@@ -46,8 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminInfo.cs" />
+    <Compile Include="AffairInfo.cs" />
+    <Compile Include="ProjDocUserInfo.cs" />
+    <Compile Include="ProjectClientInfo.cs" />
+    <Compile Include="ProjectDocInfo.cs" />
     <Compile Include="ProjectInfo.cs" />
+    <Compile Include="ProjectUserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScheduleInfo.cs" />
+    <Compile Include="SubTaskInfo.cs" />
     <Compile Include="UserInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
