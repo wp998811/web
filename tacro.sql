@@ -50,7 +50,7 @@ CREATE TABLE `affair` (
   `AffairID` int(11) NOT NULL,
   `AffairDescription` varchar(50) DEFAULT NULL,
   `AffairOperatorID` int(11) DEFAULT NULL,
-  `AffairTime` time DEFAULT NULL,
+  `AffairTime` datetime DEFAULT NULL,
   `ProjectNum` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`AffairID`),
   KEY `AffairUser` (`AffairOperatorID`),
@@ -191,7 +191,7 @@ CREATE TABLE `contactrecord` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `ContactID` int(11) DEFAULT NULL,
   `RecordDetail` varchar(50) DEFAULT NULL,
-  `RecordTime` time DEFAULT NULL,
+  `RecordTime` datetime DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -401,7 +401,7 @@ CREATE TABLE `document` (
   `DocUrl` varchar(50) DEFAULT NULL,
   `DocPermission` int(11) DEFAULT NULL,
   `UploadUserID` int(11) DEFAULT NULL,
-  `UploadTime` time DEFAULT NULL,
+  `UploadTime` datetime DEFAULT NULL,
   PRIMARY KEY (`DocID`),
   KEY `DocumentUser` (`UploadUserID`),
   KEY `DocumentDartDocCat` (`DocCategoryID`),
@@ -574,8 +574,8 @@ CREATE TABLE `project` (
   `ProjectAdminID` int(11) DEFAULT NULL,
   `ProjectDescription` varchar(200) DEFAULT NULL,
   `ProjectType` varchar(50) DEFAULT NULL,
-  `BeginTime` time DEFAULT NULL,
-  `EndTime` time DEFAULT NULL,
+  `BeginTime` datetime DEFAULT NULL,
+  `EndTime` datetime DEFAULT NULL,
   PRIMARY KEY (`ProjectNum`),
   KEY `ProjectUser` (`ProjectAdminID`),
   CONSTRAINT `ProjectUser` FOREIGN KEY (`ProjectAdminID`) REFERENCES `user` (`UserID`) ON DELETE SET NULL ON UPDATE SET NULL
@@ -635,7 +635,7 @@ CREATE TABLE `projectdoc` (
   `DocDescription` varchar(200) DEFAULT NULL,
   `DocUrl` varchar(50) DEFAULT NULL,
   `DocPermission` int(11) DEFAULT NULL,
-  `UploadTime` time DEFAULT NULL,
+  `UploadTime` datetime DEFAULT NULL,
   `UploadUserID` int(11) DEFAULT NULL,
   PRIMARY KEY (`ProjDocID`),
   KEY `ProjectDocUser` (`UploadUserID`),
@@ -721,7 +721,7 @@ CREATE TABLE `schedule` (
   `ID` int(11) NOT NULL,
   `UserID` int(11) DEFAULT NULL,
   `ScheduleContent` varchar(50) DEFAULT NULL,
-  `ScheduleTime` time DEFAULT NULL,
+  `ScheduleTime` datetime DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `ScheduleUser` (`UserID`),
   CONSTRAINT `ScheduleUser` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE SET NULL ON UPDATE SET NULL
@@ -749,15 +749,15 @@ CREATE TABLE `subtask` (
   `ProjectNum` varchar(50) DEFAULT NULL,
   `TaskName` varchar(50) DEFAULT NULL,
   `Period` int(11) DEFAULT NULL,
-  `StartTime` time DEFAULT NULL,
-  `EndTime` time DEFAULT NULL,
+  `StartTime` datetime DEFAULT NULL,
+  `EndTime` datetime DEFAULT NULL,
   `Product` varchar(50) DEFAULT NULL,
   `ForeTask` varchar(50) DEFAULT NULL,
   `Resource` varchar(50) DEFAULT NULL,
   `UserID` int(11) DEFAULT NULL,
   `TaskState` varchar(50) DEFAULT NULL,
   `IsRemind` int(11) DEFAULT NULL,
-  `RemindTime` time DEFAULT NULL,
+  `RemindTime` datetime DEFAULT NULL,
   PRIMARY KEY (`TaskID`),
   KEY `SubtaskUser` (`UserID`),
   KEY `SUbtaskProject` (`ProjectNum`),
@@ -817,7 +817,7 @@ CREATE TABLE `visitrecord` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `ContactID` int(11) DEFAULT NULL,
   `VisitDetail` varchar(50) DEFAULT NULL,
-  `RecordTime` time DEFAULT NULL,
+  `RecordTime` datetime DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `VistRecordContact` (`ContactID`),
   CONSTRAINT `VistRecordContact` FOREIGN KEY (`ContactID`) REFERENCES `contact` (`ContactID`) ON DELETE SET NULL ON UPDATE SET NULL
@@ -842,4 +842,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-26 10:55:02
+-- Dump completed on 2012-07-26 11:27:49
