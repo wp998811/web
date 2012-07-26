@@ -817,7 +817,7 @@ CREATE TABLE `visitrecord` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `ContactID` int(11) DEFAULT NULL,
   `VisitDetail` varchar(50) DEFAULT NULL,
-  `RecordTIme` time DEFAULT NULL,
+  `RecordTime` time DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `VistRecordContact` (`ContactID`),
   CONSTRAINT `VistRecordContact` FOREIGN KEY (`ContactID`) REFERENCES `contact` (`ContactID`) ON DELETE SET NULL ON UPDATE SET NULL
@@ -842,4 +842,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-26 10:45:16
+-- Dump completed on 2012-07-26 10:55:02
