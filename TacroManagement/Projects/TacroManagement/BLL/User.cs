@@ -132,6 +132,36 @@ namespace BLL
             return false;
         }
 
+        /// <summary>
+        /// 编辑用户
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="userType"></param>
+        /// <param name="userEmail"></param>
+        /// <param name="userPhone"></param>
+        /// <param name="departID"></param>
+        /// <returns></returns>
+        public bool ModifyUser(int userID,string userName, string password, string userType, string userEmail, string userPhone, int departID)
+        {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(userType))
+                return false;
+            if (departID < 0)
+                return false;
+            UserInfo userInfo = dal.GetUserById(userID);
+            if (userInfo == null)
+                return false;
+            userInfo.UserName = userName;
+            userInfo.Password = password;
+            userInfo.UserType = userType;
+            userInfo.UserEmail = userEmail;
+            userInfo.UserPhone = userPhone;
+            userInfo.DepartID = departID;
+
+            if (1 == dal.UpdateUser(userInfo))
+                return true;
+            return false;
+        }
 
     }
 }
