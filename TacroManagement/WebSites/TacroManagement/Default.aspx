@@ -35,6 +35,9 @@
             Text="Add" />
         <asp:Button ID="btnUserLogin" runat="server" onclick="btnUserLogin_Click" 
             Text="Login" />
+        <asp:Button ID="btnEdit" runat="server" onclick="btnEdit_Click" Text="Edit" />
+        <asp:Button ID="btnDelete" runat="server" onclick="btnDelete_Click" 
+            Text="Delete" />
         <br />
     
     </div>
