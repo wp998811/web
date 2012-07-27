@@ -20,7 +20,7 @@ namespace MySQLDAL
         private const string PARM_USERTYPE = "@UserType";
         private const string PARM_USEREMAIL = "@UserEmail";
         private const string PARM_USERPHONE = "@UserPhone";
-        private const string PARM_DepartID = "@DepartID";
+        private const string PARM_DEPARTID = "@DepartID";
 
         private const string SQL_INSERT_USER = "insert into user(UserName,Password,UserType,UserEmail,UserPhone,DepartID) values(@UserName,@Password,@UserType,@UserEmail,@UserPhone,@DepartID)";
         private const string SQL_DELETE_USER = "delete from user where UserID=@UserID";
@@ -47,7 +47,7 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERTYPE,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USEREMAIL,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERPHONE,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_DepartID,MySqlDbType.Int32,50)
+                    new MySqlParameter(PARM_DEPARTID,MySqlDbType.Int32,50)
                 };
                 parms[0].Value = userInfo.UserName;
                 parms[1].Value = userInfo.Password;
@@ -103,7 +103,7 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERTYPE,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USEREMAIL,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERPHONE,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_DepartID,MySqlDbType.Int32),
+                    new MySqlParameter(PARM_DEPARTID,MySqlDbType.Int32),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32)
                 };
                 parms[0].Value = userInfo.UserName;
