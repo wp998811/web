@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Model;
+
 namespace IDAL
 {
-    public interface IShedule
+    public interface ISchedule
     {
         int InsertSchedule(ScheduleInfo scheduleInfo);
         int DeleteSchedule(int scheduleId);
@@ -14,7 +16,7 @@ namespace IDAL
         IList<ScheduleInfo> GetSchedulesDescending();
         IList<ScheduleInfo> GetSchedulesByUserIdDescending(int userId);
         IList<ScheduleInfo> GetSchedulesByDate(string date);
-        ScheduleInfo GetScheduleByIdDescending(int id);
+        ScheduleInfo GetScheduleById(int id);
 
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class ProjDocUserInfo
+    public class ProjDocUserInfo
     {
         private int id;
         private int projDocId;

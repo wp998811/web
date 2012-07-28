@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Model;
 
 namespace IDAL
 {
@@ -10,15 +11,15 @@ namespace IDAL
         //新增项目
         int InsertProject(ProjectInfo projectInfo);
         //删除项目
-        int DeleteProject(int projectId);
+        int DeleteProject(string projectNum);
         //更新项目信息
         int UpdateProject(ProjectInfo projectInfo);
 
         //获得所有的项目
         IList<ProjectInfo> GetProjects();
         //通过名字获得project
-        ProjectInfo GetProjectByName(string name);
+        ProjectInfo GetProjectByProjectNum(string projectNums);
         //通过id获得project
-        ProjectInfo GetProjectById(int id);
+        IList<ProjectInfo> GetProjectByAdminId(int adminId);
     }
 }

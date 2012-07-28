@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class SubTaskInfo
+    public class SubTaskInfo
     {
         private int taskId;
         private string projectNum;

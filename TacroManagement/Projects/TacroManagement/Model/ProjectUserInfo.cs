@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class ProjectUserInfo
+    public class ProjectUserInfo
     {
         private int id;
         private string projectNum;

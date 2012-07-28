@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class ProjectDocInfo
+    public class ProjectDocInfo
     {
         private int projDocId;
         private int taskId;
@@ -24,7 +24,7 @@ namespace Model
         }
 
         public ProjectDocInfo(int taskId, int projDocCate, string docName, string docKey, string docDescription
-            , string docUrl, int docPermission, string uploadTime, string uploadUserId)
+            , string docUrl, int docPermission, string uploadTime, int uploadUserId)
         {
             this.taskId = taskId;
             this.projDocCate = projDocCate;
@@ -38,7 +38,7 @@ namespace Model
         }
 
         public ProjectDocInfo(int projDocId, int taskId, int projDocCate, string docName, string docKey, string docDescription
-            , string docUrl, int docPermission, string uploadTime, string uploadUserId)
+            , string docUrl, int docPermission, string uploadTime, int uploadUserId)
         {
             this.projDocId = projDocId;
             this.taskId = taskId;

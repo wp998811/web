@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{674E86A3-B758-4A9F-A174-475EB8C8944F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -50,7 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin.cs" />
+    <Compile Include="Affair.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="ProjectClient.cs" />
+    <Compile Include="ProjectDoc.cs" />
+    <Compile Include="ProjectDocUser.cs" />
+    <Compile Include="ProjectUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule.cs" />
+    <Compile Include="SubTask.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

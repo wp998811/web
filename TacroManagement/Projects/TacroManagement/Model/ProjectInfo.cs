@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class ProjectInfo
+    public class ProjectInfo
     {
         private string projectNum;
         private string projectName;
@@ -72,6 +72,12 @@ namespace Model
         {
             get { return this.projectType; }
             set { this.projectType = value; }
+        }
+
+        public string ProjectClientName
+        {
+            get { return projectClientName; }
+            set { projectClientName = value; }
         }
 
         public string BeginTime

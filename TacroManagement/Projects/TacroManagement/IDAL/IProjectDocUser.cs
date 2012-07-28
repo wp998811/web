@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Model;
+
 namespace IDAL
 {
     public interface IProjectDocUser
@@ -13,7 +15,7 @@ namespace IDAL
 
         ProjDocUserInfo GetProjectDocUserById(int id);
         IList<ProjDocUserInfo> GetProjectDocUsers();
-        ProjDocUserInfo GetProjectDocUserByDocId(int docId);
+        IList<ProjDocUserInfo> GetProjectDocUserByDocId(int docId);
         IList<ProjDocUserInfo> GetProjectDocUserByUserId(int userId);
     }
 }

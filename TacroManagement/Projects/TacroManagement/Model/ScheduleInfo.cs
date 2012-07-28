@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class ScheduleInfo
+    public class ScheduleInfo
     {
         private int id;
         private int userId;
