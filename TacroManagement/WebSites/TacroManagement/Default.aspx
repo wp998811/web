@@ -35,6 +35,8 @@
             Text="Add" />
         <asp:Button ID="btnUserLogin" runat="server" onclick="btnUserLogin_Click" 
             Text="Login" />
+        <asp:Button ID="testButton" runat="server" onclick="testButton_Click" 
+            Text="测试" />
         <br />
     
     </div>

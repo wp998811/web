@@ -90,4 +90,15 @@ public partial class _Default : System.Web.UI.Page
     #endregion
 
 
+    #region test by wangjie
+    protected void testButton_Click(object sender, EventArgs e)
+    {
+
+        Document document = new Document();
+
+        DocumentInfo documentInfo= document.GetDocumentById(1);
+
+        Console.WriteLine(documentInfo.DocName);
+    }
+    #endregion
 }

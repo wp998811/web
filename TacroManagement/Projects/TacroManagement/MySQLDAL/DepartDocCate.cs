@@ -93,7 +93,7 @@ namespace MySQLDAL
         /// </summary>
         /// <param name="departDocCateInfo"></param>
         /// <returns></returns>
-        int IDepartDocCate.UpdeteDepartDocCate(DepartDocCateInfo departDocCateInfo)
+        int IDepartDocCate.UpdateDepartDocCate(DepartDocCateInfo departDocCateInfo)
         {
             int result = -1;
             try
