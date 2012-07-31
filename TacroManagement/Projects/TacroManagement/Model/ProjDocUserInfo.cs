@@ -9,27 +9,27 @@ namespace Model
     {
         private int id;
         private int projDocId;
-        private int userId;
+        private string userId;
 
         public ProjDocUserInfo()
         {
 
         }
 
-        public ProjDocUserInfo(int projDocId, int userId)
+        public ProjDocUserInfo(int projDocId, string userId)
         {
             this.projDocId = projDocId;
             this.userId = userId;
         }
 
-        public ProjDocUserInfo(int id, int projDocId, int userId)
+        public ProjDocUserInfo(int id, int projDocId, string userId)
         {
             this.id = id;
             this.projDocId = projDocId;
             this.userId = userId;
         }
 
-        public int UserId
+        public string UserId
         {
             get { return userId; }
             set { userId = value; }

@@ -21,5 +21,9 @@ namespace IDAL
         ProjectInfo GetProjectByProjectNum(string projectNums);
         //通过id获得project
         IList<ProjectInfo> GetProjectByAdminId(int adminId);
+        //通过项目的num获得项目所需的总时间
+        int GetProjectTimeLength(string projectNum);
+        //通过项目的num获得项目已经开发的时间
+        int GetProjectSpareTime(string projectNum);
     }
 }

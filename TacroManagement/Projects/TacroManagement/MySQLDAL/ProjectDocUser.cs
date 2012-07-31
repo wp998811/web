@@ -99,7 +99,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2));
                     }
                     else
                         projectDocUser = new ProjDocUserInfo();
@@ -121,7 +121,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjDocUserInfo projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        ProjDocUserInfo projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2));
                         projectDocUsers.Add(projectDocUser);
                     }
                 }
@@ -144,7 +144,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjDocUserInfo projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        ProjDocUserInfo projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2));
                         projectDocUsers.Add(projectDocUser);
                     }
                 }
@@ -161,13 +161,13 @@ namespace MySQLDAL
             IList<ProjDocUserInfo> projectDocUsers = new List<ProjDocUserInfo>();
             try
             {
-                MySqlParameter parm = new MySqlParameter(PARM_USERID, MySqlDbType.Int32);
-                parm.Value = userId;
+                MySqlParameter parm = new MySqlParameter(PARM_USERID, MySqlDbType.VarChar, 50);
+                parm.Value = userId.ToString();
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PROJECTDOC_USER_BY_USERID, parm))
                 {
                     while (rdr.Read())
                     {
-                        ProjDocUserInfo projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        ProjDocUserInfo projectDocUser = new ProjDocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2));
                         projectDocUsers.Add(projectDocUser);
                     }
                 }

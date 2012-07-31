@@ -30,8 +30,59 @@ namespace MySQLDAL
         private const string SQL_SELECT_PROJECTS = "select * from project";
         private const string SQL_SELECT_PROJECT_BY_NUM = "select * from project where ProjectNum=@ProjectNum";
         private const string SQL_SELECT_PROJECT_BY_ADMIN_ID = "select * from project where ProjectAdminID=@ProjectAdminID";
+        private const string SQL_GET_PROJECT_TIME_LENGHT = "select ABS(DATEDIFF(BeginTime, EndTime)) from project where ProjectNum=@ProjectNum";
+        private const string SQL_GET_PROJECT_SPARE_TIME = "select ABS(DATEDIFF(BeginTime, Now())) from project where ProjectNum=@ProjectNum";
+
 
         #region IProject 成员
+
+        public int GetProjectTimeLength(string projectNum)
+        {
+            int result = -1;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_PROJECT_NUM, MySqlDbType.VarChar, 50);
+                parm.Value = projectNum;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_GET_PROJECT_TIME_LENGHT, parm))
+                {
+                    if (rdr.Read())
+                    {
+                        result = rdr.GetInt32(0);
+                    }
+                }
+                
+            }
+            catch (MySqlException ex)
+            {
+            	Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
+
+        public int GetProjectSpareTime(string projectNum)
+        {
+            int result = -1;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_PROJECT_NUM, MySqlDbType.VarChar, 50);
+                parm.Value = projectNum;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_GET_PROJECT_SPARE_TIME, parm))
+                {
+                    if (rdr.Read())
+                    {
+                        result = rdr.GetInt32(0);
+                    }
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
 
         public int InsertProject(ProjectInfo projectInfo)
         {
