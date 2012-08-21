@@ -23,7 +23,7 @@ namespace MySQLDAL
         private const string SQL_INSERT_GOVERCONTACT = "INSERT INTO govercontact(GoverID, ContactID) VALUES (@GoverID, @ContactID) ";
         private const string SQL_DELETE_GOVERCONTACT = "DELETE FROM govercontact WHERE ID=@ID";
         private const string SQL_UPDATE_GOVERCONTACT = "UPDATE govercontact SET GoverID = @GoverID, ContactID = @ContactID WHERE ID = @ID";
-        private const string SQL_SELECT_GOVERCONTACT = "SELECT * FORM govercontact";
+        private const string SQL_SELECT_GOVERCONTACT = "SELECT * FROM govercontact";
         private const string SQL_SELECT_GOVERCONTACT_BY_ID = "SELECT * FROM govercontact WHERE ID = @ID";
         private const string SQL_SELECT_GOVERCONTACT_BY_GOVER_CONTACT = "SELECT * FROM govercontact WHERE GoverID = @GoverID AND ContactID = @ContactID";
 

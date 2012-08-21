@@ -23,7 +23,7 @@ namespace MySQLDAL
         private const string SQL_INSERT_PARTNERCONTACT = "INSERT INTO partnercontact(PartnerID, ContactID) VALUES (@PartnerID, @ContactID) ";
         private const string SQL_DELETE_PARTNERCONTACT = "DELETE FROM partnercontact WHERE ID=@ID";
         private const string SQL_UPDATE_PARTNERCONTACT = "UPDATE partnercontact SET PartnerID = @PartnerID, ContactID = @ContactID WHERE ID = @ID";
-        private const string SQL_SELECT_PARTNERCONTACT = "SELECT * FORM partnercontact";
+        private const string SQL_SELECT_PARTNERCONTACT = "SELECT * FROM partnercontact";
         private const string SQL_SELECT_PARTNERCONTACT_BY_ID = "SELECT * FROM partnercontact WHERE ID = @ID";
         private const string SQL_SELECT_PARTNERCONTACT_BY_PARTNER_CONTACT = "SELECT * FROM partnercontact WHERE PartnerID = @PartnerID AND ContactID = @ContactID";
 

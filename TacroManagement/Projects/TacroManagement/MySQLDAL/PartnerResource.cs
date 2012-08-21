@@ -20,13 +20,13 @@ namespace MySQLDAL
         private const string PARM_USERID = "@UserID";
         private const string PARM_PARTNERCITY = "@PartnerCity";
         private const string PARM_ORGANNAME = "@OrganName";
-        private const string PARM_ORGANINTRO = "@OranIntro";
+        private const string PARM_ORGANINTRO = "@OrganIntro";
 
         private const string SQL_INSERT_PARTNERRESOURCE = "INSERT INTO partnerresource(UserID, PartnerCity, OrganName, OrganIntro) VALUES (@UserID, @PartnerCity, @OrganName, @OrganIntro) ";
         private const string SQL_DELETE_PARTNERRESOURCE = "DELETE FROM partnerresource WHERE PartnerID=@PartnerID";
         private const string SQL_UPDATE_PARTNERRESOURCE = "UPDATE partnerresource SET UserID = @UserID, PartnerCity =@PartnerCity, OrganName =@OrganName, OrganIntro =@OrganIntro WHERE PartnerID = @PartnerID";
-        private const string SQL_SELECT_PARTNERRESOURCE = "SELECT * FORM partnerresource";
-        private const string SQL_SELECT_PARTNERRESOURCE_BY_ID = "SELECT * FORM partnerresource WHERE PartnerID = @PartnerID";
+        private const string SQL_SELECT_PARTNERRESOURCE = "SELECT * FROM partnerresource";
+        private const string SQL_SELECT_PARTNERRESOURCE_BY_ID = "SELECT * FROM partnerresource WHERE PartnerID = @PartnerID";
 
 
 

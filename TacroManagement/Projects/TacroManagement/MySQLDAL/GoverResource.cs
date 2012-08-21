@@ -17,17 +17,17 @@ namespace MySQLDAL
 
         #region GoverResource Constant String
 
-        private const string PARM_PARTNERID = "@GoverID";
+        private const string PARM_GOVERID = "@GoverID";
         private const string PARM_USERID ="@UserID";
-        private const string PARM_PARTNERCITY ="@GoverCity";
+        private const string PARM_GOVERCITY ="@GoverCity";
         private const string PARM_ORGANNAME="@OrganName";
-        private const string PARM_ORGANINTRO = "@OranIntro";
+        private const string PARM_ORGANINTRO = "@OrganIntro";
 
-        private const string SQL_INSERT_PARTNERRESOURCE = "INSERT INTO goverresource(UserID, GoverCity, OrganName, OrganIntro) VALUES (@UserID, @GoverCity, @OrganName, @OrganIntro) ";
-        private const string SQL_DELETE_PARTNERRESOURCE = "DELETE FROM goverresource WHERE GoverID=@GoverID";
-        private const string SQL_UPDATE_PARTNERRESOURCE = "UPDATE goverresource SET UserID = @UserID, GoverCity =@GoverCity, OrganName =@OrganName, OrganIntro =@OrganIntro WHERE GoverID = @GoverID";
-        private const string SQL_SELECT_PARTNERRESOURCE = "SELECT * FORM goverresource";
-        private const string SQL_SELECT_PARTNERRESOURCE_BY_ID = "SELECT * FORM goverresource WHERE GoverID = @GoverID";
+        private const string SQL_INSERT_GOVERRESOURCE = "INSERT INTO goverresource(UserID, GoverCity, OrganName, OrganIntro) VALUES (@UserID, @GoverCity, @OrganName, @OrganIntro) ";
+        private const string SQL_DELETE_GOVERRESOURCE = "DELETE FROM goverresource WHERE GoverID=@GoverID";
+        private const string SQL_UPDATE_GOVERRESOURCE = "UPDATE goverresource SET UserID = @UserID, GoverCity =@GoverCity, OrganName =@OrganName, OrganIntro =@OrganIntro WHERE GoverID = @GoverID";
+        private const string SQL_SELECT_GOVERRESOURCE = "SELECT * FROM goverresource";
+        private const string SQL_SELECT_GOVERRESOURCE_BY_ID = "SELECT * FROM goverresource WHERE GoverID = @GoverID";
 
 
 
@@ -53,7 +53,7 @@ namespace MySQLDAL
             {
                 MySqlParameter[] parms = new MySqlParameter[] { 
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11),
-                    new MySqlParameter(PARM_PARTNERCITY,MySqlDbType.VarChar,50) ,
+                    new MySqlParameter(PARM_GOVERCITY,MySqlDbType.VarChar,50) ,
                     new MySqlParameter(PARM_ORGANNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200)
                 };
@@ -62,7 +62,7 @@ namespace MySQLDAL
                 parms[2].Value = goverResourceInfo.OrganName;
                 parms[3].Value = goverResourceInfo.OrganIntro;
 
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_PARTNERRESOURCE, parms);
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_GOVERRESOURCE, parms);
 
             }
             catch (MySqlException se)
@@ -82,9 +82,9 @@ namespace MySQLDAL
             int result = -1;
             try
             {
-                MySqlParameter parm = new MySqlParameter(PARM_PARTNERID, MySqlDbType.Int32);
+                MySqlParameter parm = new MySqlParameter(PARM_GOVERID, MySqlDbType.Int32);
                 parm.Value = id;
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_PARTNERRESOURCE, parm);
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_GOVERRESOURCE, parm);
             }
             catch (MySqlException se)
             {
@@ -105,10 +105,10 @@ namespace MySQLDAL
            {
                MySqlParameter[] parms = new MySqlParameter[] { 
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11),
-                    new MySqlParameter(PARM_PARTNERCITY,MySqlDbType.VarChar,50) ,
+                    new MySqlParameter(PARM_GOVERCITY,MySqlDbType.VarChar,50) ,
                     new MySqlParameter(PARM_ORGANNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200),
-                    new MySqlParameter(PARM_PARTNERID,MySqlDbType.Int32,11)
+                    new MySqlParameter(PARM_GOVERID,MySqlDbType.Int32,11)
                 };
                parms[0].Value = goverResourceInfo.UserID;
                parms[1].Value = goverResourceInfo.GoverCity;
@@ -117,7 +117,7 @@ namespace MySQLDAL
                parms[4].Value = goverResourceInfo.GoverID;
 
 
-               result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_PARTNERRESOURCE, parms);
+               result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_GOVERRESOURCE, parms);
            }
            catch (MySqlException se)
            {
@@ -136,7 +136,7 @@ namespace MySQLDAL
             IList<GoverResourceInfo> goverResources = new List<GoverResourceInfo>();
             try
             {
-                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERRESOURCE, null))
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE, null))
                 {
                     while (rdr.Read())
                     {
@@ -162,10 +162,10 @@ namespace MySQLDAL
             GoverResourceInfo goverResourceInfo = null;
             try
             {
-                MySqlParameter parm = new MySqlParameter(PARM_PARTNERID, MySqlDbType.Int32, 11);
+                MySqlParameter parm = new MySqlParameter(PARM_GOVERID, MySqlDbType.Int32, 11);
                 parm.Value = id;
 
-                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERRESOURCE_BY_ID, parm))
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE, parm))
                 {
                     if (rdr.Read())
                         goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));

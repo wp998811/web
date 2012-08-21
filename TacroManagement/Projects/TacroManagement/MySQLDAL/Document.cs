@@ -19,7 +19,7 @@ namespace MySQLDAL
         private const string PARM_DOCID = "@DocID";
         private const string PARM_DOCNAME = "@DocName";
         private const string PARM_DOCVERSION = "@DocVersion";
-        private const string PARM_DOCDESCRIPITION = "@DocDescripition";
+        private const string PARM_DOCDESCRIPTION = "@DocDescription";
         private const string PARM_DOCKEY = "@DocKey";    
         private const string PARM_DEPARTID = "@DepartID";    
         private const string PARM_DOCCATEGORYID = "@DocCategoryID";       
@@ -31,10 +31,10 @@ namespace MySQLDAL
         private const string PARM_UPLOADTIMEBEGIN = "@uploadTimeBegin";
         private const string PARM_UPLOADTIMEEND = "@uploadTimeEnd";
 
-        private const string SQL_INSERT_DOCUMENT = "INSERT INTO document(DocName, DocVersion, DocDescipition, DocKey, DepartID,DocCategoryID, DocState, DocUrl,DocPermission,uploadUSerID, uploadTime ) VALUES (@DocName, @DocVersion, @DocDescipition, @DocKey, @DepartID,@DocCategoryID, @DocState, @DocUrl,@DocPermission,@UploadUSerID, @UploadTime)";
+        private const string SQL_INSERT_DOCUMENT = "INSERT INTO document(DocName, DocVersion, DocDescription, DocKey, DepartID,DocCategoryID, DocState, DocUrl,DocPermission,uploadUSerID, uploadTime ) VALUES (@DocName, @DocVersion, @DocDescription, @DocKey, @DepartID,@DocCategoryID, @DocState, @DocUrl,@DocPermission,@UploadUSerID, @UploadTime)";
         private const string SQL_DELETE_DOCUMENT = "DELETE FROM document WHERE DocID=@DocID";
         private const string SQL_DELETE_DOCUMENT_BY_NAME = "DELETE FROM document WHERE DocName=@DocName";
-        private const string SQL_UPDATE_DOCUMENT = "UPDATE document SET DocName=@DocName, DocVersion=@DocVersion, DocDescripition=@DocDescipition, DocKey=@DocKey, DepartID=@DepartID,DocCategoryID=@DocCategoryID, DocState=@DocState, DocUrl=@DocUrl, DocPermission = @DocPermission, UploadUserID=@UploadUSerID, UploadTime = @UploadTime WHERE  DocID=@DocID";
+        private const string SQL_UPDATE_DOCUMENT = "UPDATE document SET DocName=@DocName, DocVersion=@DocVersion, DocDescription=@DocDescription, DocKey=@DocKey, DepartID=@DepartID,DocCategoryID=@DocCategoryID, DocState=@DocState, DocUrl=@DocUrl, DocPermission = @DocPermission, UploadUserID=@UploadUSerID, UploadTime = @UploadTime WHERE  DocID=@DocID";
         private const string SQL_SELECT_DOCUMENT = "SELECT * FROM document";
         private const string SQL_SELECT_DOCUMENT_BY_NAME = "SELECT * FROM Document WHERE DocName=@DocName";
         private const string SQL_SELECT_DOCUMENT_BY_ID = "SELECT * FROM Document WHERE DocID=@DocID";
@@ -56,7 +56,7 @@ namespace MySQLDAL
                 MySqlParameter[] parms = new MySqlParameter[] { 
                     new MySqlParameter(PARM_DOCNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DOCVERSION,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_DOCDESCRIPITION,MySqlDbType.VarChar,1000),
+                    new MySqlParameter(PARM_DOCDESCRIPTION,MySqlDbType.VarChar,1000),
                     new MySqlParameter(PARM_DOCKEY,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DEPARTID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_DOCCATEGORYID,MySqlDbType.Int32,11),
@@ -123,10 +123,10 @@ namespace MySQLDAL
             try
             { 
                 MySqlParameter[] parms = new MySqlParameter[] {
-                    new MySqlParameter(PARM_DOCID,MySqlDbType.Int32,11),
+                   // new MySqlParameter(PARM_DOCID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_DOCNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DOCVERSION,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_DOCDESCRIPITION,MySqlDbType.VarChar,1000),
+                    new MySqlParameter(PARM_DOCDESCRIPTION,MySqlDbType.VarChar,1000),
                     new MySqlParameter(PARM_DOCKEY,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DEPARTID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_DOCCATEGORYID,MySqlDbType.Int32,11),
@@ -254,7 +254,7 @@ namespace MySQLDAL
             int result = -1;
             try
             {
-                MySqlParameter parm = new MySqlParameter(PARM_DOCNAME, MySqlDbType.Int32);
+                MySqlParameter parm = new MySqlParameter(PARM_DOCNAME, MySqlDbType.VarString);
                 parm.Value = docName;
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_DOCUMENT_BY_NAME, parm);
             }
@@ -265,9 +265,37 @@ namespace MySQLDAL
             return result;
         }
 
-        IList<DocumentInfo> IDocument.GetDocumentBySearchCondition(string docName, string docVersion, string docKey, int DepertId, int docCategoryID, int uploadUserID, string updateTimeBegin, string updateTimeEnd)
+       // string docName, string docVersion, string docKey, int DepertId, int docCategoryID, int uploadUserID, string updateTimeBegin, string updateTimeEnd
+        IList<DocumentInfo> IDocument.GetDocumentBySearchCondition(string searchCondition)
         {
-            throw new NotImplementedException();
+
+            string sqlString;
+            if (searchCondition =="")
+            {
+                sqlString = "SELECT * FROM document ";
+            }
+            else
+            {
+                sqlString = "SELECT * FROM document WHERE " + searchCondition;
+            }
+             
+            IList<DocumentInfo> documents = new List<DocumentInfo>();
+            try
+            {
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, sqlString, null))
+                {
+                    while (rdr.Read())
+                    {
+                        DocumentInfo document = new DocumentInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetInt32(5), rdr.GetInt32(6), rdr.GetString(7), rdr.GetString(8), rdr.GetInt32(9), rdr.GetInt32(10), rdr.GetString(11));
+                        documents.Add(document);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return documents;
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace MySQLDAL
         private const string SQL_INSERT_DOCUSER = "INSERT INTO docuser(DocID, UserID) VALUES (@DocID, @UserID) ";
         private const string SQL_DELETE_DOCUSER = "DELETE FROM docuser WHERE ID=@ID";
         private const string SQL_UPDATE_DOCUSER = "UPDATE docuser SET DocID = @DocID, UserID = @UserID WHERE ID = @ID";
-        private const string SQL_SELECT_DOCUSER = "SELECT * FORM docuser";
+        private const string SQL_SELECT_DOCUSER = "SELECT * FROM docuser";
         private const string SQL_SELECT_DOCUSER_BY_ID = "SELECT * FROM docuser WHERE ID = @ID";
         private const string SQL_SELECT_DOCUSER_BY_DOC_USER = "SELECT * FROM docuser WHERE DocID = @DocID AND UserID = @UserID";
 
@@ -180,8 +180,8 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_DOCID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = DocumentID;
-                parms[1].Value = userID;
+                parms[0].Value = userID;
+                parms[1].Value = DocumentID;
 
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DOCUSER_BY_DOC_USER, parms))
                 {

@@ -26,7 +26,7 @@ namespace MySQLDAL
         private const string SQL_INSERT_DEPARTDOCCATE= "INSERT INTO departdoccate(DepartID,Visibility,CategoryName ) VALUES (@DepartID, @Visibility, @CategoryName)";
         private const string SQL_DELETE_DEPARTDOCCATE = "DELETE FROM departdoccate WHERE ID=@ID";
         private const string SQL_UPDATE_DEPARTDOCCATE = "UPDATE departdoccate SET DepartID = @DepartID, Visibility = @Visibility, CategoryName = @CategoryName WHERE ID = @ID";
-        private const string SQL_SELECT_DEPARTDOCCATE = "SELECT * FORM departdoccate";
+        private const string SQL_SELECT_DEPARTDOCCATE = "SELECT * FROM departdoccate";
         private const string SQL_SELECT_DEPARTDOCCATE_BY_ID = "SELECT * FROM departdoccate WHERE ID = @ID";
         private const string SQL_SELECT_DEPARTDOCCATE_BY_DEPART_CATEGORY = "SELECT * FROM departdoccate WHERE DepartID = @DepartID AND CategoryName = @CategoryName";
 

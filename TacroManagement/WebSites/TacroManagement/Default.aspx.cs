@@ -94,11 +94,120 @@ public partial class _Default : System.Web.UI.Page
     protected void testButton_Click(object sender, EventArgs e)
     {
 
-        Document document = new Document();
+        string filePath = FileUpload1.PostedFile.FileName;
+        if (filePath.Trim().Length > 0)
+        {
+            string filename = filePath.Substring(filePath.LastIndexOf("\\") + 1);
+            //string serverfimename = Server.MapPath(@"../") + filename;
+            string serverfilename = @"c:\upload\" + filename;
 
-        DocumentInfo documentInfo= document.GetDocumentById(1);
+            if (System.IO.File.Exists(serverfilename))
+            {
+                //this.Page.RegisterStartupScript("", "<script>alert('此文件已经存在！');</script>");
+            }
+            else
+            {
+                if (FileUpload1.PostedFile.ContentLength > 0)
+                {
+                    try
+                    {
+                        FileUpload1.PostedFile.SaveAs(serverfilename);
+                      //  this.Page.RegisterStartupScript("", "<script>alert('文件上传成功！');</script>");
+                    }
+                    catch (Exception exc)
+                    {
+                    //    this.Page.RegisterStartupScript("", "<script>alert('文件上传失败！');</script>");
+                    }
+                }
+            }
+        }
+        //PartnerResource partnerResource = new PartnerResource();
+        //PartnerResourceInfo partnerResourceInfo = new PartnerResourceInfo();
+        //IList<PartnerResourceInfo> partnerResourceInfos;
+        //partnerResourceInfo = partnerResource.GetPartnerResourceById(1);
+        //int isInsert = partnerResource.InsertPartnerResource(partnerResourceInfo);
+        //partnerResourceInfo.OrganName = "更新组织名称";
+        //int isUpdate = partnerResource.UpdetePartnerResource(partnerResourceInfo);
+        //int isDelete = partnerResource.DeletePartnerResource(2);
+        //partnerResourceInfos = partnerResource.GetPartnerResource();
 
-        Console.WriteLine(documentInfo.DocName);
+        //PartnerContactInfo partnerContactInfo = new PartnerContactInfo();
+        //PartnerContact partnerContact = new PartnerContact();
+        //IList<PartnerContactInfo> partnerContactInfos;
+        //partnerContactInfo = partnerContact.GetPartnerContactById(1);
+        //int isInsert = partnerContact.InsertPartnerContact(partnerContactInfo);
+        //partnerContactInfo.PartnerID = 3;
+        //int isUpdate = partnerContact.UpdatePartnerContact(partnerContactInfo);
+        //int isDelete = partnerContact.DeletePartnerContact(6);
+        //partnerContactInfos = partnerContact.GetPartnerContact();
+
+        //GoverResource goverResource = new GoverResource();
+        //GoverResourceInfo goverResourcetInfo = new GoverResourceInfo();
+        //IList<GoverResourceInfo> goverResourceInfos;
+        //goverResourcetInfo = goverResource.GetGoverResourceById(1);
+        //int isInsert = goverResource.InsertGoverResource(goverResourcetInfo);
+        //goverResourcetInfo.OrganName = "更新组织名称";
+        //int isUpdate = goverResource.UpdeteGoverResource(goverResourcetInfo);
+        //int isDelete = goverResource.DeleteGoverResource(2);
+        //goverResourceInfos = goverResource.GetGoverResource();
+          
+       // GoverContact goverContact = new GoverContact();
+       // GoverContactInfo goverContactInfo = new GoverContactInfo();
+       // IList<GoverContactInfo> goverContactInfos ;
+       // goverContactInfo = goverContact.GetGoverContactById(1);
+       // int isInsert = goverContact.InsertGoverContact(goverContactInfo);
+       // goverContactInfo.ContactID = 3;
+       // int isUpdate = goverContact.UpdateGoverContact(goverContactInfo);
+       //int isDelete = goverContact.DeleteGoverContact(1);
+       // goverContactInfos = goverContact.GetGoverContact();
+
+        //DocUserInfo docUserInfo = new DocUserInfo();
+        //DocUser docUser = new DocUser();
+        //docUserInfo = docUser.GetDocUserById(1);
+        //int isDelete = docUser.DeleteDocUser(2);
+        //docUserInfo.UserID = 2;
+        //int isInsert = docUser.InsertDocUser(docUserInfo);
+        //docUserInfo.DocID = 1;
+        //int isUpdate = docUser.UpdateDocUser(docUserInfo);
+        //IList<DocUserInfo> docUserInfos = docUser.GetDocUser();
+        //docUserInfo = docUser.GetDocUserByDocUser(4, 1);
+
+        //DepartDocCate departDocCate = new DepartDocCate();
+        //DepartDocCateInfo departDocCateInfo = new DepartDocCateInfo();
+        //departDocCateInfo = departDocCate.GetDepartDocCateById(2);
+        //int isInsert = departDocCate.InsertDepartDocCate(departDocCateInfo);
+        //departDocCate.InsertDepartDocCate(departDocCateInfo);
+        //departDocCate.InsertDepartDocCate(departDocCateInfo);
+        //IList<DepartDocCateInfo> departDocCateInfos =departDocCate.GetDepartDocCate();
+        //departDocCateInfo.Visibility =2;
+        //departDocCateInfo.CategoryName = "文档目录update";
+        //int isUpdate = departDocCate.UpdateDepartDocCate(departDocCateInfo);
+        //int isDelete = departDocCate.DeleteDepartDocCate(3);
+        //departDocCateInfo = departDocCate.GetDepartDocCateByDepartCategory(2, "文档目录update");
+     
+        //Document document = new Document();
+        //DocumentInfo documentInfo= document.GetDocumentById(1); 
+        //int IsInsert = document.InsertDocument(documentInfo);
+        //documentInfo.DocName = "文档update";
+        //int isUpdate = document.UpdateDocument(documentInfo);
+        // int IsDelete =  document.DeleteDocument(2);
+        // int IsDelete =  document.DeleteDocumentByName("文档名称B");
+        //DocumentInfo documentInfo = document.GetDocumentByName("文档名称B");
+        //IList<DocumentInfo> documentInfos = document.GetDocument();   
+        //Console.WriteLine(documentInfo.DocState);
+        //Console.ReadLine();
     }
     #endregion
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        Response.Clear();
+        Response.Buffer = true;
+        Response.ContentType = "text/xml/rmvb";
+        Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+        Response.AppendHeader("Content-Disposition", "attachment;filename=exam.rmvb");
+        string path = Server.MapPath("./");
+        Response.WriteFile(path + "upload/b.rmvb");
+        Response.End();
+     
+    }
 }

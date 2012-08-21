@@ -16,6 +16,9 @@ namespace Model
         }
         public DocUserInfo(int id, int docID, int UserID)
         {
+            this.id = id;
+            this.docID = docID;
+            this.UserID = UserID;
         }
         public int Id
         {

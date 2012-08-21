@@ -37,6 +37,11 @@
             Text="Login" />
         <asp:Button ID="testButton" runat="server" onclick="testButton_Click" 
             Text="测试" />
+        <asp:FileUpload ID="FileUpload1" runat="server" />
+        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/upload/a.txt">HyperLink</asp:HyperLink>
+        
+        <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="Button" />
+        
         <br />
     
     </div>
