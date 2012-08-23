@@ -14,5 +14,6 @@ namespace IDAL
 
         IList<GoverContactInfo> GetGoverContact();                             //查找所以政府联系人
         GoverContactInfo GetGoverContactById(int id);                         //通过ID查找政府联系人
+        GoverContactInfo GetGoverContactByGover(int goverId);          //通过政府资料ID查找政府联系人
     }
 }

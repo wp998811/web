@@ -266,17 +266,17 @@ namespace MySQLDAL
         }
 
        // string docName, string docVersion, string docKey, int DepertId, int docCategoryID, int uploadUserID, string updateTimeBegin, string updateTimeEnd
-        IList<DocumentInfo> IDocument.GetDocumentBySearchCondition(string searchCondition)
+        IList<DocumentInfo> IDocument.GetDocumentBySearchCondition(string selectCondition)
         {
 
             string sqlString;
-            if (searchCondition =="")
+            if (selectCondition == "")
             {
                 sqlString = "SELECT * FROM document ";
             }
             else
             {
-                sqlString = "SELECT * FROM document WHERE " + searchCondition;
+                sqlString = "SELECT * FROM document WHERE " + selectCondition;
             }
              
             IList<DocumentInfo> documents = new List<DocumentInfo>();

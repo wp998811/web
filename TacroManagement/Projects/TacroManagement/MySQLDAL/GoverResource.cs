@@ -180,6 +180,42 @@ namespace MySQLDAL
             return goverResourceInfo;
         }
 
+        /// <summary>
+        /// 根据查询条件查找政府资料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IList<GoverResourceInfo> GetGoverResourceByCondition(string selectCondition)
+        {
+
+            string sqlString;
+            if (selectCondition == "")
+            {
+                sqlString = "SELECT * FROM document ";
+            }
+            else
+            {
+                sqlString = "SELECT * FROM document WHERE " + selectCondition;
+            }
+            IList<GoverResourceInfo> goverResources = new List<GoverResourceInfo>();
+            try
+            {
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, sqlString, null))
+                {
+                    while (rdr.Read())
+                    {
+                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        goverResources.Add(goverResource);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return goverResources;
+
+        }
         #endregion
     }
 }

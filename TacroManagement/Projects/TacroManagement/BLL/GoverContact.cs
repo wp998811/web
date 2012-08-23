@@ -53,7 +53,7 @@ namespace BLL
         {
             return dal.GetGoverContact();
         }
-
+        
         /// <summary>
         /// 根据文档政府联系人编号查找政府联系人
         /// </summary>
@@ -64,6 +64,10 @@ namespace BLL
             return dal.GetGoverContactById(id);
         }
 
+        public GoverContactInfo GetGoverContactByGover(int goverId)
+        {
+            return dal.GetGoverContactByGover(goverId);
+        }
         #endregion
     }
 }

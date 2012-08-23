@@ -25,6 +25,7 @@ namespace MySQLDAL
         private const string SQL_UPDATE_GOVERCONTACT = "UPDATE govercontact SET GoverID = @GoverID, ContactID = @ContactID WHERE ID = @ID";
         private const string SQL_SELECT_GOVERCONTACT = "SELECT * FROM govercontact";
         private const string SQL_SELECT_GOVERCONTACT_BY_ID = "SELECT * FROM govercontact WHERE ID = @ID";
+        private const string SQL_SELECT_GOVERCONTACT_BY_GOVER = "SELECT * FROM govercontact WHERE GoverID = @GoverID";
         private const string SQL_SELECT_GOVERCONTACT_BY_GOVER_CONTACT = "SELECT * FROM govercontact WHERE GoverID = @GoverID AND ContactID = @ContactID";
 
         #endregion
@@ -148,6 +149,34 @@ namespace MySQLDAL
                 parm.Value = id;
 
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERCONTACT_BY_ID, parm))
+                {
+                    if (rdr.Read())
+                        goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                    else
+                        goverContactInfo = new GoverContactInfo();
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return goverContactInfo;
+        }
+
+        /// <summary>
+        /// 通过政府资料ID查找政府联系人
+        /// </summary>
+        /// <param name="goverId"></param>
+        /// <returns></returns>
+        public GoverContactInfo GetGoverContactByGover(int goverId)
+        {
+            GoverContactInfo goverContactInfo = null;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_GOVERID, MySqlDbType.Int32, 11);
+                parm.Value = goverId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERCONTACT_BY_GOVER, parm))
                 {
                     if (rdr.Read())
                         goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));

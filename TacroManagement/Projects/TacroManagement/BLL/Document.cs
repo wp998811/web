@@ -83,11 +83,11 @@ namespace BLL
         /// </summary>
         /// <param name="searchCondition"></param>
         /// <returns></returns>
-        public IList<DocumentInfo> GetDocumentBySearchCondition(string searchCondition)
+        public IList<DocumentInfo> GetDocumentBySearchCondition(string selectCondition)
         {
-            return dal.GetDocumentBySearchCondition(searchCondition);
+            return dal.GetDocumentBySearchCondition(selectCondition);
         }
-#endregion
+#endregion  
 
         /// <summary>
         /// 根据查询条件查询文档
@@ -136,7 +136,7 @@ namespace BLL
         public string GetSearchCondition(string docName, string docVersion, string docKey, string DepertName, string docCategoryName, string uploadUserName, string updateTimeBegin, string updateTimeEnd)
         {
             string condition ="";
-            if (string.IsNullOrEmpty(docName))
+            if (!string.IsNullOrEmpty(docName))
             {
                 if (condition != "")
                 {
@@ -145,7 +145,7 @@ namespace BLL
                 condition += " DocName LIKE '%" + docName + "%' ";
             }
 
-            if (string.IsNullOrEmpty(docVersion))
+            if (!string.IsNullOrEmpty(docVersion))
             {
                 if (condition != "")
                 {
@@ -154,7 +154,7 @@ namespace BLL
                 condition += " DocVersion LIKE '%" + docVersion + "%' ";
             }
 
-            if (string.IsNullOrEmpty(docKey))
+            if (!string.IsNullOrEmpty(docKey))
             {
                 if (condition != "")
                 {
@@ -163,7 +163,7 @@ namespace BLL
                 condition += " DocKey LIKE '%" + docKey + "%' ";
             }
 
-            if (string.IsNullOrEmpty(DepertName))
+            if (!string.IsNullOrEmpty(DepertName))
             {
                 //Department department = new Department();
                 //DepartmentInfo departmentInfo = department.GetDepartmentByName(DepertName);
@@ -178,13 +178,13 @@ namespace BLL
                 //condition += " DepartID = '" + departmentInfo.DepartmentID + "' ";
             }
 
-            if (string.IsNullOrEmpty(docCategoryName) && string.IsNullOrEmpty(DepertName))
+            if (!string.IsNullOrEmpty(docCategoryName) && string.IsNullOrEmpty(DepertName))
             {
                 //DepartDocCate departDocCate = new DepartDocCate();
                // DepartDocCateInfo departDocCateInfo = departDocCate.GetDepartDocCateByDepartCategory();              
             }
 
-            if (string.IsNullOrEmpty(uploadUserName))
+            if (!string.IsNullOrEmpty(uploadUserName))
             {
                 User user = new User();
                 UserInfo userInfo = user.GetUserByName(uploadUserName);
@@ -199,7 +199,7 @@ namespace BLL
                 condition += " UploadUserID = '" + userInfo.UserID + "' ";
             }
 
-            if (string.IsNullOrEmpty(updateTimeBegin))
+            if (!string.IsNullOrEmpty(updateTimeBegin))
             {
                 if (condition != "")
                 {
@@ -208,7 +208,7 @@ namespace BLL
                 condition += " UploadTime >= '" + updateTimeBegin + "' ";
             }
 
-            if (string.IsNullOrEmpty(updateTimeEnd))
+            if (!string.IsNullOrEmpty(updateTimeEnd))
             {
                 if (condition != "")
                 {
@@ -219,5 +219,9 @@ namespace BLL
             return condition;
         }
 
+        public bool AddDocument(string docName, string docVersion, string docKey, string DepertName, string docCategoryName)
+        {
+            return true;
+        }
     }
 }
