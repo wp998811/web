@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B7547DD2-E371-4BBA-A966-5055353F8138}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -46,8 +46,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin.cs" />
+    <Compile Include="ClinicalContact.cs" />
+    <Compile Include="ClinicalResource.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="ContactRecord.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="CustomerContact.cs" />
+    <Compile Include="CustomerProjContact.cs" />
+    <Compile Include="CustomerProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="VisitRecord.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DALFactory\DALFactory.csproj">

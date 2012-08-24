@@ -85,7 +85,7 @@ namespace MySQLDAL
         /// <summary>
         /// 更新拜访记录
         /// </summary>
-        /// <param name="userInfo"></param>
+        /// <param name="visitRecord"></param>
         /// <returns></returns>
         public int UpdateVisitRecord(VisitRecordInfo visitRecord)
         {
@@ -112,6 +112,36 @@ namespace MySQLDAL
                 Console.WriteLine(se.Message);
             }
             return result;
+        }
+
+        /// <summary>
+        /// 根据ID查找拜访记录
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public VisitRecordInfo GetVisitRecordById(int id)
+        {
+            VisitRecordInfo visitRecord = null;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_ID, MySqlDbType.Int32, 50);
+                parm.Value = id;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_VISITRECORD_BY_ID, parm))
+                {
+                    if (rdr.Read())
+                    {
+                        visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                    }
+                    else
+                        visitRecord = new VisitRecordInfo();
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return visitRecord;
         }
 
         /// <summary>
@@ -144,11 +174,11 @@ namespace MySQLDAL
         /// <summary>
         /// 根据联系人ID查找拜访记录
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="contactId"></param>
         /// <returns></returns>
-        public VisitRecordInfo GetVisitRecordsByContactID(int contactId)
+        public IList<VisitRecordInfo> GetVisitRecordsByContactId(int contactId)
         {
-            VisitRecordInfo visitRecord = null;
+            IList<VisitRecordInfo> visitRecords = new List<VisitRecordInfo>();
             try
             {
                 MySqlParameter parm = new MySqlParameter(PARM_CONTACTID, MySqlDbType.Int32, 50);
@@ -156,27 +186,28 @@ namespace MySQLDAL
 
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_VISITRECORD_BY_CONTACTID, parm))
                 {
-                    if (rdr.Read())
-                        visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
-                    else
-                        visitRecord = new VisitRecordInfo();
+                    while (rdr.Read())
+                    {
+                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        visitRecords.Add(visitRecord);
+                    }
                 }
             }
             catch (MySqlException se)
             {
                 Console.WriteLine(se.Message);
             }
-            return visitRecord;
+            return visitRecords;
         }
 
         /// <summary>
         /// 根据联用户ID查找拜访记录
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public VisitRecordInfo GetVisitRecordsByUserID(int userId)
+        public IList<VisitRecordInfo> GetVisitRecordsByUserId(int userId)
         {
-            VisitRecordInfo visitRecord = null;
+            IList<VisitRecordInfo> visitRecords = new List<VisitRecordInfo>();
             try
             {
                 MySqlParameter parm = new MySqlParameter(PARM_USERID, MySqlDbType.Int32, 50);
@@ -184,17 +215,18 @@ namespace MySQLDAL
 
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_VISITRECORD_BY_USERID, parm))
                 {
-                    if (rdr.Read())
-                        visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
-                    else
-                        visitRecord = new VisitRecordInfo();
+                    while (rdr.Read())
+                    {
+                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        visitRecords.Add(visitRecord);
+                    }
                 }
             }
             catch (MySqlException se)
             {
                 Console.WriteLine(se.Message);
             }
-            return visitRecord;
+            return visitRecords;
         }
 
         #endregion

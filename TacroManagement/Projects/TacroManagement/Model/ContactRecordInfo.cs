@@ -25,7 +25,7 @@ namespace Model
             this.recordTime = recordTime;
         }
 
-        public ContactRecordInfo(int id, int contactID, string visitDetail, string recordTime, int userID)
+        public ContactRecordInfo(int id, int contactID, string recordDetail, string recordTime, int userID)
         {
             this.id = id;
             this.contactID = contactID;

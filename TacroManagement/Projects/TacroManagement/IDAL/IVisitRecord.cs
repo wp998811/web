@@ -14,7 +14,8 @@ namespace IDAL
         int UpdateVisitRecord(VisitRecordInfo visitRecord);//更新拜访记录
 
         IList<VisitRecordInfo> GetVisitRecords();//查找所有拜访记录
-        VisitRecordInfo GetVisitRecordsByUserID(int userID);//通过用户ID查找拜访记录
-        VisitRecordInfo GetVisitRecordsByContactID(int contactID);//通过联系人ID查找拜访记录
+        IList<VisitRecordInfo> GetVisitRecordsByUserId(int userID);//通过用户ID查找拜访记录
+        IList<VisitRecordInfo> GetVisitRecordsByContactId(int contactID);//通过联系人ID查找拜访记录
+        VisitRecordInfo GetVisitRecordById(int id);//通过ID查找拜访记录
     }
 }

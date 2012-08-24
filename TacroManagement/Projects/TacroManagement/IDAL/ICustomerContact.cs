@@ -14,5 +14,7 @@ namespace IDAL
         int UpdateCustomerContact(CustomerContactInfo userInfo);//更新客户联系人信息
 
         IList<ContactInfo> GetContactsByCustomerId(int customerId);//根据客户ID查找所有联系人信息
+        IList<CustomerContactInfo> GetCustomerContacts();//查找所有客户联系人信息
+        CustomerContactInfo GetCustomerContactById(int id);//根据ID查询所有联系人信息
     }
 }

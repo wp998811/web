@@ -25,6 +25,8 @@ namespace MySQLDAL
         private const string SQL_UPDATE_CUSTOMERCONTACT = "update customercontact set CustomerID=@CustomerID,ContactID=@ContactID where ID=@ID";
         private const string SQL_SELECT_CONTACT_BY_CUSTOMERID = "select contact.ContactID, contact.ContactName, contact.Position, contact.Mobilephone, contact.Telephone, contact.Email," +
             "contact.Address, contact.PostCode, contact.FaxNumber from contact where contact.ContactID in (select contact.ContactID from customercontact, contact where customercontact.CustomerID=@CustomerID and customercontact.ContactID=contact.ContactID)";
+        private const string SQL_SELECT_CUSTOMERCONTACTCONTACTS = "select * from customercontact";
+        private const string SQL_SELECT_CUSTOMERCONTACTCONTACT_BY_ID = "select * from customercontact where ID=@ID";
 
         #region ICustomerContact 成员
 
@@ -105,6 +107,33 @@ namespace MySQLDAL
         }
 
         /// <summary>
+        /// 查找所有用户
+        /// </summary>
+        /// <returns></returns>
+        public IList<CustomerContactInfo> GetCustomerContacts()
+        {
+            IList<CustomerContactInfo> customerContactInfos = new List<CustomerContactInfo>();
+
+            try
+            {
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CUSTOMERCONTACTCONTACTS, null))
+                {
+                    while (rdr.Read())
+                    {
+                        CustomerContactInfo customerContactInfo = new CustomerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        customerContactInfos.Add(customerContactInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return customerContactInfos;
+
+        }
+
+        /// <summary>
         /// 根据客户ID查找所有联系人信息
         /// </summary>
         /// <returns></returns>
@@ -132,6 +161,38 @@ namespace MySQLDAL
             }
             return contacts;
 
+        }
+
+        /// <summary>
+        /// 根据ID查找客户联系人
+        /// </summary>
+        /// <param name="customerContactId"></param>
+        /// <returns></returns>
+        public CustomerContactInfo GetCustomerContactById(int customerContactId)
+        {
+            CustomerContactInfo customerContactInfo = null;
+
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_ID, MySqlDbType.Int32);
+                parm.Value = customerContactId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CUSTOMERCONTACTCONTACT_BY_ID, parm))
+                {
+                    if (rdr.Read())
+                    {
+                        customerContactInfo = new CustomerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                    }
+                    else
+                        customerContactInfo = new CustomerContactInfo();
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+
+            return customerContactInfo;
         }
 
         #endregion
