@@ -183,7 +183,7 @@ namespace MySQLDAL
         /// </summary>
         /// <param name="selectCondition"></param>
         /// <returns></returns>
-         public IList<PartnerContactInfo> GetPartnerResourceByCondition(string selectCondition)
+        public IList<PartnerResourceInfo> GetPartnerResourceByCondition(string selectCondition)
         {
 
             string sqlString;
