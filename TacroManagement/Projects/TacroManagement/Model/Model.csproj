@@ -61,6 +61,13 @@
     <Compile Include="CustomerInfo.cs" />
     <Compile Include="CustomerProjContactInfo.cs" />
     <Compile Include="CustomerProjectInfo.cs" />
+    <Compile Include="DepartDocCateInfo.cs" />
+    <Compile Include="DocumentInfo.cs" />
+    <Compile Include="DocUserInfo.cs" />
+    <Compile Include="GoverContactInfo.cs" />
+    <Compile Include="GoverResourceInfo.cs" />
+    <Compile Include="PartnerResourceInfo.cs" />
+    <Compile Include="PartnerContactInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="VisitRecordInfo.cs" />

@@ -263,5 +263,10 @@ namespace BLL
             }
             return false;
         }
+
+        public bool AddDocument(string docName, string docVersion, string docKey, string DepertName, string docCategoryName)
+        {
+            return true;
+        }
     }
 }

@@ -62,6 +62,17 @@ namespace BLL
         {
             return dal.GetContactById(contactId);
         }
+
+        /// <summary>
+        /// 通过联系人名字查找联系人
+        /// </summary>
+        /// <param name="contactName"></param>
+        /// <returns></returns>
+        public ContactInfo GetContactByContactName(string contactName)
+        {
+            return dal.GetContactByName(contactName);
+        }
+
         #endregion
 
         /// <summary>

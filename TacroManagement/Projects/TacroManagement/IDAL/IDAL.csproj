@@ -52,6 +52,8 @@
     <Compile Include="ICustomerProjContact.cs" />
     <Compile Include="ICustomerProject.cs" />
     <Compile Include="IAdmin.cs" />
+    <Compile Include="IContact.cs" />
+    <Compile Include="ICustomer.cs" />
     <Compile Include="IDepartDocCate.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDocUser.cs" />

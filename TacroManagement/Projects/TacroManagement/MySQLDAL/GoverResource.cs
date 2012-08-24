@@ -184,7 +184,7 @@ namespace MySQLDAL
         /// <summary>
         /// 根据政府机构名称查找政府资料
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="organName"></param>
         /// <returns></returns>
         GoverResourceInfo IGoverResource.GetGoverResourceByOrganName(string organName)
         {
@@ -208,10 +208,11 @@ namespace MySQLDAL
             }
             return goverResourceInfo;
         }
+
         /// <summary>
         /// 根据查询条件查找政府资料
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="selectCondition"></param>
         /// <returns></returns>
         public IList<GoverResourceInfo> GetGoverResourceByCondition(string selectCondition)
         {
