@@ -125,5 +125,52 @@ namespace DALFactory
             return (IDAL.IPartnerResource)Assembly.Load(path).CreateInstance(className);
         }
 
+        public static IDAL.IProject CreateProject()
+        {
+            string className = path + ".Project";
+            return (IDAL.IProject)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.IProjectUser CreateProjectUser()
+        {
+            string className = path + ".ProjectUser";
+            return (IDAL.IProjectUser)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.IProjectClient CreateProjectClient()
+        {
+            string className = path + ".ProjectClient";
+            return (IDAL.IProjectClient)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.IProjectDoc CreateProjectDoc()
+        {
+            string className = path + ".ProjectDoc";
+            return (IDAL.IProjectDoc)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.IProjectDocUser CreateProjectDocUser()
+        {
+            string className = path + ".ProjectDocUser";
+            return (IDAL.IProjectDocUser)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.ISubTask CreateSubTask()
+        {
+            string className = path + ".SubTask";
+            return (IDAL.ISubTask)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.IAffair CreateAffair()
+        {
+            string className = path + ".Affair";
+            return (IDAL.IAffair)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.ISchedule CreateSchedule()
+        {
+            string className = path + ".Schedule";
+            return (IDAL.ISchedule)Assembly.Load(path).CreateInstance(className);
+        }
     }
 }

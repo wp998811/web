@@ -61,6 +61,14 @@
     <Compile Include="IGoverResource.cs" />
     <Compile Include="IPartnerContact.cs" />
     <Compile Include="IPartnerResource.cs" />
+    <Compile Include="IAffair.cs" />
+    <Compile Include="IProject.cs" />
+    <Compile Include="IProjectClient.cs" />
+    <Compile Include="IProjectDoc.cs" />
+    <Compile Include="IProjectDocUser.cs" />
+    <Compile Include="IProjectUser.cs" />
+    <Compile Include="IShedule.cs" />
+    <Compile Include="ISubTask.cs" />
     <Compile Include="IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IVisitRecord.cs" />
