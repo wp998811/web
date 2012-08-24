@@ -178,6 +178,42 @@ namespace MySQLDAL
             return partnerResourceInfo;
         }
 
+        /// <summary>
+        /// 根据查询条件查找合作伙伴资料
+        /// </summary>
+        /// <param name="selectCondition"></param>
+        /// <returns></returns>
+         public IList<PartnerContactInfo> GetPartnerResourceByCondition(string selectCondition)
+        {
+
+            string sqlString;
+            if (selectCondition == "")
+            {
+                sqlString = "SELECT * FROM partnerresource ";
+            }
+            else
+            {
+                sqlString = "SELECT * FROM partnerresource WHERE " + selectCondition;
+            }
+            IList<PartnerResourceInfo> partnerResources = new List<PartnerResourceInfo>();
+            try
+            {
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, sqlString, null))
+                {
+                    while (rdr.Read())
+                    {
+                        PartnerResourceInfo partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        partnerResources.Add(partnerResourceInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return partnerResources;
+
+        }
         #endregion
     }
 }

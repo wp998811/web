@@ -66,6 +66,17 @@ namespace BLL
             return dal.GetPartnerContactById(id);
         }
 
+        /// <summary>
+        /// 根据文档合作伙伴ID查找合作伙伴联系人
+        /// </summary>
+        /// <param name="PartnerId"></param>
+        /// <returns></returns>
+        public PartnerContactInfo GetPartnerContactByPartner(int partnerId)
+        {
+            return dal.GetPartnerContactByPartner(partnerId);
+        }
         #endregion
+
+
     }
 }

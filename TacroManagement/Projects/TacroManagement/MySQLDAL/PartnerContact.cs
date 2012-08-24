@@ -25,6 +25,7 @@ namespace MySQLDAL
         private const string SQL_UPDATE_PARTNERCONTACT = "UPDATE partnercontact SET PartnerID = @PartnerID, ContactID = @ContactID WHERE ID = @ID";
         private const string SQL_SELECT_PARTNERCONTACT = "SELECT * FROM partnercontact";
         private const string SQL_SELECT_PARTNERCONTACT_BY_ID = "SELECT * FROM partnercontact WHERE ID = @ID";
+        private const string SQL_SELECT_PARTNERCONTACT_BY_PARTNERID = "SELECT * FROM partnercontact WHERE PartnerID = @PartnerID";
         private const string SQL_SELECT_PARTNERCONTACT_BY_PARTNER_CONTACT = "SELECT * FROM partnercontact WHERE PartnerID = @PartnerID AND ContactID = @ContactID";
 
         #endregion
@@ -147,6 +148,35 @@ namespace MySQLDAL
                 parm.Value = id;
 
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERCONTACT_BY_ID, parm))
+                {
+                    if (rdr.Read())
+                        partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                    else
+                        partnerContactInfo = new PartnerContactInfo();
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return partnerContactInfo;
+        }
+
+
+        /// <summary>
+        /// 根据文档合作伙伴ID查找合作伙伴联系人
+        /// </summary>
+        /// <param name="PartnerId"></param>
+        /// <returns></returns>
+        PartnerContactInfo IPartnerContact.GetPartnerContactByPartner(int PartnerId)
+        {
+            PartnerContactInfo partnerContactInfo = null;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_PARTNERID, MySqlDbType.Int32, 11);
+                parm.Value = PartnerId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERCONTACT_BY_PARTNERID, parm))
                 {
                     if (rdr.Read())
                         partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));

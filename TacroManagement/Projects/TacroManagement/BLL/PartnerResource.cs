@@ -65,6 +65,38 @@ namespace BLL
             return dal.GetPartnerResourceById(id);
         }
 
+        /// <summary>
+        /// 根据查询条件查找合作伙伴资料
+        /// </summary>
+        /// <param name="selectCondition"></param>
+        /// <returns></returns>
+        public IList<PartnerResourceInfo> GetPartnerResourceByCondition(string selectCondition )
+        {
+            return dal.GetPartnerResourceByCondition(selectCondition);
+        }
+
+        public DataTable GetPartnerResourceAndContactByCondition()
+        {
+
+            DataTable dataTable = new DataTable();
+
+            //        DataRow dataRow = dataTable.NewRow();
+            //        User user1 = new User();
+            //        UserInfo userInfo1 = user1.GetUserById(goverResourceInfo.UserID);
+            //        dataRow["负责人"] = userInfo1.UserName;
+            //        dataRow["所属城市"] = goverResourceInfo.GoverCity;
+            //        dataRow["机构名称"] = goverResourceInfo.OrganName;
+            //        dataRow["联系人姓名"] = contactInfo.ContactName;
+            //        dataRow["职位"] = contactInfo.Position;
+            //        dataRow["手机"] = contactInfo.Mobilephone;
+            //        dataRow["固定电话"] = contactInfo.Telephone;
+            //        dataRow["电子邮箱"] = contactInfo.Email;
+            //        dataRow["地址"] = contactInfo.Address;
+            //        dataRow["邮编"] = contactInfo.PostCode;
+            //        dataRow["传真"] = contactInfo.FaxNumber;
+
+            return dataTable;
+        }
         #endregion
     }
 }

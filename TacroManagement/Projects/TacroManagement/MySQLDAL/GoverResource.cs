@@ -191,11 +191,13 @@ namespace MySQLDAL
             string sqlString;
             if (selectCondition == "")
             {
-                sqlString = "SELECT * FROM document ";
+                sqlString = "SELECT * FROM goverresouece ";
             }
             else
             {
-                sqlString = "SELECT * FROM document WHERE " + selectCondition;
+                //sqlString = "SELECT goverresouece.GoverID,goverresouece.UserID,goverresouece.GoverCity,goverresouece.OrgonName,goverresouece.OrganIntro"
+                //    + " FROM goverresouece,govercontact,contact WHERE " + selectCondition;
+                sqlString = "SELECT * FROM goverresouece" + selectCondition;
             }
             IList<GoverResourceInfo> goverResources = new List<GoverResourceInfo>();
             try

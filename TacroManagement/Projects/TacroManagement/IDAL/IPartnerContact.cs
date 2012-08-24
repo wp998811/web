@@ -15,6 +15,7 @@ namespace IDAL
 
         IList<PartnerContactInfo> GetPartnerContact();                                // 查找所有合作伙伴联系人
         PartnerContactInfo GetPartnerContactById(int id);                            //通过合作伙伴联系人ID查找合作伙伴联系人
+        PartnerContactInfo GetPartnerContactByPartner(int PartnerId);   //通过合作伙伴的ID查找合作伙伴联系人
 
     }
 }
