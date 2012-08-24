@@ -56,7 +56,7 @@ namespace BLL
         }
 
         /// <summary>
-        /// 根据文档政府联系人编号查找政府资料
+        /// 根据政府联系人编号查找政府资料
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -65,6 +65,15 @@ namespace BLL
             return dal.GetGoverResourceById(id);
         }
 
+        /// <summary>
+        /// 根据政府机构名称查找政府资料
+        /// </summary>
+        /// <param name="organName"></param>
+        /// <returns></returns>
+        public GoverResourceInfo GetGoverResourceByOrganName(string organName)
+        {
+            return dal.GetGoverResourceByOrganName(organName);
+        }
         /// <summary>
         /// 根据查询条件查找政府资料
         /// </summary>
@@ -112,84 +121,118 @@ namespace BLL
                  }
                  condition += " OrganName LIKE '%" + organName + "%' ";
              }
-
-
-
-             //    IList<GoverResourceInfo> goverResourceInfos = GetGoverResourceByCondition(condition);
+                 IList<GoverResourceInfo> goverResourceInfos = GetGoverResourceByCondition(condition);
 
                  DataTable dataTable = new DataTable();
-             //    DataColumn userNameColumn = new DataColumn("负责人");
-             //    DataColumn cityNameColumn = new DataColumn("所属城市");
-             //    DataColumn organNameColumn = new DataColumn("机构名称");
-             //    DataColumn contactNameColumn = new DataColumn("联系人姓名");
-             //    DataColumn positionColumn = new DataColumn("职位");
-             //    DataColumn mobilephoneColumn = new DataColumn("手机");
-             //    DataColumn telephoneColumn= new DataColumn("固定电话");
-             //    DataColumn emailColumn = new DataColumn("电子邮箱");
-             //    DataColumn addressColumn = new DataColumn("地址");
-             //    DataColumn postCodeColumn = new DataColumn("邮编");
-             //    DataColumn faxNumberColumn = new DataColumn("传真");
+                 DataColumn userNameColumn = new DataColumn("负责人");
+                 DataColumn cityNameColumn = new DataColumn("所属城市");
+                 DataColumn organNameColumn = new DataColumn("机构名称");
+                 DataColumn contactNameColumn = new DataColumn("联系人姓名");
+                 DataColumn positionColumn = new DataColumn("职位");
+                 DataColumn mobilephoneColumn = new DataColumn("手机");
+                 DataColumn telephoneColumn = new DataColumn("固定电话");
+                 DataColumn emailColumn = new DataColumn("电子邮箱");
+                 DataColumn addressColumn = new DataColumn("地址");
+                 DataColumn postCodeColumn = new DataColumn("邮编");
+                 DataColumn faxNumberColumn = new DataColumn("传真");
 
-             //    dataTable.Columns.Add(userNameColumn);
-             //    dataTable.Columns.Add(cityNameColumn);
-             //    dataTable.Columns.Add(organNameColumn);
-             //    dataTable.Columns.Add(contactNameColumn);
-             //    dataTable.Columns.Add(positionColumn);
-             //    dataTable.Columns.Add(mobilephoneColumn);
-             //    dataTable.Columns.Add(telephoneColumn);
-             //    dataTable.Columns.Add(emailColumn);
-             //    dataTable.Columns.Add(addressColumn);
-             //    dataTable.Columns.Add(postCodeColumn);
-             //    dataTable.Columns.Add(faxNumberColumn);
+                 dataTable.Columns.Add(userNameColumn);
+                 dataTable.Columns.Add(cityNameColumn);
+                 dataTable.Columns.Add(organNameColumn);
+                 dataTable.Columns.Add(contactNameColumn);
+                 dataTable.Columns.Add(positionColumn);
+                 dataTable.Columns.Add(mobilephoneColumn);
+                 dataTable.Columns.Add(telephoneColumn);
+                 dataTable.Columns.Add(emailColumn);
+                 dataTable.Columns.Add(addressColumn);
+                 dataTable.Columns.Add(postCodeColumn);
+                 dataTable.Columns.Add(faxNumberColumn);
 
-             //   // Contact contact = new Contact();
-             //   // ContactInfo contactInfo = new ContactInfo();
-             //    if (!string.IsNullOrEmpty(contactName))
-             //    {
+                 Contact contact = new Contact();
+                 ContactInfo contactInfo = new ContactInfo();
+                 if (!string.IsNullOrEmpty(contactName))
+                 {
 
-             //        //contactInfo = new contact.GetContactByName(contactName);
-             //        if (string.IsNullOrEmpty(contactInfo.ContactName))
-             //        {
-             //            return new DataTable();
-             //        }
-             //    }
-             //    for (int i = 0; i < goverResourceInfos.Count;++i )
-             //    {
-             //        GoverResourceInfo goverResourceInfo = goverResourceInfos[i];
-             //        GoverContact goverContact = new GoverContact();
-             //        GoverContactInfo goverContactInfo = goverContact.GetGoverContactByGover(goverResourceInfo.GoverID);              
-             //        if (string.IsNullOrEmpty(contactInfo.ContactName))
-             //        {
-             //            //contactInfo = new contact.GetContactById(goverContactInfo.ContactID);
-             //        }
-             //        else
-             //        {
-             //            if (contactInfo.ContactID != goverContactInfo.ContactID)
-             //            {
-             //                continue;
-             //            }
-             //        }
+                     //contactInfo = contact.GetContactByContactName(contactName);
+                     if (string.IsNullOrEmpty(contactInfo.ContactName))
+                     {
+                         return new DataTable();
+                     }
+                 }
+                 for (int i = 0; i < goverResourceInfos.Count; ++i)
+                 {
+                     GoverResourceInfo goverResourceInfo = goverResourceInfos[i];
+                     GoverContact goverContact = new GoverContact();
+                     GoverContactInfo goverContactInfo = goverContact.GetGoverContactByGover(goverResourceInfo.GoverID);
+                     if (string.IsNullOrEmpty(contactInfo.ContactName))
+                     {
+                         contactInfo = contact.GetContactById(goverContactInfo.ContactID);
+                     }
+                     else
+                     {
+                         if (contactInfo.ContactID != goverContactInfo.ContactID)
+                         {
+                             continue;
+                         }
+                     }
 
-             //        DataRow dataRow = dataTable.NewRow();
-             //        User user1 = new User();
-             //        UserInfo userInfo1 = user1.GetUserById(goverResourceInfo.UserID);
-             //        dataRow["负责人"] = userInfo1.UserName;
-             //        dataRow["所属城市"] = goverResourceInfo.GoverCity;
-             //        dataRow["机构名称"] = goverResourceInfo.OrganName;
-             //        dataRow["联系人姓名"] = contactInfo.ContactName;
-             //        dataRow["职位"] = contactInfo.Position;
-             //        dataRow["手机"] = contactInfo.Mobilephone;
-             //        dataRow["固定电话"] = contactInfo.Telephone;
-             //        dataRow["电子邮箱"] = contactInfo.Email;
-             //        dataRow["地址"] = contactInfo.Address;
-             //        dataRow["邮编"] = contactInfo.PostCode;
-             //        dataRow["传真"] = contactInfo.FaxNumber;
+                     DataRow dataRow = dataTable.NewRow();
+                     User user1 = new User();
+                     UserInfo userInfo1 = user1.GetUserById(goverResourceInfo.UserID);
+                     dataRow["负责人"] = userInfo1.UserName;
+                     dataRow["所属城市"] = goverResourceInfo.GoverCity;
+                     dataRow["机构名称"] = goverResourceInfo.OrganName;
+                     dataRow["联系人姓名"] = contactInfo.ContactName;
+                     dataRow["职位"] = contactInfo.Position;
+                     dataRow["手机"] = contactInfo.Mobilephone;
+                     dataRow["固定电话"] = contactInfo.Telephone;
+                     dataRow["电子邮箱"] = contactInfo.Email;
+                     dataRow["地址"] = contactInfo.Address;
+                     dataRow["邮编"] = contactInfo.PostCode;
+                     dataRow["传真"] = contactInfo.FaxNumber;
 
-             //        dataTable.Rows.Add(dataRow);
-             //    }
+                     dataTable.Rows.Add(dataRow);
+                 }
                 return dataTable;
 
              }
+
+
+         //int userID, string cityName, string organName, string organIntro, string contactName,string position, string mobilephone, string telephone, string email, string address, string postCode, string faxNumber
+         public bool AddGoverResourceAndContact(GoverResourceInfo goverResourceInfo, ContactInfo contactInfo)
+         {
+             if (string.IsNullOrEmpty(goverResourceInfo.OrganName))
+             {
+                 return false;
+             }
+
+             int isInsertGove = InsertGoverResource(goverResourceInfo);
+             if (isInsertGove != 1)
+             {
+                 return false;
+             }
+
+             if (string.IsNullOrEmpty(contactInfo.ContactName))
+             {
+                 return false;
+             }
+             Contact contact = new Contact();
+              int isInsertContact =contact.InsertContact(contactInfo);
+
+             GoverResourceInfo gri = GetGoverResourceByOrganName(goverResourceInfo.OrganName);
+             if (isInsertContact != 1)
+             {                 
+                 DeleteGoverResource(gri.GoverID);
+                 return false;
+             }
+
+             //ContactInfo ci = contact.GetContactByContactName(contactInfo.ContactName);
+             //GoverContact goverContact = new GoverContact();
+             //GoverContactInfo goverContactInfo = new GoverContactInfo(gri.GoverID,ci.ContactID);
+             //goverContact.InsertGoverContact(goverResourceInfo);
+            
+             return true;
+         }
         
     }
 }
