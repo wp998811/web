@@ -50,13 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin.cs" />
-    <Compile Include="DepartDocCate.cs" />
-    <Compile Include="Document.cs" />
-    <Compile Include="DocUser.cs" />
-    <Compile Include="GoverContact.cs" />
-    <Compile Include="GoverResource.cs" />
-    <Compile Include="PartnerContact.cs" />
-    <Compile Include="PartnerResource.cs" />
     <Compile Include="ClinicalContact.cs" />
     <Compile Include="ClinicalResource.cs" />
     <Compile Include="Contact.cs" />

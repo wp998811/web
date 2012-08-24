@@ -46,13 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminInfo.cs" />
-    <Compile Include="DepartDocCateInfo.cs" />
-    <Compile Include="DocumentInfo.cs" />
-    <Compile Include="DocUserInfo.cs" />
-    <Compile Include="GoverContactInfo.cs" />
-    <Compile Include="GoverResourceInfo.cs" />
-    <Compile Include="PartnerResourceInfo.cs" />
-    <Compile Include="PartnerContactInfo.cs" />
     <Compile Include="ClinicalContactInfo.cs" />
     <Compile Include="ClinicalResourceInfo.cs" />
     <Compile Include="ContactInfo.cs" />
