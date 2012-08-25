@@ -12,15 +12,15 @@ using MySql.Data.MySqlClient;
 
 namespace MySQLDAL
 {
-    public class GoverResource:IGoverResource
+    public class GoverResource : IGoverResource
     {
 
         #region GoverResource Constant String
 
         private const string PARM_GOVERID = "@GoverID";
-        private const string PARM_USERID ="@UserID";
-        private const string PARM_GOVERCITY ="@GoverCity";
-        private const string PARM_ORGANNAME="@OrganName";
+        private const string PARM_USERID = "@UserID";
+        private const string PARM_GOVERCITY = "@GoverCity";
+        private const string PARM_ORGANNAME = "@OrganName";
         private const string PARM_ORGANINTRO = "@OrganIntro";
 
         private const string SQL_INSERT_GOVERRESOURCE = "INSERT INTO goverresource(UserID, GoverCity, OrganName, OrganIntro) VALUES (@UserID, @GoverCity, @OrganName, @OrganIntro) ";
@@ -28,6 +28,7 @@ namespace MySQLDAL
         private const string SQL_UPDATE_GOVERRESOURCE = "UPDATE goverresource SET UserID = @UserID, GoverCity =@GoverCity, OrganName =@OrganName, OrganIntro =@OrganIntro WHERE GoverID = @GoverID";
         private const string SQL_SELECT_GOVERRESOURCE = "SELECT * FROM goverresource";
         private const string SQL_SELECT_GOVERRESOURCE_BY_ID = "SELECT * FROM goverresource WHERE GoverID = @GoverID";
+        private const string SQL_SELECT_GOVERRESOURCE_BY_ORGANNAME = "SELECT * FROM goverresource WHERE  OrganName = @OrganName";
 
 
 
@@ -100,30 +101,30 @@ namespace MySQLDAL
         /// <returns></returns>
         int IGoverResource.UpdeteGoverResource(GoverResourceInfo goverResourceInfo)
         {
-           int result = -1;
-           try
-           {
-               MySqlParameter[] parms = new MySqlParameter[] { 
+            int result = -1;
+            try
+            {
+                MySqlParameter[] parms = new MySqlParameter[] { 
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_GOVERCITY,MySqlDbType.VarChar,50) ,
                     new MySqlParameter(PARM_ORGANNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_GOVERID,MySqlDbType.Int32,11)
                 };
-               parms[0].Value = goverResourceInfo.UserID;
-               parms[1].Value = goverResourceInfo.GoverCity;
-               parms[2].Value = goverResourceInfo.OrganName;
-               parms[3].Value = goverResourceInfo.OrganIntro;
-               parms[4].Value = goverResourceInfo.GoverID;
+                parms[0].Value = goverResourceInfo.UserID;
+                parms[1].Value = goverResourceInfo.GoverCity;
+                parms[2].Value = goverResourceInfo.OrganName;
+                parms[3].Value = goverResourceInfo.OrganIntro;
+                parms[4].Value = goverResourceInfo.GoverID;
 
 
-               result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_GOVERRESOURCE, parms);
-           }
-           catch (MySqlException se)
-           {
-               Console.WriteLine(se.Message);
-           }
-           return result;
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_GOVERRESOURCE, parms);
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return result;
 
         }
 
@@ -165,7 +166,35 @@ namespace MySQLDAL
                 MySqlParameter parm = new MySqlParameter(PARM_GOVERID, MySqlDbType.Int32, 11);
                 parm.Value = id;
 
-                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE, parm))
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE_BY_ID, parm))
+                {
+                    if (rdr.Read())
+                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                    else
+                        goverResourceInfo = new GoverResourceInfo();
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return goverResourceInfo;
+        }
+
+        /// <summary>
+        /// 根据政府机构名称查找政府资料
+        /// </summary>
+        /// <param name="organName"></param>
+        /// <returns></returns>
+        GoverResourceInfo IGoverResource.GetGoverResourceByOrganName(string organName)
+        {
+            GoverResourceInfo goverResourceInfo = null;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_ORGANNAME, MySqlDbType.VarChar, 50);
+                parm.Value = organName;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE_BY_ORGANNAME, parm))
                 {
                     if (rdr.Read())
                         goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
@@ -183,7 +212,7 @@ namespace MySQLDAL
         /// <summary>
         /// 根据查询条件查找政府资料
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="selectCondition"></param>
         /// <returns></returns>
         public IList<GoverResourceInfo> GetGoverResourceByCondition(string selectCondition)
         {

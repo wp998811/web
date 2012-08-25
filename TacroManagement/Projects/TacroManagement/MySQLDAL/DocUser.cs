@@ -13,14 +13,14 @@ using MySql.Data.MySqlClient;
 
 namespace MySQLDAL
 {
-    public class DocUser:IDocUser
+    public class DocUser : IDocUser
     {
 
         #region DocUser Constant String
 
         private const string PARM_ID = "@ID";
         private const string PARM_DOCID = "@DocID";
-        private const string PARM_USERID= "@UserID";
+        private const string PARM_USERID = "@UserID";
 
         private const string SQL_INSERT_DOCUSER = "INSERT INTO docuser(DocID, UserID) VALUES (@DocID, @UserID) ";
         private const string SQL_DELETE_DOCUSER = "DELETE FROM docuser WHERE ID=@ID";
@@ -101,7 +101,7 @@ namespace MySQLDAL
                 parms[0].Value = docUserInfo.DocID;
                 parms[1].Value = docUserInfo.UserID;
                 parms[2].Value = docUserInfo.Id;
-                
+
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_DOCUSER, parms);
 
             }

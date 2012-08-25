@@ -25,7 +25,7 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_USER = "insert into user(UserName,Password,UserType,UserEmail,UserPhone,DepartID) values(@UserName,@Password,@UserType,@UserEmail,@UserPhone,@DepartID)";
         private const string SQL_DELETE_USER = "delete from user where UserID=@UserID";
-        private const string SQL_UPDATE_USER = "update user set UserName=@UserName,Password=@Password,UserType=@UserType,UserEmail=@UserEmail,UserPhone=@UserPhone,DepartID=@DepartID";
+        private const string SQL_UPDATE_USER = "update user set UserName=@UserName,Password=@Password,UserType=@UserType,UserEmail=@UserEmail,UserPhone=@UserPhone,DepartID=@DepartID where UserID=@UserID";
         private const string SQL_SELECT_USERS = "select * from user";
         private const string SQL_SELECT_USER_BY_NAME = "select * from user where UserName=@UserName";
         private const string SQL_SELECT_USER_BY_ID = "select * from user where UserID=@UserID";
@@ -105,7 +105,8 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERTYPE,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USEREMAIL,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERPHONE,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_DepartID,MySqlDbType.Int32)
+                    new MySqlParameter(PARM_DepartID,MySqlDbType.Int32),
+                    new MySqlParameter(PARM_USERID, MySqlDbType.Int32)
                 };
                 parms[0].Value = userInfo.UserName;
                 parms[1].Value = userInfo.Password;
@@ -113,6 +114,7 @@ namespace MySQLDAL
                 parms[3].Value = userInfo.UserEmail;
                 parms[4].Value = userInfo.UserPhone;
                 parms[5].Value = userInfo.DepartID;
+                parms[6].Value = userInfo.UserID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_UPDATE_USER,parms);
             }

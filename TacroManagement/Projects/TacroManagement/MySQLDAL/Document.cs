@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 namespace MySQLDAL
 {
-    public class Document:IDocument
+    public class Document : IDocument
     {
 
         #region Document Constand String
@@ -20,12 +20,12 @@ namespace MySQLDAL
         private const string PARM_DOCNAME = "@DocName";
         private const string PARM_DOCVERSION = "@DocVersion";
         private const string PARM_DOCDESCRIPTION = "@DocDescription";
-        private const string PARM_DOCKEY = "@DocKey";    
-        private const string PARM_DEPARTID = "@DepartID";    
-        private const string PARM_DOCCATEGORYID = "@DocCategoryID";       
-        private const string PARM_DOCSTATE="@DocState";
-        private const string PARM_DOCURL="@DocUrl";
-        private const string PARM_DOCPERMISSION="@DocPermission";
+        private const string PARM_DOCKEY = "@DocKey";
+        private const string PARM_DEPARTID = "@DepartID";
+        private const string PARM_DOCCATEGORYID = "@DocCategoryID";
+        private const string PARM_DOCSTATE = "@DocState";
+        private const string PARM_DOCURL = "@DocUrl";
+        private const string PARM_DOCPERMISSION = "@DocPermission";
         private const string PARM_UPLOADUSERID = "@uploadUserID";
         private const string PARM_UPLOADTIME = "@uploadTime";
         private const string PARM_UPLOADTIMEBEGIN = "@uploadTimeBegin";
@@ -52,7 +52,7 @@ namespace MySQLDAL
         {
             int result = -1;
             try
-            { 
+            {
                 MySqlParameter[] parms = new MySqlParameter[] { 
                     new MySqlParameter(PARM_DOCNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DOCVERSION,MySqlDbType.VarChar,50),
@@ -79,14 +79,14 @@ namespace MySQLDAL
                 parms[8].Value = documentInfo.DocPermimission;
                 parms[9].Value = documentInfo.UploadUserID;
                 parms[10].Value = documentInfo.UploadTime;
-                
 
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_INSERT_DOCUMENT,parms);
+
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_DOCUMENT, parms);
             }
-           catch(MySqlException se)
+            catch (MySqlException se)
             {
-               Console.WriteLine(se.Message);
-           }
+                Console.WriteLine(se.Message);
+            }
             return result;
         }
 
@@ -119,9 +119,9 @@ namespace MySQLDAL
         /// <returns></returns>
         int IDocument.UpdateDocument(DocumentInfo documentInfo)
         {
-           int result = -1;
+            int result = -1;
             try
-            { 
+            {
                 MySqlParameter[] parms = new MySqlParameter[] {
                    // new MySqlParameter(PARM_DOCID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_DOCNAME,MySqlDbType.VarChar,50),
@@ -152,12 +152,12 @@ namespace MySQLDAL
                 parms[10].Value = documentInfo.UploadTime;
                 parms[11].Value = documentInfo.DocID;
 
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_UPDATE_DOCUMENT,parms);
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_DOCUMENT, parms);
             }
-           catch(MySqlException se)
+            catch (MySqlException se)
             {
-               Console.WriteLine(se.Message);
-           }
+                Console.WriteLine(se.Message);
+            }
             return result;
         }
 
@@ -265,7 +265,7 @@ namespace MySQLDAL
             return result;
         }
 
-       // string docName, string docVersion, string docKey, int DepertId, int docCategoryID, int uploadUserID, string updateTimeBegin, string updateTimeEnd
+        // string docName, string docVersion, string docKey, int DepertId, int docCategoryID, int uploadUserID, string updateTimeBegin, string updateTimeEnd
         IList<DocumentInfo> IDocument.GetDocumentBySearchCondition(string selectCondition)
         {
 
@@ -278,7 +278,7 @@ namespace MySQLDAL
             {
                 sqlString = "SELECT * FROM document WHERE " + selectCondition;
             }
-             
+
             IList<DocumentInfo> documents = new List<DocumentInfo>();
             try
             {

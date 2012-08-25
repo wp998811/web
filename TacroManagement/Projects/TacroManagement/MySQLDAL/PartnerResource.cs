@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 namespace MySQLDAL
 {
-    public class PartnerResource:IPartnerResource
+    public class PartnerResource : IPartnerResource
     {
         #region PartnerResource Constant String
 

@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 namespace MySQLDAL
 {
-    public class GoverContact:IGoverContact
+    public class GoverContact : IGoverContact
     {
         #region GoverContact Constant String
 

@@ -31,7 +31,6 @@ namespace BLL
         /// <returns></returns>
         public int DeleteDocUser(int docUserId)
         {
-
             return dal.DeleteDocUser(docUserId);
         }
 

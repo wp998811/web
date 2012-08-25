@@ -219,6 +219,51 @@ namespace BLL
             return condition;
         }
 
+        public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertName,string docCategoryName, string docState, int docPermission,int userId)
+        {
+            DocumentInfo documentInfo = new DocumentInfo();
+            documentInfo.DocName = docName;
+            documentInfo.DocVersion = docVersion;
+            documentInfo.DocKey = docKey;
+            documentInfo.DocDescription = docDescription;          
+            documentInfo.DocState = docState;
+            documentInfo.DocUrl = "Documents/" + docName;
+            documentInfo.DocPermimission = docPermission;
+            documentInfo.UploadUserID = userId;
+
+            DateTime dateTime = DateTime.Now;
+            documentInfo.UploadTime = dateTime.ToString();
+           
+            //if (!string.IsNullOrEmpty(DepertName))
+            //{
+            //    Department department = new Department();
+            //    DepartmentInfo departmentInfo= department.GetDepartmentByDepartName(DepertName);
+            //    if (string.IsNullOrEmpty(departmentInfo.DepartName))
+            //    {//部门不存在
+            //        return false;
+            //    }
+            //    documentInfo.DepartID = departmentInfo.DepartID;
+            //    if (!string.IsNullOrEmpty(docCategoryName))
+            //    {
+            //        DepartDocCate departDocCate = new DepartDocCate();
+            //        DepartDocCateInfo departDocCateInfo= departDocCate.GetDepartDocCateByDepartCategory(departmentInfo.DepartID,docCategoryName);
+            //        if (!string.IsNullOrEmpty(departDocCateInfo.CategoryName))
+            //        {
+            //            //部门文档类型存在
+            //            documentInfo.DocCategoryID = departDocCateInfo.Id;
+            //        }
+            //    }
+
+            //}
+
+            int reslut =InsertDocument(documentInfo);
+            if (reslut ==1)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool AddDocument(string docName, string docVersion, string docKey, string DepertName, string docCategoryName)
         {
             return true;
