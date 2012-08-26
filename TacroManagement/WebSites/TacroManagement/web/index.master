@@ -402,7 +402,7 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">项目一览</span>
+                                                                                                                    <span class="STYLE3"><a href="projectList.aspx">项目一览</a></span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
