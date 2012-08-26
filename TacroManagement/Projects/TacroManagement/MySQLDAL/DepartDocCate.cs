@@ -28,6 +28,7 @@ namespace MySQLDAL
         private const string SQL_UPDATE_DEPARTDOCCATE = "UPDATE departdoccate SET DepartID = @DepartID, Visibility = @Visibility, CategoryName = @CategoryName WHERE ID = @ID";
         private const string SQL_SELECT_DEPARTDOCCATE = "SELECT * FROM departdoccate";
         private const string SQL_SELECT_DEPARTDOCCATE_BY_ID = "SELECT * FROM departdoccate WHERE ID = @ID";
+        private const string SQL_SELECT_DEPARTDOCCATE_BY_DEPARTID = "SELECT * FROM departdoccate WHERE DepartID = @DepartID";
         private const string SQL_SELECT_DEPARTDOCCATE_BY_DEPART_CATEGORY = "SELECT * FROM departdoccate WHERE DepartID = @DepartID AND CategoryName = @CategoryName";
 
         #endregion
@@ -170,6 +171,34 @@ namespace MySQLDAL
                 Console.WriteLine(se.Message);
             }
             return departDocCateInfo;
+        }
+
+        /// <summary>
+        /// 通过部门编号查找部门文档类型
+        /// </summary>
+        /// <param name="departId"></param>
+        /// <returns></returns>
+        IList<DepartDocCateInfo> IDepartDocCate.GetDepartDocCateByDepartId(int departId)
+        {
+            IList<DepartDocCateInfo> departDocCates = new List<DepartDocCateInfo>();
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_DEPARTID, MySqlDbType.Int32, 11);
+                parm.Value = departId;
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DEPARTDOCCATE_BY_DEPARTID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        DepartDocCateInfo departDocCate = new DepartDocCateInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
+                        departDocCates.Add(departDocCate);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return departDocCates;
         }
 
         /// <summary>

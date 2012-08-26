@@ -122,6 +122,7 @@ namespace BLL
                 DepartDocCate departDocCate = new DepartDocCate();
                 DepartDocCateInfo departDocCateInfo =departDocCate.GetDepartDocCateById(documentInfo.DocCategoryID);
                 dataRow["文档类别"] = departDocCateInfo.CategoryName;
+                
                 dataRow["文档所属部门"] = departDocCateInfo.DepartID;
                 User user = new User();
                 UserInfo userInfo = user.GetUserById(documentInfo.UploadUserID);
