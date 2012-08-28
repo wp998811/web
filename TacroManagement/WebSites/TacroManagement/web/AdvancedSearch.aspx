@@ -1,9 +1,6 @@
 ﻿<%@ Page Language="C#" Async="true" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="AdvancedSearch.aspx.cs" Inherits="web_AdvancedSearch" Title="Untitled Page" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <script type="text/javascript">
 
         var xmlHttp=null;              
@@ -31,7 +28,7 @@
             }
         } 
         
-        function openAjax(val) 
+        function openAjax(val,b) 
         {   
             
             if( xmlHttp == null)
@@ -42,24 +39,48 @@
                     //alert('出错');
                     return ;
                 }
-            }                                                       
-            $('<%=SubTaskName.ClientID %>').options[0]=new Option("正在加载...",""); 
-            $('<%=SubTaskName.ClientID %>').disabled=true;
-            
-            try
+            }
+            if (b == "true") 
             {
-                xmlHttp.open("get","GetSubTaskByProjectNum.aspx?ProjectNum="+val+"&date="+new Date(),true); 
-                //xmlHttp.open("get","GetCityByProvinceID.aspx?PID="+val,true); 
-                
-                xmlHttp.onreadystatechange=xmlHttpChange;             
-           
-                xmlHttp.send(null);                
+                 $('<%=DocCate.ClientID %>').options[0]=new Option("正在加载...",""); 
+                 $('<%=DocCate.ClientID %>').disabled=true; 
+                 try
+                {
+                    xmlHttp.open("get","GetDocCateByDepartId.aspx?DepartID="+val+"&date="+new Date(),true); 
+                    //xmlHttp.open("get","GetCityByProvinceID.aspx?PID="+val,true); 
+                    
+                    xmlHttp.onreadystatechange=xmlHttpChange;             
+               
+                    xmlHttp.send(null);                
+                }
+                catch(e)
+                {            
+                    $('<%=DocCate.ClientID %>').options.length=0; 
+                    $('<%=DocCate.ClientID %>').disabled=false;
+                }    
+            
             }
-            catch(e)
-            {            
-                $('<%=SubTaskName.ClientID %>').options.length=0; 
-                $('<%=SubTaskName.ClientID %>').disabled=false;
+            else
+            {
+                 $('<%=SubTaskName.ClientID %>').options[0]=new Option("正在加载...",""); 
+                 $('<%=SubTaskName.ClientID %>').disabled=true; 
+                 try
+                {
+                    xmlHttp.open("get","GetSubTaskByProjectNum.aspx?ProjectNum="+val+"&date="+new Date(),true); 
+                    //xmlHttp.open("get","GetCityByProvinceID.aspx?PID="+val,true); 
+                    
+                    xmlHttp.onreadystatechange=xmlHttpChange;             
+               
+                    xmlHttp.send(null);                
+                }
+                catch(e)
+                {            
+                    $('<%=SubTaskName.ClientID %>').options.length=0; 
+                    $('<%=SubTaskName.ClientID %>').disabled=false;
+                }    
             }
+                 
+            
         } 
         
         function xmlHttpChange() 
@@ -67,10 +88,21 @@
             if(xmlHttp.readyState==4) 
             {             
                 if(xmlHttp.status==200) 
-                {                                                                
-                    $('<%=SubTaskName.ClientID %>').options.length=0; 
-                    $('<%=SubTaskName.ClientID %>').disabled=false;                    
-                    Bind(xmlHttp.responseText);                    
+                {   
+                    var oTab=document.getElementById("<%=DocRadioButtonList.ClientID%>");
+                    var arrRadio=oTab.getElementsByTagName('INPUT');
+                     if (arrRadio[0].checked==true )
+                     {
+                        $('<%=DocCate.ClientID %>').options.length=0; 
+                        $('<%=DocCate.ClientID %>').disabled=false;    
+                        Bind(xmlHttp.responseText,"true"); 
+                     }
+                     else
+                     {
+                        $('<%=SubTaskName.ClientID %>').options.length=0; 
+                        $('<%=SubTaskName.ClientID %>').disabled=false; 
+                        Bind(xmlHttp.responseText,"false");    
+                     }                         
                 } 
             } 
         }    
@@ -78,26 +110,57 @@
         {
             if(val=='0')
                 return ;
-            openAjax(val);
+            openAjax(val,"false");
         }
-        function Bind(xmlStr)
-        {        
-            if(xmlStr=='')
+        function getDocCate(val)
+        {
+                if(val=='0')
+                    return ;
+                openAjax(val,"true");
+        
+        }
+        function Bind(xmlStr,b)
+        {    
+            if (b == "true")
             {
-                $('<%=SubTaskName.ClientID %>').disabled=true; 
-                return;
-            }
-            $('<%=SubTaskName.ClientID %>').options.add(new Option("——请选择——", "0"));
-            
-            var subTaskIDAndNameList =xmlStr.split(";");
-            var num =subTaskIDAndNameList[0];
-            for(var i=1; i < num*2+1; i=i+2)
-            {
-                   $('<%=SubTaskName.ClientID %>').options.add(new Option(subTaskIDAndNameList[i+1],subTaskIDAndNameList[i]));
+                if(xmlStr=='')
+                {
+                    $('<%=DocCate.ClientID %>').disabled=true; 
+                    return;
+                }
+                $('<%=DocCate.ClientID %>').options.add(new Option("选择文档类型", "0"));
+                
+                var subTaskIDAndNameList =xmlStr.split(";");
+                var num =subTaskIDAndNameList[0];
+                for(var i=1; i < num*2+1; i=i+2)
+                {
+                       $('<%=DocCate.ClientID %>').options.add(new Option(subTaskIDAndNameList[i+1],subTaskIDAndNameList[i]));
 
-            }
-            $('<%=SubTaskName.ClientID %>').disabled=false; 
+                }
+                $('<%=DocCate.ClientID %>').disabled=false; 
             
+            }   
+            else
+            {
+                    if(xmlStr=='')
+                    {
+                        $('<%=SubTaskName.ClientID %>').disabled=true; 
+                        return;
+                    }
+                    $('<%=SubTaskName.ClientID %>').options.add(new Option("选择子任务", "0"));
+                    
+                    var subTaskIDAndNameList =xmlStr.split(";");
+                    var num =subTaskIDAndNameList[0];
+                    for(var i=1; i < num*2+1; i=i+2)
+                    {
+                           $('<%=SubTaskName.ClientID %>').options.add(new Option(subTaskIDAndNameList[i+1],subTaskIDAndNameList[i]));
+
+                    }
+                    $('<%=SubTaskName.ClientID %>').disabled=false; 
+             } 
+       
+            
+            } 
 //            var xmlDoc;
 //            if(window.ActiveXObject)
 //            {
@@ -125,13 +188,61 @@
 //                }                        
 //            }
 //            $('<%=SubTaskName.ClientID %>').options[1].selected=true;
-        } 
+        
+        function setDocCate()
+        {
+            var oTab=document.getElementById("<%=DocRadioButtonList.ClientID%>");
+            var arrRadio=oTab.getElementsByTagName('INPUT');
+            if (arrRadio[0].checked==true )
+            {
+                setDocumentDoc();
+            }
+            else
+            {
+                setPojectDoc();
+            }
+        }
+        function setPojectDoc()
+        {
+        
+            document.getElementById("<%=Label9.ClientID%>").style.display ="";
+            document.getElementById("<%=ProjectName.ClientID%>").style.display ="";
+            document.getElementById("<%=Label10.ClientID%>").style.display ="";
+            document.getElementById("<%=SubTaskName.ClientID%>").style.display ="";
+             document.getElementById("<%=ProjectDocCate.ClientID%>").style.display ="";
+             
+            document.getElementById("<%=DocVersionText.ClientID%>").style.display ="none";
+            document.getElementById("<%=Label2.ClientID%>").style.display ="none";
+            document.getElementById("<%=DocCate.ClientID%>").style.display ="none";
+            document.getElementById("<%=Label4.ClientID%>").style.display ="none";
+            document.getElementById("<%=DepartName.ClientID%>").style.display ="none";
             
+        }
+        
+        function setDocumentDoc()
+        {
+            document.getElementById("<%=DocVersionText.ClientID%>").style.display ="";
+            document.getElementById("<%=Label2.ClientID%>").style.display ="";
+            document.getElementById("<%=DocCate.ClientID%>").style.display ="";
+            document.getElementById("<%=Label4.ClientID%>").style.display ="";
+            document.getElementById("<%=DepartName.ClientID%>").style.display ="";
+            
+            document.getElementById("<%=Label9.ClientID%>").style.display ="none";
+            document.getElementById("<%=ProjectName.ClientID%>").style.display ="none";
+            document.getElementById("<%=Label10.ClientID%>").style.display ="none";
+            document.getElementById("<%=SubTaskName.ClientID%>").style.display ="none";
+             document.getElementById("<%=ProjectDocCate.ClientID%>").style.display ="none";
+            
+        }
+
 </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
 <div align="center">
     <asp:RadioButtonList ID="DocRadioButtonList" runat="server" 
         RepeatDirection="Horizontal" 
-        onchange="setDocCate(this.value)"
+        onclick="setDocCate()"
         onselectedindexchanged="DocRadioButtonList_SelectedIndexChanged">
         <asp:ListItem Value="Document">资料文档</asp:ListItem>
         <asp:ListItem Value="ProjectDoc">项目文档</asp:ListItem>
@@ -189,29 +300,42 @@
         <asp:Label ID="Label7" runat="server" Text="上传时间下限"></asp:Label>   
         <asp:TextBox ID="UploadTimeEndText" runat="server"></asp:TextBox> 
     </div>
-        <asp:GridView ID="DocGridView" runat="server" CellPadding="4" 
+        <asp:GridView ID="DocGridView" runat="server" CellPadding="4" AutoGenerateColumns="false"
         ForeColor="#333333" GridLines="None" onrowcommand="DocGridView_RowCommand" >
         <RowStyle BackColor="#EFF3FB" />
         <Columns>
-           <asp:TemplateField>
-              <ItemTemplate>
-               <asp:LinkButton ID="ExploreButton" runat="server" 
+            <asp:BoundField DataField="名称" HeaderText="名称" />
+            <asp:BoundField DataField="版本" HeaderText="版本" />
+            <asp:BoundField DataField="类别" HeaderText="类别" />
+            <asp:BoundField DataField="所属部门" HeaderText="所属部门" />
+            <asp:BoundField DataField="项目子任务" HeaderText="项目子任务" />
+            <asp:BoundField DataField="上传人" HeaderText="上传人" />
+            <asp:BoundField DataField="上传时间" HeaderText="上传时间" />  
+            <asp:TemplateField>
+            <ItemTemplate>
+            <asp:LinkButton ID="ExploreButton" runat="server" 
                   NavigateUrl="~/Search.aspx" 
                   CommandName="ExploreDocument" 
                   CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
                   Text="浏览" />
-                   <%--<asp:HyperLink ID ="ExploreLink" runat="server" NavigateUrl='<%# String.Format("~/Search.aspx?id={0}", GetDocumentName(((GridViewRow) Container).RowIndex))%>' -->
-                         Target="_blank">liulan</asp:HyperLink>--%> 
-              </ItemTemplate> 
-            </asp:TemplateField>
-           <asp:TemplateField>
-              <ItemTemplate>
-                <asp:LinkButton ID="DownloadButton" runat="server" 
+             </ItemTemplate>
+             </asp:TemplateField>
+            <asp:TemplateField>
+            <ItemTemplate>
+            <asp:LinkButton ID="ModifyButton" runat="server"
+                CommandName="ModifyDocument"
+                CommandArgument ="<%# ((GridViewRow) Container).RowIndex %>"
+               Text="修改" />
+             </ItemTemplate>
+             </asp:TemplateField>
+             <asp:TemplateField>
+            <ItemTemplate>
+            <asp:LinkButton ID="DownloadButton" runat="server" 
                   CommandName="DownloadDocument" 
                   CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
-                  Text="下载" />
-              </ItemTemplate> 
-            </asp:TemplateField>
+                  Text="下载" /> 
+              </ItemTemplate>
+             </asp:TemplateField>  
         </Columns>
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
         <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
@@ -222,5 +346,6 @@
     </asp:GridView>
     <asp:Button ID="AdvancedSearchButton" runat="server" Text="高级查询" 
         onclick="AdvancedSearchButton_Click" />
+        <script type="text/javascript">setDocumentDoc();</script>
 </asp:Content>
 

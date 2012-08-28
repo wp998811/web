@@ -97,10 +97,10 @@ namespace BLL
         public DataTable SearchDocument(string searchCondition)
         {
             DataTable dataTable = new DataTable();
-            DataColumn docNameColumn = new DataColumn("文档名称");
-            DataColumn docVersionColumn = new DataColumn("文档版本");
-            DataColumn docCateColumn = new DataColumn("文档类别");
-            DataColumn departColumn = new DataColumn("文档所属部门");
+            DataColumn docNameColumn = new DataColumn("名称");
+            DataColumn docVersionColumn = new DataColumn("版本");
+            DataColumn docCateColumn = new DataColumn("类别");
+            DataColumn departColumn = new DataColumn("所属部门");
             DataColumn uploadColumn = new DataColumn("上传人");
             DataColumn uploadTimeColumn = new DataColumn("上传时间");
 
@@ -117,13 +117,13 @@ namespace BLL
             {
                 DocumentInfo documentInfo = documentInfos[i];
                 DataRow dataRow = dataTable.NewRow();
-                dataRow["文档名称"] = documentInfo.DocName;
-                dataRow["文档版本"] = documentInfo.DocVersion;
+                dataRow["名称"] = documentInfo.DocName;
+                dataRow["版本"] = documentInfo.DocVersion;
                 DepartDocCate departDocCate = new DepartDocCate();
                 DepartDocCateInfo departDocCateInfo =departDocCate.GetDepartDocCateById(documentInfo.DocCategoryID);
-                dataRow["文档类别"] = departDocCateInfo.CategoryName;
+                dataRow["类别"] = departDocCateInfo.CategoryName;
                 
-                dataRow["文档所属部门"] = departDocCateInfo.DepartID;
+                dataRow["所属部门"] = departDocCateInfo.DepartID;
                 User user = new User();
                 UserInfo userInfo = user.GetUserById(documentInfo.UploadUserID);
                 dataRow["上传人"] = userInfo.UserName;
@@ -134,7 +134,7 @@ namespace BLL
             return dataTable;
         }
 
-        public string GetSearchCondition(string docName, string docVersion, string docKey, string DepertName, string docCategoryName, string uploadUserName, string updateTimeBegin, string updateTimeEnd)
+        public string GetSearchCondition(string docName, string docVersion, string docKey, string DepertID, string docCategoryID, string uploadUserName, string updateTimeBegin, string updateTimeEnd)
         {
             string condition ="";
             if (!string.IsNullOrEmpty(docName))
@@ -164,26 +164,26 @@ namespace BLL
                 condition += " DocKey LIKE '%" + docKey + "%' ";
             }
 
-            if (!string.IsNullOrEmpty(DepertName))
-            {
-                //Department department = new Department();
-                //DepartmentInfo departmentInfo = department.GetDepartmentByName(DepertName);
-                //if (string.IsNullOrEmpty(departmentInfo.DepartmentID))
-                //{
-                //    return "";
-                //}
-                //if (condition != "")
-                //{
-                //    condition += " AND ";
-                //}
-                //condition += " DepartID = '" + departmentInfo.DepartmentID + "' ";
-            }
+            //if (!string.IsNullOrEmpty(DepertID))
+            //{
+            //    //Department department = new Department();
+            //    //DepartmentInfo departmentInfo = department.GetDepartmentByName(DepertName);
+            //    //if (string.IsNullOrEmpty(departmentInfo.DepartmentID))
+            //    //{
+            //    //    return "";
+            //    //}
+            //    //if (condition != "")
+            //    //{
+            //    //    condition += " AND ";
+            //    //}
+            //    //condition += " DepartID = '" + departmentInfo.DepartmentID + "' ";
+            //}
 
-            if (!string.IsNullOrEmpty(docCategoryName) && string.IsNullOrEmpty(DepertName))
-            {
-                //DepartDocCate departDocCate = new DepartDocCate();
-               // DepartDocCateInfo departDocCateInfo = departDocCate.GetDepartDocCateByDepartCategory();              
-            }
+            //if (!string.IsNullOrEmpty(docCategoryName) && string.IsNullOrEmpty(DepertName))
+            //{
+            //    //DepartDocCate departDocCate = new DepartDocCate();
+            //   // DepartDocCateInfo departDocCateInfo = departDocCate.GetDepartDocCateByDepartCategory();              
+            //}
 
             if (!string.IsNullOrEmpty(uploadUserName))
             {
@@ -220,7 +220,7 @@ namespace BLL
             return condition;
         }
 
-        public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertName,string docCategoryName, string docState, int docPermission,int userId)
+        public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertID,string docCategoryID, string docState, string docPermission,string userId)
         {
             DocumentInfo documentInfo = new DocumentInfo();
             documentInfo.DocName = docName;
@@ -229,12 +229,30 @@ namespace BLL
             documentInfo.DocDescription = docDescription;          
             documentInfo.DocState = docState;
             documentInfo.DocUrl = "Documents/" + docName;
-            documentInfo.DocPermimission = docPermission;
-            documentInfo.UploadUserID = userId;
+            documentInfo.DocPermimission = Convert.ToInt32(docPermission);
+            documentInfo.UploadUserID = Convert.ToInt32(userId);
 
             DateTime dateTime = DateTime.Now;
             documentInfo.UploadTime = dateTime.ToString();
            
+
+            if (!string.IsNullOrEmpty(DepertID))
+            {
+                int iDepartID = Convert.ToInt32(DepertID);
+                if (iDepartID != 0)
+                {
+                    documentInfo.DepartID = iDepartID;
+
+                    if (!string.IsNullOrEmpty(docCategoryID))
+                    {
+                        int iDocCate = Convert.ToInt32(docCategoryID);
+                        if (iDocCate !=0)
+                        {
+                            documentInfo.DocCategoryID =iDocCate;
+                        }
+                    }
+                }
+            }
             //if (!string.IsNullOrEmpty(DepertName))
             //{
             //    Department department = new Department();
@@ -263,11 +281,6 @@ namespace BLL
                 return true;
             }
             return false;
-        }
-
-        public bool AddDocument(string docName, string docVersion, string docKey, string DepertName, string docCategoryName)
-        {
-            return true;
         }
     }
 }

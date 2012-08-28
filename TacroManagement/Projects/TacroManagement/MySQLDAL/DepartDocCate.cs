@@ -174,7 +174,7 @@ namespace MySQLDAL
         }
 
         /// <summary>
-        /// 通过部门编号查找部门文档类型
+        /// 通过部门编号查找部门文档类型 
         /// </summary>
         /// <param name="departId"></param>
         /// <returns></returns>

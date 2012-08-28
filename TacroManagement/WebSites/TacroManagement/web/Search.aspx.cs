@@ -34,9 +34,13 @@ public partial class web_Search : System.Web.UI.Page
         if (DocRadioButtonList.SelectedValue == "Document")
         {
             string condition = "docName LIKE '%" + searchText + "%' OR DocKey LIKE '%" + searchText + "%'";
-            Document document = new Document();
-            DocGridView.DataSource = document.SearchDocument(condition);
+            Document document = new Document();           
+            DataTable documents= document.SearchDocument(condition);
+            DataColumn subTaskColumn = new DataColumn("项目子任务");//与页面的GirdView一致
+            documents.Columns.Add(subTaskColumn);
+            DocGridView.DataSource = documents;
             DocGridView.DataBind();
+            DocGridView.Columns[4].Visible = false;
         }
         else
         {
@@ -64,13 +68,13 @@ public partial class web_Search : System.Web.UI.Page
         {
             int index = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = DocGridView.Rows[index];
-            string docName = row.Cells[2].Text;
+            string docName = row.Cells[0].Text;
 
             //查看下载权限是否允许
 
             //         WebClient webClient = new WebClient();
-            ////         webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
-            // //        webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+            //        webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+            //       webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
             //         string path = Server.MapPath("./");
             //         webClient.DownloadFileAsync(new Uri(path+"upload/a.txt"), @"d:\myfile.txt");
 
@@ -81,7 +85,7 @@ public partial class web_Search : System.Web.UI.Page
             // Response.ContentType = "text/xml/rmvb";
             Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
             Response.AppendHeader("Content-Disposition", "attachment;filename=" + documentInfo.DocName);
-            string path = Server.MapPath("./");
+            string path = Server.MapPath("~/");
             Response.WriteFile(path + documentInfo.DocUrl);
             Response.End();
         }
