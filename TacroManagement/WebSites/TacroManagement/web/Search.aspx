@@ -1,19 +1,24 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Search.aspx.cs" Inherits="Search" Async="True" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="Search.aspx.cs" Inherits="web_Search" Title="Untitled Page" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>查询</title>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-    
+    <div align="center">
         <asp:TextBox ID="SearchText" runat="server"></asp:TextBox>
         <asp:Button ID="SearchSubmit" runat="server" Text="查找" 
             onclick="SearchSubmit_Click" /> 
-          
+        <asp:HyperLink ID="AdvancedSearch" runat="server" NavigateUrl="~/AdvancedSearch.aspx" 
+            Target="_blank">高级查询</asp:HyperLink>  
+            </div>
+            <div align="center">
+                <asp:RadioButtonList ID="DocRadioButtonList" runat="server" 
+                    RepeatDirection="Horizontal">
+                    <asp:ListItem Value="Document">资料文档</asp:ListItem>
+                    <asp:ListItem Value="ProjectDoc">项目文档</asp:ListItem>
+                </asp:RadioButtonList>
+            </div>
+            <div align="center">   
     <asp:GridView ID="DocGridView" runat="server" CellPadding="4" 
         ForeColor="#333333" GridLines="None" onrowcommand="DocGridView_RowCommand" >
         <RowStyle BackColor="#EFF3FB" />
@@ -45,11 +50,6 @@
         <EditRowStyle BackColor="#2461BF" />
         <AlternatingRowStyle BackColor="White" />
     </asp:GridView>
-          
-        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Search.aspx" 
-            Target="_blank">HyperLink</asp:HyperLink>
-          
     </div>
-    </form>
-</body>
-</html>
+</asp:Content>
+

@@ -64,6 +64,10 @@ namespace BLL
              return dal.GetDepartDocCateById(id);
          }
 
+        public IList<DepartDocCateInfo> GetDepartDocCateByDepartId(int departId)
+        {
+            return dal.GetDepartDocCateByDepartId(departId);
+        }
         /// <summary>
         /// 根据部门和文档类型查找部门文档类型
         /// </summary>

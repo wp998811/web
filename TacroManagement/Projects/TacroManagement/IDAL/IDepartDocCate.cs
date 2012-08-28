@@ -14,6 +14,7 @@ namespace IDAL
 
         IList<DepartDocCateInfo> GetDepartDocCate();                                // 查找所有部门文档类型
         DepartDocCateInfo GetDepartDocCateById(int id);                            //通过部门文档类型ID查找部门文档类型
+        IList<DepartDocCateInfo> GetDepartDocCateByDepartId(int departId);           //通过部门编号查找部门文档类型
         DepartDocCateInfo GetDepartDocCateByDepartCategory(int departID, string categoryName);  //通过部门ID和文档类型查找部门文档类型
 
 
