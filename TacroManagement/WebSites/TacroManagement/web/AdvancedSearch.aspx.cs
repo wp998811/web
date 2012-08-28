@@ -26,7 +26,6 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
             InitDocCate();
             InitProjectDoc();
         }
-       
 
         //ProjectName.Visible = false;
         //ProjectDocCate.Visible = false;
@@ -38,8 +37,10 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         Project project = new Project();
         IList<ProjectInfo> projectInfos = project.GetProjects();
 
+
         ProjectName.Items.Clear();
         ProjectName.Items.Add(new ListItem("选择项目","0"));
+
         for (int i = 0; i < projectInfos.Count;++i )
         {
             ListItem listItem = new ListItem();
@@ -135,13 +136,6 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
 
         }
 
-
-       
-        
-
-
-
-
     }
 
     protected void DocGridView_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -149,6 +143,7 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
     }
     protected void DepartName_SelectedIndexChanged(object sender, EventArgs e)
     {
+
         //DepartDocCate departDocCate = new DepartDocCate();
         //IList<DepartDocCateInfo> departDocCateInfos = departDocCate.GetDepartDocCateByDepartId(int.Parse(DepartName.SelectedValue));
 
@@ -163,6 +158,7 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         //{
         //    DocCate.SelectedIndex = 0;
         //}
+
     }
     protected void ProjectName_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -182,10 +178,7 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         //if (SubTaskName.Items.Count >=0)
         //{
         //    SubTaskName.SelectedIndex = 0;
-        //}
-
-        
-       
+        //}      
     }
     protected void DocRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
     {

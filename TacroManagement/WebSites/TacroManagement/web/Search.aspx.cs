@@ -41,6 +41,7 @@ public partial class web_Search : System.Web.UI.Page
             DocGridView.DataSource = documents;
             DocGridView.DataBind();
             DocGridView.Columns[4].Visible = false;
+
         }
         else
         {
@@ -73,6 +74,7 @@ public partial class web_Search : System.Web.UI.Page
             //查看下载权限是否允许
 
             //         WebClient webClient = new WebClient();
+
             //        webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
             //       webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
             //         string path = Server.MapPath("./");

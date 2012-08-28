@@ -79,8 +79,7 @@
                     $('<%=SubTaskName.ClientID %>').disabled=false;
                 }    
             }
-                 
-            
+
         } 
         
         function xmlHttpChange() 
@@ -161,6 +160,7 @@
        
             
             } 
+            
 //            var xmlDoc;
 //            if(window.ActiveXObject)
 //            {
