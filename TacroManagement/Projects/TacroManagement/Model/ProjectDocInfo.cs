@@ -9,7 +9,7 @@ namespace Model
     {
         private int projDocId;
         private int taskId;
-        private int projDocCate;
+        private string projDocCate;
         private string docName;
         private string docKey;
         private string docDescription;
@@ -23,7 +23,7 @@ namespace Model
 
         }
 
-        public ProjectDocInfo(int taskId, int projDocCate, string docName, string docKey, string docDescription
+        public ProjectDocInfo(int taskId, string projDocCate, string docName, string docKey, string docDescription
             , string docUrl, int docPermission, string uploadTime, int uploadUserId)
         {
             this.taskId = taskId;
@@ -37,7 +37,7 @@ namespace Model
             this.uploadUserId = uploadUserId;
         }
 
-        public ProjectDocInfo(int projDocId, int taskId, int projDocCate, string docName, string docKey, string docDescription
+        public ProjectDocInfo(int projDocId, int taskId, string projDocCate, string docName, string docKey, string docDescription
             , string docUrl, int docPermission, string uploadTime, int uploadUserId)
         {
             this.projDocId = projDocId;
@@ -94,7 +94,7 @@ namespace Model
             set { docName = value; }
         }
 
-        public int ProjDocCate
+        public string ProjDocCate
         {
             get { return projDocCate; }
             set { projDocCate = value; }

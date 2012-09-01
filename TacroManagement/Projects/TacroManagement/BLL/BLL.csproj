@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="ClinicalContact.cs" />
     <Compile Include="ClinicalResource.cs" />
     <Compile Include="Contact.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="CustomerProjContact.cs" />
     <Compile Include="CustomerProject.cs" />
     <Compile Include="DepartDocCate.cs" />
+    <Compile Include="Department.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocUser.cs" />
     <Compile Include="GoverContact.cs" />

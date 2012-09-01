@@ -44,8 +44,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>   
+  <ItemGroup>
     <Compile Include="IAdmin.cs" />
+    <Compile Include="IClient.cs" />
     <Compile Include="IClinicalContact.cs" />
     <Compile Include="IClinicalResource.cs" />
     <Compile Include="IContact.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="ICustomerProjContact.cs" />
     <Compile Include="ICustomerProject.cs" />
     <Compile Include="IDepartDocCate.cs" />
+    <Compile Include="IDepartment.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDocUser.cs" />
     <Compile Include="IGoverContact.cs" />

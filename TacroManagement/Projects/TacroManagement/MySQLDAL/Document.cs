@@ -76,7 +76,7 @@ namespace MySQLDAL
                 parms[5].Value = documentInfo.DocCategoryID;
                 parms[6].Value = documentInfo.DocState;
                 parms[7].Value = documentInfo.DocUrl;
-                parms[8].Value = documentInfo.DocPermimission;
+                parms[8].Value = documentInfo.DocPermission;
                 parms[9].Value = documentInfo.UploadUserID;
                 parms[10].Value = documentInfo.UploadTime;
 
@@ -147,7 +147,7 @@ namespace MySQLDAL
                 parms[5].Value = documentInfo.DocCategoryID;
                 parms[6].Value = documentInfo.DocState;
                 parms[7].Value = documentInfo.DocUrl;
-                parms[8].Value = documentInfo.DocPermimission;
+                parms[8].Value = documentInfo.DocPermission;
                 parms[9].Value = documentInfo.UploadUserID;
                 parms[10].Value = documentInfo.UploadTime;
                 parms[11].Value = documentInfo.DocID;

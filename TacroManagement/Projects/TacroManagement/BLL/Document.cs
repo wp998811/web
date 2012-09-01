@@ -97,6 +97,7 @@ namespace BLL
         public DataTable SearchDocument(string searchCondition)
         {
             DataTable dataTable = new DataTable();
+            DataColumn docIDColumn= new DataColumn("docID");
             DataColumn docNameColumn = new DataColumn("名称");
             DataColumn docVersionColumn = new DataColumn("版本");
             DataColumn docCateColumn = new DataColumn("类别");
@@ -104,8 +105,9 @@ namespace BLL
             DataColumn uploadColumn = new DataColumn("上传人");
             DataColumn uploadTimeColumn = new DataColumn("上传时间");
 
+            dataTable.Columns.Add(docIDColumn);
             dataTable.Columns.Add(docNameColumn);
-            dataTable.Columns.Add(docVersionColumn);
+            dataTable.Columns.Add(docVersionColumn);    
             dataTable.Columns.Add(docCateColumn);
             dataTable.Columns.Add(departColumn);
             dataTable.Columns.Add(uploadColumn);
@@ -117,13 +119,16 @@ namespace BLL
             {
                 DocumentInfo documentInfo = documentInfos[i];
                 DataRow dataRow = dataTable.NewRow();
+                dataRow["docID"] = documentInfo.DocID;
                 dataRow["名称"] = documentInfo.DocName;
                 dataRow["版本"] = documentInfo.DocVersion;
                 DepartDocCate departDocCate = new DepartDocCate();
                 DepartDocCateInfo departDocCateInfo =departDocCate.GetDepartDocCateById(documentInfo.DocCategoryID);
                 dataRow["类别"] = departDocCateInfo.CategoryName;
                 
-                dataRow["所属部门"] = departDocCateInfo.DepartID;
+                Department department = new Department();
+                DepartmentInfo departmentInfo=department.GetDepartmentByID(departDocCateInfo.DepartID);
+                dataRow["所属部门"] = departmentInfo.DepartName;
                 User user = new User();
                 UserInfo userInfo = user.GetUserById(documentInfo.UploadUserID);
                 dataRow["上传人"] = userInfo.UserName;
@@ -164,26 +169,32 @@ namespace BLL
                 condition += " DocKey LIKE '%" + docKey + "%' ";
             }
 
-            //if (!string.IsNullOrEmpty(DepertID))
-            //{
-            //    //Department department = new Department();
-            //    //DepartmentInfo departmentInfo = department.GetDepartmentByName(DepertName);
-            //    //if (string.IsNullOrEmpty(departmentInfo.DepartmentID))
-            //    //{
-            //    //    return "";
-            //    //}
-            //    //if (condition != "")
-            //    //{
-            //    //    condition += " AND ";
-            //    //}
-            //    //condition += " DepartID = '" + departmentInfo.DepartmentID + "' ";
-            //}
+             if (!string.IsNullOrEmpty(DepertID))
+            {
+                int iDepartID = Convert.ToInt32(DepertID);
+                if (iDepartID != 0)
+                {
+                   
+                    if (condition != "")
+                    {
+                        condition += " AND ";
+                    }
+                    condition += " DepartID = '" + iDepartID + "' ";
 
-            //if (!string.IsNullOrEmpty(docCategoryName) && string.IsNullOrEmpty(DepertName))
-            //{
-            //    //DepartDocCate departDocCate = new DepartDocCate();
-            //   // DepartDocCateInfo departDocCateInfo = departDocCate.GetDepartDocCateByDepartCategory();              
-            //}
+                    if (!string.IsNullOrEmpty(docCategoryID))
+                    {
+                        int iDocCate = Convert.ToInt32(docCategoryID);
+                        if (iDocCate !=0)
+                        {
+                            if (condition != "")
+                            {
+                                condition += " AND ";
+                            }
+                            condition += " DocCategryID = '" + iDocCate + "' ";
+                        }
+                    }
+                }
+            }
 
             if (!string.IsNullOrEmpty(uploadUserName))
             {
@@ -221,7 +232,7 @@ namespace BLL
         }
 
 
-        public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertID,string docCategoryID, string docState, string docPermission,string userId)
+        public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertID,string docCategoryID, string docState, string docUrl,string docPermission,string userId)
         {
             DocumentInfo documentInfo = new DocumentInfo();
             documentInfo.DocName = docName;
@@ -229,9 +240,11 @@ namespace BLL
             documentInfo.DocKey = docKey;
             documentInfo.DocDescription = docDescription;          
             documentInfo.DocState = docState;
-            documentInfo.DocUrl = "Documents/" + docName;
-            documentInfo.DocPermimission = Convert.ToInt32(docPermission);
+            documentInfo.DocUrl = "Documents/" + docUrl;      
             documentInfo.UploadUserID = Convert.ToInt32(userId);
+
+            //处理
+            documentInfo.DocPermission = Convert.ToInt32(docPermission);
 
             DateTime dateTime = DateTime.Now;
             documentInfo.UploadTime = dateTime.ToString();
@@ -254,27 +267,6 @@ namespace BLL
                     }
                 }
             }
-            //if (!string.IsNullOrEmpty(DepertName))
-            //{
-            //    Department department = new Department();
-            //    DepartmentInfo departmentInfo= department.GetDepartmentByDepartName(DepertName);
-            //    if (string.IsNullOrEmpty(departmentInfo.DepartName))
-            //    {//部门不存在
-            //        return false;
-            //    }
-            //    documentInfo.DepartID = departmentInfo.DepartID;
-            //    if (!string.IsNullOrEmpty(docCategoryName))
-            //    {
-            //        DepartDocCate departDocCate = new DepartDocCate();
-            //        DepartDocCateInfo departDocCateInfo= departDocCate.GetDepartDocCateByDepartCategory(departmentInfo.DepartID,docCategoryName);
-            //        if (!string.IsNullOrEmpty(departDocCateInfo.CategoryName))
-            //        {
-            //            //部门文档类型存在
-            //            documentInfo.DocCategoryID = departDocCateInfo.Id;
-            //        }
-            //    }
-
-            //}
 
             int reslut =InsertDocument(documentInfo);
             if (reslut ==1)

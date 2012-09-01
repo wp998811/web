@@ -1,26 +1,194 @@
-﻿<%@ Page Language="C#"  Async="true" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="UploadDoc.aspx.cs" Inherits="web_UploadDoc" Title="Untitled Page" %>
+﻿<%@ Page Language="C#"  Async="true" enableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="UploadDoc.aspx.cs" Inherits="web_UploadDoc" Title="Untitled Page" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
 <script type="text/javascript">
 
 
+var xmlHttp=null;              
+        function $(id)
+        {
+            return document.getElementById(id);
+        }
+        function createXMLHttpRequest() 
+        { 
+            if(xmlHttp == null){
+                if(window.XMLHttpRequest) {
+                    //Mozilla 浏览器
+                    xmlHttp = new XMLHttpRequest();
+                }else if(window.ActiveXObject) {
+                    // IE浏览器
+                    try {
+                        xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+                    } catch (e) {
+                        try {
+                            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                        } catch (e) {
+                        }
+                    }
+                }
+            }
+        } 
+        
+        function openAjax(val,b) 
+        {   
+            
+            if( xmlHttp == null)
+            {                
+                createXMLHttpRequest();  
+                if( xmlHttp == null)
+                {
+                    //alert('出错');
+                    return ;
+                }
+            }
+            if (b == "true") 
+            {
+                 $('<%=DocCate.ClientID %>').options[0]=new Option("正在加载...",""); 
+                 $('<%=DocCate.ClientID %>').disabled=true; 
+                 try
+                {
+                    xmlHttp.open("get","GetDocCateByDepartId.aspx?DepartID="+val+"&date="+new Date(),true); 
+                    //xmlHttp.open("get","GetCityByProvinceID.aspx?PID="+val,true); 
+                    
+                    xmlHttp.onreadystatechange=xmlHttpChange;             
+               
+                    xmlHttp.send(null);                
+                }
+                catch(e)
+                {            
+                    $('<%=DocCate.ClientID %>').options.length=0; 
+                    $('<%=DocCate.ClientID %>').disabled=false;
+                }    
+            
+            }
+            else
+            {
+                 $('<%=SubTaskName.ClientID %>').options[0]=new Option("正在加载...",""); 
+                 $('<%=SubTaskName.ClientID %>').disabled=true; 
+                 try
+                {
+                    xmlHttp.open("get","GetSubTaskByProjectNum.aspx?ProjectNum="+val+"&date="+new Date(),true); 
+                    //xmlHttp.open("get","GetCityByProvinceID.aspx?PID="+val,true); 
+                    
+                    xmlHttp.onreadystatechange=xmlHttpChange;             
+               
+                    xmlHttp.send(null);                
+                }
+                catch(e)
+                {            
+                    $('<%=SubTaskName.ClientID %>').options.length=0; 
+                    $('<%=SubTaskName.ClientID %>').disabled=false;
+                }    
+            }
+
+        } 
+        
+        function xmlHttpChange() 
+        { 
+            if(xmlHttp.readyState==4) 
+            {             
+                if(xmlHttp.status==200) 
+                {   
+                    var oTab=document.getElementById("<%=DocRadioButtonList.ClientID%>");
+                    var arrRadio=oTab.getElementsByTagName('INPUT');
+                     if (arrRadio[0].checked==true )
+                     {
+                        $('<%=DocCate.ClientID %>').options.length=0; 
+                        $('<%=DocCate.ClientID %>').disabled=false;    
+                        Bind(xmlHttp.responseText,"true"); 
+                     }
+                     else
+                     {
+                        $('<%=SubTaskName.ClientID %>').options.length=0; 
+                        $('<%=SubTaskName.ClientID %>').disabled=false; 
+                        Bind(xmlHttp.responseText,"false");    
+                     }                         
+                } 
+            } 
+        }    
+        function getSubTask(val)
+        {
+            if(val=='0')
+                return ;
+            openAjax(val,"false");
+        }
+        function getDocCate(val)
+        {
+                if(val=='0')
+                    return ;
+                openAjax(val,"true");
+        
+        }
+        function Bind(xmlStr,b)
+        {    
+            if (b == "true")
+            {
+                if(xmlStr=='')
+                {
+                    $('<%=DocCate.ClientID %>').disabled=true; 
+                    return;
+                }
+                $('<%=DocCate.ClientID %>').options.add(new Option("选择文档类型", "0"));
+                
+                var subTaskIDAndNameList =xmlStr.split(";");
+                var num =subTaskIDAndNameList[0];
+                for(var i=1; i < num*2+1; i=i+2)
+                {
+                       $('<%=DocCate.ClientID %>').options.add(new Option(subTaskIDAndNameList[i+1],subTaskIDAndNameList[i]));
+
+                }
+                $('<%=DocCate.ClientID %>').disabled=false; 
+            
+            }   
+            else
+            {
+                    if(xmlStr=='')
+                    {
+                        $('<%=SubTaskName.ClientID %>').disabled=true; 
+                        return;
+                    }
+                    $('<%=SubTaskName.ClientID %>').options.add(new Option("选择子任务", "0"));
+                    
+                    var subTaskIDAndNameList =xmlStr.split(";");
+                    var num =subTaskIDAndNameList[0];
+                    for(var i=1; i < num*2+1; i=i+2)
+                    {
+                           $('<%=SubTaskName.ClientID %>').options.add(new Option(subTaskIDAndNameList[i+1],subTaskIDAndNameList[i]));
+
+                    }
+                    $('<%=SubTaskName.ClientID %>').disabled=false; 
+             } 
+       
+            
+            } 
+            
  function setDocCate()
         {
             var oTab=document.getElementById("<%=DocRadioButtonList.ClientID%>");
             var arrRadio=oTab.getElementsByTagName('INPUT');
             if (arrRadio[0].checked==true )
-            {
+            {   
                 setDocumentDoc();
             }
-            else
+            else 
             {
-                setPojectDoc();
+                if (arrRadio[1].checked==true )
+                {
+                    setPojectDoc();
+                }
+                else
+                {
+                    arrRadio[0].checked ="true";
+                    setDocumentDoc();
+                }
             }
+            showUsers();
         }
         function setPojectDoc()
         {
         
+            document.getElementById("<%=DownLoadPremission.ClientID%>").options[2].text = "本项目用户";
             document.getElementById("<%=项目名称.ClientID%>").style.display ="";
             document.getElementById("<%=ProjectName.ClientID%>").style.display ="";
             document.getElementById("<%=子任务名.ClientID%>").style.display ="";
@@ -39,6 +207,9 @@
         
         function setDocumentDoc()
         {
+            document.getElementById("<%=UserNameList.ClientID%>").style.display ="none";
+            document.getElementById("<%=DownLoadPremission.ClientID%>").options[2].text = "本部门用户";
+            
             document.getElementById("<%=项目名称.ClientID%>").style.display ="none";
             document.getElementById("<%=ProjectName.ClientID%>").style.display ="none";
             document.getElementById("<%=子任务名.ClientID%>").style.display ="none";
@@ -50,12 +221,36 @@
             document.getElementById("<%=DocVersionText.ClientID%>").style.display ="";          
             document.getElementById("<%=文档所属部门.ClientID%>").style.display ="";
             document.getElementById("<%=DepartName.ClientID%>").style.display ="";
-             document.getElementById("<%=文档状态.ClientID%>").style.display ="";
+            document.getElementById("<%=文档状态.ClientID%>").style.display ="";
             document.getElementById("<%=DocState.ClientID%>").style.display ="";
             document.getElementById("<%=DocCate.ClientID%>").style.display ="";
             
         }
+        
+        function showUsers() 
+        {   
+            var index = document.getElementById("<%=DownLoadPremission.ClientID%>").selectedIndex;
+            if ( index == 3) 
+            {
+              document.getElementById("<%=UserNameList.ClientID%>").style.display ="";
+            }
+            else
+            {
+             document.getElementById("<%=UserNameList.ClientID%>").style.display ="none";
+            }
+        }
 
+function setDocCateID(val)
+{
+
+    document.getElementById("<%=DocCateIDText.ClientID%>").value = val;
+
+}
+function setSubTaskID(val)
+{
+    document.getElementById("<%=SubTaskIDText.ClientID%>").value = val;
+
+}
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -96,9 +291,10 @@
     </div>
     <div>  
         <asp:Label ID="文档所属部门" runat="server" Text="文档所属部门"></asp:Label>   
-        <asp:DropDownList ID="DepartName" runat="server" 
+        <asp:DropDownList ID="DepartName" onchange="getDocCate(this.value)" runat="server" 
            >
         </asp:DropDownList>
+       
     </div>
         <div>  
         <asp:Label ID="项目名称" runat="server" Text="项目名称"></asp:Label>   
@@ -108,13 +304,15 @@
     </div>
      <div>  
         <asp:Label ID="子任务名" runat="server" Text="子任务名"></asp:Label>   
-        <asp:DropDownList ID="SubTaskName" runat="server" >
+        <asp:DropDownList ID="SubTaskName" runat="server"  onchange="setSubTaskID(this.value)">
         </asp:DropDownList>
+         <asp:HiddenField ID="SubTaskIDText" runat="server" />
     </div>
         <div>  
         <asp:Label ID="文档类别" runat="server" Text="文档类别"></asp:Label>   
-        <asp:DropDownList ID="DocCate" runat="server">
+        <asp:DropDownList ID="DocCate" runat="server" onchange="setDocCateID(this.value)">
         </asp:DropDownList>  
+         <asp:HiddenField ID="DocCateIDText" runat="server" />
         <asp:DropDownList ID="ProjectDocCate" runat="server">
             <asp:ListItem>临床试验</asp:ListItem>
             <asp:ListItem>注册</asp:ListItem>
@@ -124,9 +322,13 @@
     </div>
         <div>  
         <asp:Label ID="下载权限" runat="server" Text="下载权限"></asp:Label>     
-         <asp:DropDownList ID="DownLoadPremission" runat="server">
+         <asp:DropDownList ID="DownLoadPremission" onchange="showUsers()" runat="server">
+             <asp:ListItem Value="0">下载权限</asp:ListItem>
+             <asp:ListItem Value="1">所有用户</asp:ListItem>
+             <asp:ListItem Value="2">本部门用户</asp:ListItem>
+             <asp:ListItem Value="3">自定义用户</asp:ListItem>
         </asp:DropDownList>  
-            <asp:CheckBoxList ID="UserNameList" runat="server">
+            <asp:CheckBoxList ID="UserNameList" runat="server">               
             </asp:CheckBoxList>
     </div>
      <div>  
@@ -164,6 +366,7 @@
         <AlternatingRowStyle BackColor="White" />
     </asp:GridView>
     <asp:Button ID="UploadButton" runat="server" Text="上传文档" 
-        onclick="UploadButton_Click" />
+        onclick="UploadButton_Click"  />
+    <script type="text/javascript">setDocCate();</script>
 </asp:Content>
 
