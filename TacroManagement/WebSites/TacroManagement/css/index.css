@@ -1,0 +1,65 @@
+﻿
+        body
+        {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+        }
+        .STYLE_TABLE_WORD
+        {
+        	font-size:12px;
+        	color:#033d61;
+        	}
+        .STYLE1
+        {
+            font-size: 12px;
+            color: #FFFFFF;
+            float:left;
+        }
+        .STYLE2
+        {
+            font-size: 9px;
+        }
+        .STYLE3
+        {
+            color: #033d61;
+            font-size: 12px;
+            float:left;
+        }
+        .STYLE4 
+        {
+			color: #03515d;
+			font-size: 12px;
+		}
+        .menu_title SPAN
+        {
+            font-weight: bold;
+            left: 3px;
+            color: #ffffff;
+            position: relative;
+            top: 2px;
+        }
+        .menu_title2 SPAN
+        {
+            font-weight: bold;
+            left: 3px;
+            color: #FFCC00;
+            position: relative;
+            top: 2px;
+        }
+        .navPoint
+        {
+            color: white;
+            font-family: Webdings;
+            font-size: 9pt;
+        }
+        
+        a:link,a:visited
+        {
+			text-decoration:none;  /*超链接无下划线*/
+		}
+		a:hover
+		{
+			text-decoration:underline;  /*鼠标放上去有下划线*/
+		}

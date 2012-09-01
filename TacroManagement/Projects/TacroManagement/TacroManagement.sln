@@ -19,7 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TacroManagement", "..\..\We
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "50925"
+		VWDPort = "53113"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject

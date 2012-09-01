@@ -14,6 +14,7 @@ namespace MySQLDAL
 {
     public class User:IUser
     {
+
         private const string PARM_USERID = "@UserID";
         private const string PARM_USERNAME = "@UserName";
         private const string PARM_PASSWORD = "@Password";
@@ -28,6 +29,7 @@ namespace MySQLDAL
         private const string SQL_SELECT_USERS = "select * from user";
         private const string SQL_SELECT_USER_BY_NAME = "select * from user where UserName=@UserName";
         private const string SQL_SELECT_USER_BY_ID = "select * from user where UserID=@UserID";
+
 
         #region IUser 成员
 
@@ -103,8 +105,13 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERTYPE,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USEREMAIL,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERPHONE,MySqlDbType.VarChar,50),
+<<<<<<< HEAD
                     new MySqlParameter(PARM_DEPARTID,MySqlDbType.Int32),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32)
+=======
+                    new MySqlParameter(PARM_DepartID,MySqlDbType.Int32),
+                    new MySqlParameter(PARM_USERID, MySqlDbType.Int32)
+>>>>>>> origin/MacGrady
                 };
                 parms[0].Value = userInfo.UserName;
                 parms[1].Value = userInfo.Password;
