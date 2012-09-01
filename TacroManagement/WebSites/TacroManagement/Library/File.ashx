@@ -8,9 +8,9 @@ using Microsoft.Office.Core;
 using Word = Microsoft.Office.Interop.Word;
 
 public class File_WebHandler : IHttpHandler, IRequiresSessionState
-{    
+{
     private const int UploadFileLimit = 1;//上传文件数量限制
-	
+
     private string _msg = "上传成功！";//返回信息
 
     string saveName = "";
@@ -28,51 +28,71 @@ public class File_WebHandler : IHttpHandler, IRequiresSessionState
         }
         else
         {
-            context.Session.Clear();
-            HttpPostedFile file = context.Request.Files[0];
-            string path = "\\Manage\\WenKu2\\file\\" + DateTime.Now.ToString("yyyy-MM-dd") + "\\";
-            string ArticlePath = System.Web.HttpContext.Current.Server.MapPath("~") + path;
-            if (file.ContentLength > 0 || !string.IsNullOrEmpty(file.FileName))
+
+            for (int i = 0; i < iTotal; i++)
             {
-                //建立图片主文件夹
-                if (!Directory.Exists(ArticlePath))
+
+
+                context.Session.Clear();
+                HttpPostedFile file = context.Request.Files[i];
+                
+                string path = "\\Library\\file\\" + DateTime.Now.ToString("yyyy-MM-dd") + "\\";
+                string ArticlePath = System.Web.HttpContext.Current.Server.MapPath("~") + path;
+                if (file.ContentLength > 0 || !string.IsNullOrEmpty(file.FileName))
                 {
-                    Directory.CreateDirectory(ArticlePath);
+                    //建立图片主文件夹
+                    if (!Directory.Exists(ArticlePath))
+                    {
+                        Directory.CreateDirectory(ArticlePath);
+                    }
+                    saveName = Path.GetFileName(file.FileName);
+                    string extension = Path.GetExtension(file.FileName).ToLower();
+                    string fileName = DateTime.Now.ToString("HH-mm-ss") + extension;
+                    ArticlePath += fileName;
+                    //保存文件 
+
+                    file.SaveAs(ArticlePath);
+
+                    string[] extensions = { ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".pdf" };
+                    foreach (string item in extensions)
+                    {
+                        if (extension.Equals(item))
+                        {
+                            string pdfpath = ArticlePath.Substring(0, ArticlePath.Length - extension.Length) + ".pdf";
+                            string swfpath = ArticlePath.Substring(0, ArticlePath.Length - extension.Length) + ".swf";
+
+                            if (extension == ".doc" || extension == ".docx")
+                            {
+                                office2pdf.DOCConvertToPDF(ArticlePath, pdfpath);
+                                pdf2swf.PDFConvertToSWF(pdfpath, swfpath);
+                            }
+                            else if (extension == ".ppt" || extension == ".pptx")
+                            {
+                                office2pdf.PPTConvertToPDF(ArticlePath, pdfpath);
+                                pdf2swf.PDFConvertToSWF(pdfpath, swfpath);
+                            }
+                            else if (extension == ".xls" || extension == ".xlsx")
+                            {
+                                office2pdf.XLSConvertToPDF(ArticlePath, pdfpath);
+                                pdf2swf.PDFConvertToSWF(pdfpath, swfpath);
+                            }
+                            else if (extension == ".pdf")
+                            {
+                                pdf2swf.PDFConvertToSWF(ArticlePath, swfpath);
+                            }
+
+                            savePath = path.Substring(1, path.Length - 1) + fileName.Substring(0, fileName.Length - extension.Length) + ".swf";
+                            context.Session["upPath"] = path.Substring(1, path.Length - 1) + fileName;
+                        }
+                    }
+                    
+             
                 }
-                saveName = Path.GetFileName(file.FileName);
-                string extension = Path.GetExtension(file.FileName).ToLower();
-                string fileName = DateTime.Now.ToString("HH-mm-ss") + extension;
-                ArticlePath += fileName;
-                //保存文件
-                file.SaveAs(ArticlePath);
-                string pdfpath = ArticlePath.Substring(0, ArticlePath.Length - extension.Length) + ".pdf";
-                string swfpath=ArticlePath.Substring(0, ArticlePath.Length - extension.Length) + ".swf";
-                if (extension==".doc"||extension==".docx")
-                {
-                    office2pdf.DOCConvertToPDF(ArticlePath, pdfpath);
-                    pdf2swf.PDFConvertToSWF(pdfpath, swfpath);
-                }
-                else if (extension == ".ppt" || extension == ".pptx")
-                {
-                    office2pdf.PPTConvertToPDF(ArticlePath, pdfpath);
-                    pdf2swf.PDFConvertToSWF(pdfpath, swfpath);
-                    //pdf2swf.PDFConvertToSWF("G:/doc.pdf", " G:/1.swf");
-                }
-                else if (extension == ".xls" || extension == ".xlsx")
-                {
-                    office2pdf.XLSConvertToPDF(ArticlePath, pdfpath);
-                    pdf2swf.PDFConvertToSWF(pdfpath, swfpath);
-                }
-                else if (extension == ".pdf")
-                {
-                    pdf2swf.PDFConvertToSWF(ArticlePath, swfpath);
-                }
-                savePath = path.Substring(1, path.Length - 1) + fileName.Substring(0, fileName.Length - extension.Length) + ".swf";
-                context.Session["upPath"] = path.Substring(1, path.Length - 1) + fileName; 
-            }  
+            }
+            context.Session["savePath"] = savePath;
+            context.Session["name"] = saveName;
         }
-        context.Session["savePath"] = savePath;
-        context.Session["name"] = saveName;
+        
         context.Response.Write("<script>window.parent.Finish('" + _msg + "');</script>");
     }
 

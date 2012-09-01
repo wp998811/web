@@ -34,6 +34,7 @@ public partial class Library_TestLibrary : System.Web.UI.Page
         //以日期建立文件夹
         string path = "\\Library\\file\\" + DateTime.Now.ToString("yyyy-MM-dd") + "\\";
         string ArticlePath = Server.MapPath("~") + path;
+
         if (fileLength > 0 || !string.IsNullOrEmpty(fullFileName))
         {
             //建立主文件夹
