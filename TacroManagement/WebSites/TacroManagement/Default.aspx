@@ -36,10 +36,13 @@
         <asp:Button ID="btnUserLogin" runat="server" onclick="btnUserLogin_Click" 
             Text="Login" />
 <<<<<<< HEAD
+<<<<<<< HEAD
         <asp:Button ID="btnEdit" runat="server" onclick="btnEdit_Click" Text="Edit" />
         <asp:Button ID="btnDelete" runat="server" onclick="btnDelete_Click" 
             Text="Delete" />
 =======
+=======
+>>>>>>> origin/MacGrady
         <asp:Button ID="testButton" runat="server" onclick="testButton_Click" 
             Text="测试" />
         <asp:FileUpload ID="FileUpload1" runat="server" />
@@ -47,6 +50,9 @@
         
         <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="Button" />
         
+<<<<<<< HEAD
+>>>>>>> origin/MacGrady
+=======
 >>>>>>> origin/MacGrady
         <br />
     

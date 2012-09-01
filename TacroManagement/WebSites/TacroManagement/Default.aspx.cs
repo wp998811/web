@@ -138,8 +138,11 @@ public partial class _Default : System.Web.UI.Page
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> origin/MacGrady
     #region test by wangjie
     protected void testButton_Click(object sender, EventArgs e)
     {
@@ -260,5 +263,8 @@ public partial class _Default : System.Web.UI.Page
         Response.End();
      
     }
+<<<<<<< HEAD
+>>>>>>> origin/MacGrady
+=======
 >>>>>>> origin/MacGrady
 }
