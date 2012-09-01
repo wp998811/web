@@ -13,7 +13,7 @@ namespace BLL
     {
         private static readonly IUser dal = DALFactory.DataAccess.CreateUser();
 
-        #region 
+        #region 基本方法
         /// <summary>
         /// 新增用户
         /// </summary>
@@ -74,6 +74,8 @@ namespace BLL
         }
         #endregion
 
+
+        #region 业务
         /// <summary>
         ///用户登录 
         /// </summary>
@@ -163,5 +165,6 @@ namespace BLL
             return false;
         }
 
+        #endregion
     }
 }

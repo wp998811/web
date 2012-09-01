@@ -46,9 +46,6 @@ public partial class web_Search : System.Web.UI.Page
             DocGridView.DataSource = documents;
             DocGridView.DataBind();
             DocGridView.Columns[4].Visible = false;
-
-            Response.Write("<script  language='javascript'> window.parent.frames['mainFrame'].location.replace('../projectList.aspx'); </script>");
-
         }
         else
         {

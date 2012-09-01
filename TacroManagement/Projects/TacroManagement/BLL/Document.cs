@@ -129,6 +129,7 @@ namespace BLL
                 Department department = new Department();
                 DepartmentInfo departmentInfo=department.GetDepartmentByID(departDocCateInfo.DepartID);
                 dataRow["所属部门"] = departmentInfo.DepartName;
+
                 User user = new User();
                 UserInfo userInfo = user.GetUserById(documentInfo.UploadUserID);
                 dataRow["上传人"] = userInfo.UserName;
@@ -230,7 +231,6 @@ namespace BLL
             }
             return condition;
         }
-
 
         public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertID,string docCategoryID, string docState, string docUrl,string docPermission,string userId)
         {

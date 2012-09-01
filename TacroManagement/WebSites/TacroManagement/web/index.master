@@ -381,7 +381,7 @@
                                                                                                 </tr>
                                                                                                 <tr>
                                                                                                     <td height="23">
-                                                                                                        <div align="centerF">
+                                                                                                        <div align="center">
                                                                                                             <img src="../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td height="23">
@@ -405,7 +405,7 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3"><a onclick="window.parent.frames['mainFrame'].location.replace('../projectList.aspx')">项目一览</a></span>
+                                                                                                                    <span class="STYLE3">项目一览</span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -478,7 +478,7 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3"><a onclick="window.parent.frames['MainFrame'].location.replace('Search.aspx')">搜索文档</a></span>
+                                                                                                                    <span class="STYLE3">搜索文档</span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>

@@ -119,10 +119,6 @@ namespace Model
         {
             get { return uploadTime; }
             set { uploadTime = value; }
-        }
-
-       
-
-       
+        } 
     }
 }

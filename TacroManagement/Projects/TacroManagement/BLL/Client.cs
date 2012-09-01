@@ -13,4 +13,5 @@ namespace BLL
     {
         private static readonly IClient dal = DALFactory.DataAccess.CreateClient();
     }
+
 }

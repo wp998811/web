@@ -6,7 +6,6 @@
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-
     <div align="center">
         <asp:TextBox ID="SearchText" runat="server"></asp:TextBox>
         <asp:Button ID="SearchSubmit" runat="server" Text="查找" onclick="SearchSubmit_Click" 
@@ -77,4 +76,3 @@
     </asp:GridView>
     </div>
 </asp:Content>
-

@@ -137,6 +137,19 @@ namespace DALFactory
             return (IDAL.IProjectUser)Assembly.Load(path).CreateInstance(className);
         }
 
+        public static IDAL.IDepartment CreateDepartment()
+        {
+            string className = path + ".Department";
+            return (IDAL.IDepartment)Assembly.Load(path).CreateInstance(className);
+        }
+
+        public static IDAL.IClient CreateClient()
+        {
+            string className = path + ".Client";
+            return (IDAL.IClient)Assembly.Load(path).CreateInstance(className);
+        }
+
+
         public static IDAL.IProjectClient CreateProjectClient()
         {
             string className = path + ".ProjectClient";
@@ -171,18 +184,6 @@ namespace DALFactory
         {
             string className = path + ".Schedule";
             return (IDAL.ISchedule)Assembly.Load(path).CreateInstance(className);
-        }
-
-        public static IDAL.IDepartment CreateDepartment()
-        {
-            string className = path + ".Department";
-            return (IDAL.IDepartment)Assembly.Load(path).CreateInstance(className);
-        }
-
-        public static IDAL.IClient CreateClient()
-        {
-            string className = path + ".Client";
-            return (IDAL.IClient)Assembly.Load(path).CreateInstance(className);
         }
     }
 }

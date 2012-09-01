@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AdminInfo.cs" />
     <Compile Include="ClientInfo.cs" />
+    <Compile Include="DepartmentInfo.cs" />
     <Compile Include="ClinicalContactInfo.cs" />
     <Compile Include="ClinicalResourceInfo.cs" />
     <Compile Include="ContactInfo.cs" />

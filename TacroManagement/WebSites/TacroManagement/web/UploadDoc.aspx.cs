@@ -115,9 +115,6 @@ public partial class web_UploadDoc : System.Web.UI.Page
 
     }
 
-
-
-
     protected void UploadButton_Click(object sender, EventArgs e)
     {
         string filePath = FileUpload1.PostedFile.FileName;

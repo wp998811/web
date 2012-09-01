@@ -34,7 +34,6 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         Project project = new Project();
         IList<ProjectInfo> projectInfos = project.GetProjects();
 
-
         ProjectName.Items.Clear();
         ProjectName.Items.Add(new ListItem("选择项目","0"));
 
@@ -124,7 +123,6 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
 
             DataColumn subTaskColumn = new DataColumn("项目子任务");//与页面的GirdView一致
             documents.Columns.Add(subTaskColumn);
-
             DocGridView.DataSource = documents;
             DocGridView.DataBind();
             DocGridView.Columns[4].Visible = false;
@@ -155,18 +153,12 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
             DocGridView.Columns[1].Visible = false;
             DocGridView.Columns[3].Visible = false;
 
-
-
-
-          
-
         }
 
     }
 
     protected void DocGridView_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-
         int index = Convert.ToInt32(e.CommandArgument);
         string docID = DocGridView.DataKeys[index][0].ToString();
 

@@ -4,7 +4,6 @@
 
 <script type="text/javascript">
 
-
 var xmlHttp=null;              
         function $(id)
         {
@@ -209,7 +208,7 @@ var xmlHttp=null;
         {
             document.getElementById("<%=UserNameList.ClientID%>").style.display ="none";
             document.getElementById("<%=DownLoadPremission.ClientID%>").options[2].text = "本部门用户";
-            
+
             document.getElementById("<%=项目名称.ClientID%>").style.display ="none";
             document.getElementById("<%=ProjectName.ClientID%>").style.display ="none";
             document.getElementById("<%=子任务名.ClientID%>").style.display ="none";

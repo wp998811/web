@@ -7,7 +7,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-<div style="width: 100%;">
+    <div style="width: 100%;">
         <div style="width: 100%; height: 10px;">
         </div>
         <div style="width: 100%">
