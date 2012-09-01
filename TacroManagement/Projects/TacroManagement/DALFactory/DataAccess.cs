@@ -137,7 +137,7 @@ namespace DALFactory
             return (IDAL.IProjectUser)Assembly.Load(path).CreateInstance(className);
         }
 
-<<<<<<< HEAD
+
         public static IDAL.IDepartment CreateDepartment()
         {
             string className = path + ".Department";
@@ -150,7 +150,7 @@ namespace DALFactory
             return (IDAL.IClient)Assembly.Load(path).CreateInstance(className);
         }
 
-=======
+
         public static IDAL.IProjectClient CreateProjectClient()
         {
             string className = path + ".ProjectClient";
@@ -186,6 +186,5 @@ namespace DALFactory
             string className = path + ".Schedule";
             return (IDAL.ISchedule)Assembly.Load(path).CreateInstance(className);
         }
->>>>>>> origin/MacGrady
     }
 }
