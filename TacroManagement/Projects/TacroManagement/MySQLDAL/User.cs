@@ -105,16 +105,11 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERTYPE,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USEREMAIL,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERPHONE,MySqlDbType.VarChar,50),
-<<<<<<< HEAD
 
                     new MySqlParameter(PARM_DEPARTID,MySqlDbType.Int32),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32),
 
 
-=======
-                    new MySqlParameter(PARM_DepartID,MySqlDbType.Int32),
-                    new MySqlParameter(PARM_USERID, MySqlDbType.Int32)
->>>>>>> origin/MacGrady
                 };
                 parms[0].Value = userInfo.UserName;
                 parms[1].Value = userInfo.Password;

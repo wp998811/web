@@ -14,10 +14,6 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using BLL;
 using Model;
-<<<<<<< HEAD
-using MySQLDAL;
-=======
->>>>>>> origin/MacGrady
 
 public partial class web_GetSubTaskByProjectNum : System.Web.UI.Page
 {
