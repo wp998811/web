@@ -42,6 +42,7 @@ namespace BLL
         public int DeleteUser(int userID)
         {
             return dal.DeleteUser(userID);
+  
         }
 
         /// <summary>
@@ -165,6 +166,23 @@ namespace BLL
             return false;
         }
 
+        /// <summary>
+        ///判断用户类型是否为系统管理员 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public bool IsSysAdmin(string userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+                return false;
+            UserInfo user = dal.GetUserByName(userName);
+            if (user.UserType.Equals("系统管理员"))
+                return true;
+            return true;
+        }
+
+
         #endregion
     }
+
 }
