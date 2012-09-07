@@ -12,8 +12,9 @@ namespace BLL
     public class ProjectUser
     {
         private static readonly IProjectUser dal = DALFactory.DataAccess.CreateProjectUser();
+        User userMange = new User();
 
-        #region 
+        #region
         public int InsertProjectUser(ProjectUserInfo projectUserInfo)
         {
             return dal.InsertProjectUser(projectUserInfo);
@@ -39,6 +40,22 @@ namespace BLL
             return dal.GetProjectUsersByProjectNum(projectNum);
         }
 
+        //获取项目所有员工的信息
+        public IList<UserInfo> GetProjectUserInfosByProjectNum(string projectNum)
+        {
+            IList<UserInfo> userInfos = new List<UserInfo>();
+            IList<ProjectUserInfo> projectUsers = GetProjectUsersByProjectNum(projectNum);
+            foreach (ProjectUserInfo projectUserInfo in projectUsers)
+            {
+                UserInfo userInfo = userMange.GetUserById(projectUserInfo.UserId);
+                if (userInfo != null)
+                {
+                    userInfos.Add(userInfo);
+                }
+            }
+            return userInfos;
+        }
+
         public IList<ProjectUserInfo> GetProjectUsersByUserId(int userId)
         {
             return dal.GetProjectUsersByUserId(userId);
@@ -49,5 +66,25 @@ namespace BLL
             return dal.GetProjectUserById(id);
         }
         #endregion
+
+        //根据projectNum和userId删除projectUser
+        public int DeleteProjectUserByProjectNumAndUserID(string projectNum, int userId)
+        {
+            IList<ProjectUserInfo> projectUserInfoList = GetProjectUsersByProjectNum(projectNum);
+            int id = -1;
+            foreach (ProjectUserInfo projectUserInfo in projectUserInfoList)
+            {
+                if (projectUserInfo.UserId == userId)
+                {
+                    id = projectUserInfo.ID;
+                    break;
+                }
+            }
+            if (id != -1)
+            {
+                return DeleteProjectUser(id);
+            }
+            return -1;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/web/index.master" Title="无标题页" %>
+
+<%@ Page Language="C#" MasterPageFile="~/web/index.master" Title="无标题页" %>
 
 <script runat="server">
 

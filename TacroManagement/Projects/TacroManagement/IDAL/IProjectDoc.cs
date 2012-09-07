@@ -16,8 +16,11 @@ namespace IDAL
         ProjectDocInfo GetProjectDocById(int projectDocId);
         IList<ProjectDocInfo> GetProjectDocsByTaskId(int taskId);
         IList<ProjectDocInfo> GetProjectDocsByUpLoadUserId(int userId);
-        IList<ProjectDocInfo> GetProjectDocs(int projectDocCate, string projectDocName, string projectDocKey
+
+        IList<ProjectDocInfo> GetProjectDocs(string projectDocCate, string projectDocName, string projectDocKey
             , int projectDocTaskId, int uploadUserId, string uploadTime);
+        IList<ProjectDocInfo> GetProjectDocBySearchCondition(string selectCondition);
+
 
     }
 }

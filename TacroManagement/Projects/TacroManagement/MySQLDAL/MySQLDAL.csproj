@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=5.2.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Desktop\MySql.Data.dll</HintPath>
+      <HintPath>..\..\..\WebSites\TacroManagement\Bin\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -50,6 +50,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Department.cs" />
+    <Compile Include="ClinicalContact.cs" />
+    <Compile Include="ClinicalResource.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="ContactRecord.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="CustomerContact.cs" />
+    <Compile Include="CustomerProjContact.cs" />
+    <Compile Include="CustomerProject.cs" />
+    <Compile Include="DepartDocCate.cs" />
+    <Compile Include="Department.cs" />
+    <Compile Include="Document.cs" />
+    <Compile Include="DocUser.cs" />
+    <Compile Include="GoverContact.cs" />
+    <Compile Include="GoverResource.cs" />
+    <Compile Include="PartnerContact.cs" />
+    <Compile Include="PartnerResource.cs" />
     <Compile Include="Affair.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectClient.cs" />
@@ -60,6 +78,7 @@
     <Compile Include="Schedule.cs" />
     <Compile Include="SubTask.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="VisitRecord.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBUtility\DBUtility.csproj">

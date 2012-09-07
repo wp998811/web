@@ -25,7 +25,8 @@ namespace MySQLDAL
         private const string PARM_UPLOAD_TIME = "@UploadTime";
         private const string PARM_UPLOAD_USERID = "@UploadUserID";
 
-        private const string SQL_INSERT_PROJDOC = "insert into projectdoc(TaskID, ProjDocCate, DocName, DocKey, DocDescription, DocUrl, DocPermission, UploadTime, UploadUserID) values(@TaskID, @ProjDocCate, @DocName, @DocKey, @DocDescription, @DocUrl, DocPermission, @UploadTime, @UploadUserID)";
+
+        private const string SQL_INSERT_PROJDOC = "insert into projectdoc(TaskID, ProjDocCate, DocName, DocKey, DocDescription, DocUrl, DocPermission, UploadTime, UploadUserID) values(@TaskID, @ProjDocCate, @DocName, @DocKey, @DocDescription, @DocUrl, @DocPermission, @UploadTime, @UploadUserID)";
         private const string SQL_DELETE_PROJDOC = "delete from projectdoc where ProjDocID=@ProjDocID";
         private const string SQL_UPDATE_PROJDOC = "update projectdoc set TaskID, ProjDocCate, DocName=@DocName, DocKey=@DocKey, DocDescription=@DocDescripttion, DocUrl=@DocUrl, DocPermission=@DocPermission, UploadTime=@UploadTime, UploadUserID=@UploadUserID";
         private const string SQL_SELECT_PROJDOCS = "select * from projectdoc";
@@ -42,7 +43,7 @@ namespace MySQLDAL
             {
                 MySqlParameter[] parms = new MySqlParameter[]{
                     new MySqlParameter(PARM_TASK_ID, MySqlDbType.Int32),
-                    new MySqlParameter(PARM_PROJDOC_CATE, MySqlDbType.Int32),
+                    new MySqlParameter(PARM_PROJDOC_CATE, MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DOC_NAME, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_DOC_KEY, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_DOC_DESCRIPTION, MySqlDbType.VarChar, 200),
@@ -94,7 +95,8 @@ namespace MySQLDAL
             {
                 MySqlParameter[] parms = new MySqlParameter[]{
                     new MySqlParameter(PARM_TASK_ID, MySqlDbType.Int32),
-                    new MySqlParameter(PARM_PROJDOC_CATE, MySqlDbType.Int32),
+
+                     new MySqlParameter(PARM_PROJDOC_CATE, MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DOC_NAME, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_DOC_KEY, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_DOC_DESCRIPTION, MySqlDbType.VarChar, 200),
@@ -133,7 +135,8 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectDocInfo projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
+
+                        ProjectDocInfo projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
                         projectDocs.Add(projectDoc);
                     }
                 }
@@ -156,7 +159,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
+                        projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
                     }
                     else
                         projectDoc = new ProjectDocInfo();
@@ -180,7 +183,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectDocInfo projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
+                        ProjectDocInfo projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
                         projectDocs.Add(projectDoc);
                     }
                 }
@@ -203,7 +206,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectDocInfo projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
+                        ProjectDocInfo projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
                         projectDocs.Add(projectDoc);
                     }
                 }
@@ -215,9 +218,41 @@ namespace MySQLDAL
             return projectDocs;
         }
 
-        public IList<ProjectDocInfo> GetProjectDocs(int projectDocCate, string projectDocName, string projectDocKey, int projectDocTaskId, int uploadUserId, string uploadTime)
+
+        public IList<ProjectDocInfo> GetProjectDocs(string projectDocCate, string projectDocName, string projectDocKey, int projectDocTaskId, int uploadUserId, string uploadTime)
         {
             throw new NotImplementedException();
+        }
+
+        public IList<ProjectDocInfo> GetProjectDocBySearchCondition(string selectCondition)
+        {
+
+            string sqlString;
+            if (selectCondition == "")
+            {
+                sqlString = "SELECT * FROM projectdoc ";
+            }
+            else
+            {
+                sqlString = "SELECT * FROM projectdoc WHERE " + selectCondition;
+            }
+            IList<ProjectDocInfo> projectDocs = new List<ProjectDocInfo>();
+            try
+            {
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, sqlString, null))
+                {
+                    while (rdr.Read())
+                    {
+                        ProjectDocInfo projectDoc = new ProjectDocInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7), rdr.GetString(8), rdr.GetInt32(9));
+                        projectDocs.Add(projectDoc);
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return projectDocs;
         }
 
         #endregion
