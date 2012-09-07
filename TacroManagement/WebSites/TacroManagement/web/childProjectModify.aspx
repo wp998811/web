@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/web/index.master" Title="无标题页" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/web/index.master"  AutoEventWireup="true" CodeFile="childProjectModify.aspx.cs" Inherits="web_childProjectModify" Title="无标题页"  %>
 
 <script runat="server">
 
@@ -76,4 +76,5 @@
         </table>
     </div>
 </asp:Content>
+
 

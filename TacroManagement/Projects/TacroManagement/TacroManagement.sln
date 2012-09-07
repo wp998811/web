@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TacroManagement", "..\..\WebSites\TacroManagement", "{BA4F2E09-7FDC-44EE-904A-02220E6DDCAF}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TacroManagement", "..\..\WebSites\TacroManagement\", "{BA4F2E09-7FDC-44EE-904A-02220E6DDCAF}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
 		ProjectReferences = "{B7547DD2-E371-4BBA-A966-5055353F8138}|BLL.dll;{44121D5F-10E2-4F90-AC66-12396EE62605}|DALFactory.dll;{5D8505B9-9BE0-4E26-A6B2-F4F187859416}|IDAL.dll;{EC197E65-D7DC-40A6-858D-BFD4E6230031}|Model.dll;{674E86A3-B758-4A9F-A174-475EB8C8944F}|MySQLDAL.dll;{99E642E0-A7ED-4D65-A87C-6BEC1B98160A}|DBUtility.dll;"
@@ -19,7 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TacroManagement", "..\..\We
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "50925"
+		VWDPort = "55967"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
