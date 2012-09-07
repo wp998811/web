@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin.cs" />
+    <Compile Include="Affair.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectClient.cs" />
     <Compile Include="ProjectDoc.cs" />
@@ -91,7 +92,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Affair.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="SubTask.cs" />
     <Compile Include="User.cs" />
