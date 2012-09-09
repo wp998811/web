@@ -117,7 +117,11 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        DepartmentInfo department = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2));
+                        DepartmentInfo department;
+                        if (rdr.IsDBNull(2))
+                            department = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), "");
+                        else
+                            department = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2));
                         departments.Add(department);
                     }
                 }
@@ -145,7 +149,12 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DEPARTMENT_BY_NAME, parm))
                 {
                     if (rdr.Read())
-                        departmentInfo = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2));
+                    {
+                        if (rdr.IsDBNull(2))
+                            departmentInfo = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), "");
+                        else
+                            departmentInfo = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2));
+                    }
                     else
                         departmentInfo = new DepartmentInfo();
                 }
@@ -175,7 +184,12 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        departmentInfo = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2));
+
+                        if (rdr.IsDBNull(2))
+                            departmentInfo = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), "");
+                        else
+                            departmentInfo = new DepartmentInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2));
+
                     }
                     else
                         departmentInfo = new DepartmentInfo();

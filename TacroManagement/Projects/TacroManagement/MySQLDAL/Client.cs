@@ -44,7 +44,7 @@ namespace MySQLDAL
                 parms[0].Value = clientInfo.ClientName;
                 parms[1].Value = clientInfo.ClientCompany;
 
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_CLIENT, parms);
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_CLIENT, parms);
 
             }
             catch (MySqlException se)

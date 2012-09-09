@@ -9,7 +9,7 @@ using Word = Microsoft.Office.Interop.Word;
 
 public class File_WebHandler : IHttpHandler, IRequiresSessionState
 {
-    private const int UploadFileLimit = 1;//上传文件数量限制
+    private const int UploadFileLimit = 3;//上传文件数量限制
 
     private string _msg = "上传成功！";//返回信息
 
@@ -31,8 +31,6 @@ public class File_WebHandler : IHttpHandler, IRequiresSessionState
 
             for (int i = 0; i < iTotal; i++)
             {
-
-
                 context.Session.Clear();
                 HttpPostedFile file = context.Request.Files[i];
                 
