@@ -20,9 +20,12 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //初始化部门
-        DocRadioButtonList.SelectedValue = "Document";
-        InitDocCate();
-        InitProjectDoc();
+        if (!IsPostBack)
+        {
+            DocRadioButtonList.SelectedValue = "Document";
+            InitDocCate();
+            InitProjectDoc();
+        }
 
         //ProjectName.Visible = false;
         //ProjectDocCate.Visible = false;
@@ -33,6 +36,10 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
     {
         Project project = new Project();
         IList<ProjectInfo> projectInfos = project.GetProjects();
+
+
+        ProjectName.Items.Clear();
+        ProjectName.Items.Add(new ListItem("选择项目","0"));
 
         for (int i = 0; i < projectInfos.Count;++i )
         {
@@ -69,6 +76,8 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
     {
         //Department department = new Department();
         //IList<DepartmentInfo> departmentInfos = department.GetDepartment();
+        //DepartName.Items.Clear();
+        //DepartName.Items.Add(new ListItem("选择部门", "0"));
         //for (int i = 0; i < departmentInfos.Count; ++i)
         //{
         //    ListItem listItem = new ListItem();
@@ -99,18 +108,34 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
     protected void AdvancedSearchButton_Click(object sender, EventArgs e)
     {
         string docName = DocNameText.Text.Trim();
-        string docVersion = DocVersionText.Text.Trim();
         string docKey = DocKeyText.Text.Trim();
-        string departName = DepartName.Text.Trim();
-        string docCate = DocCate.Text.Trim();
         string uploadUserName = UploadUserName.Text.Trim();
         string uploadTimeBegin = UploadTimeBeginText.Text.Trim();
         string uploadTimeEnd = UploadTimeEndText.Text.Trim();
 
-        Document document = new Document();
-        string searchCondition = document.GetSearchCondition(departName, docVersion, docKey, departName, docCate, uploadUserName, uploadTimeBegin, uploadTimeEnd);
-        DocGridView.DataSource = document.SearchDocument(searchCondition);
-        DocGridView.DataBind();
+        if (DocRadioButtonList.SelectedValue == "Document")
+        {//资料文档查询
+            string docVersion = DocVersionText.Text.Trim();       
+            string departID = DepartName.SelectedValue;
+            string docCateID = DocCate.SelectedValue;
+
+            Document document = new Document();
+            string searchCondition = document.GetSearchCondition(docName, docVersion, docKey, departID, docCateID, uploadUserName, uploadTimeBegin, uploadTimeEnd);       
+            DataTable documents =  document.SearchDocument(searchCondition);
+            DataColumn subTaskColumn = new DataColumn("项目子任务");//与页面的GirdView一致
+            documents.Columns.Add(subTaskColumn);
+            DocGridView.DataSource = documents;
+            DocGridView.DataBind();
+            DocGridView.Columns[4].Visible = false;
+        }
+        else
+        {// 项目文档
+            string projectDocCateName = ProjectDocCate.Text.Trim();
+            string projectNum = ProjectName.SelectedValue;
+            string subTaskID = SubTaskName.SelectedValue;
+
+        }
+
     }
 
     protected void DocGridView_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -118,43 +143,42 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
     }
     protected void DepartName_SelectedIndexChanged(object sender, EventArgs e)
     {
-        DepartDocCate departDocCate = new DepartDocCate();
-        IList<DepartDocCateInfo> departDocCateInfos = departDocCate.GetDepartDocCateByDepartId(int.Parse(DepartName.SelectedValue));
 
-        for (int i = 0; i < departDocCateInfos.Count;++i )
-        {
-            ListItem listItem = new ListItem();
-            listItem.Value = Convert.ToString(departDocCateInfos[i].Id);
-            listItem.Text = departDocCateInfos[i].CategoryName;
-            DocCate.Items.Add(listItem);
-        }
-        if (DocCate.Items.Count >= 1)
-        {
-            DocCate.SelectedIndex = 0;
-        }
+        //DepartDocCate departDocCate = new DepartDocCate();
+        //IList<DepartDocCateInfo> departDocCateInfos = departDocCate.GetDepartDocCateByDepartId(int.Parse(DepartName.SelectedValue));
+
+        //for (int i = 0; i < departDocCateInfos.Count;++i )
+        //{
+        //    ListItem listItem = new ListItem();
+        //    listItem.Value = Convert.ToString(departDocCateInfos[i].Id);
+        //    listItem.Text = departDocCateInfos[i].CategoryName;
+        //    DocCate.Items.Add(listItem);
+        //}
+        //if (DocCate.Items.Count >= 1)
+        //{
+        //    DocCate.SelectedIndex = 0;
+        //}
+
     }
     protected void ProjectName_SelectedIndexChanged(object sender, EventArgs e)
     {
         //Project project = new Project();
         //ProjectInfo projectInfo = project.GetProjectByNum(ProjectName.SelectedValue);
-        SubTask subTask = new SubTask();
-        IList<SubTaskInfo> subTaskInfos = subTask.GetSubTasksByProjectNum(ProjectName.SelectedValue);
+        //SubTask subTask = new SubTask();
+        //IList<SubTaskInfo> subTaskInfos = subTask.GetSubTasksByProjectNum(ProjectName.SelectedValue);
 
-        for (int i = 0; i < subTaskInfos.Count; ++i)
-        {
-            ListItem listItem = new ListItem();
-            listItem.Value = Convert.ToString(subTaskInfos[i].TaskId);
-            listItem.Text = subTaskInfos[i].TaskName;
-            SubTaskName.Items.Add(listItem);
-        }
+        //for (int i = 0; i < subTaskInfos.Count; ++i)
+        //{
+        //    ListItem listItem = new ListItem();
+        //    listItem.Value = Convert.ToString(subTaskInfos[i].TaskId);
+        //    listItem.Text = subTaskInfos[i].TaskName;
+        //    SubTaskName.Items.Add(listItem);
+        //}
 
-        if (SubTaskName.Items.Count >=0)
-        {
-            SubTaskName.SelectedIndex = 0;
-        }
-
-        
-       
+        //if (SubTaskName.Items.Count >=0)
+        //{
+        //    SubTaskName.SelectedIndex = 0;
+        //}      
     }
     protected void DocRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
     {

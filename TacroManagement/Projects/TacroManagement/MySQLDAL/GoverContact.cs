@@ -22,10 +22,12 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_GOVERCONTACT = "INSERT INTO govercontact(GoverID, ContactID) VALUES (@GoverID, @ContactID) ";
         private const string SQL_DELETE_GOVERCONTACT = "DELETE FROM govercontact WHERE ID=@ID";
+        private const string SQL_DELETE_GOVERCONTACT_BY_CONTACTID = "delete from govercontact where ContactID=@ContactID";
         private const string SQL_UPDATE_GOVERCONTACT = "UPDATE govercontact SET GoverID = @GoverID, ContactID = @ContactID WHERE ID = @ID";
         private const string SQL_SELECT_GOVERCONTACT = "SELECT * FROM govercontact";
         private const string SQL_SELECT_GOVERCONTACT_BY_ID = "SELECT * FROM govercontact WHERE ID = @ID";
         private const string SQL_SELECT_GOVERCONTACT_BY_GOVER = "SELECT * FROM govercontact WHERE GoverID = @GoverID";
+        private const string SQL_SELECT_GOVERCONTACT_BY_CONTACTID = "SELECT * FROM govercontact WHERE ContactID = @ContactID";
         private const string SQL_SELECT_GOVERCONTACT_BY_GOVER_CONTACT = "SELECT * FROM govercontact WHERE GoverID = @GoverID AND ContactID = @ContactID";
 
         #endregion
@@ -73,6 +75,27 @@ namespace MySQLDAL
                 MySqlParameter parm = new MySqlParameter(PARM_ID, MySqlDbType.Int32);
                 parm.Value = id;
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_GOVERCONTACT, parm);
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据客户ID删除客户联系人信息
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        public int DeleteGoverContactByContactId(int contactId)
+        {
+            int result = -1;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_CONTACTID, MySqlDbType.Int32);
+                parm.Value = contactId;
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_GOVERCONTACT_BY_CONTACTID, parm);
             }
             catch (MySqlException se)
             {
@@ -168,15 +191,44 @@ namespace MySQLDAL
         /// </summary>
         /// <param name="goverId"></param>
         /// <returns></returns>
-        public GoverContactInfo GetGoverContactByGover(int goverId)
+        public IList<GoverContactInfo> GetGoverContactByGover(int goverId)
         {
-            GoverContactInfo goverContactInfo = null;
+            IList<GoverContactInfo> goverContactInfos = new List<GoverContactInfo>();
             try
             {
                 MySqlParameter parm = new MySqlParameter(PARM_GOVERID, MySqlDbType.Int32, 11);
                 parm.Value = goverId;
 
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERCONTACT_BY_GOVER, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        GoverContactInfo goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        goverContactInfos.Add(goverContactInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return goverContactInfos;
+        }
+
+        /// <summary>
+        /// 通过联系人ID查找政府联系人
+        /// </summary>
+        /// <param name="contactId"></param>
+        /// <returns></returns>
+        public GoverContactInfo GetGoverContactByContactId(int contactId)
+        {
+            GoverContactInfo goverContactInfo = null;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_CONTACTID, MySqlDbType.Int32, 11);
+                parm.Value = contactId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERCONTACT_BY_CONTACTID, parm))
                 {
                     if (rdr.Read())
                         goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));

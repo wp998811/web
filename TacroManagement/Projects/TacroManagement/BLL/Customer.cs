@@ -6,6 +6,7 @@ using System.Text;
 using Model;
 using IDAL;
 using DALFactory;
+using System.Data;
 
 namespace BLL
 {
@@ -116,6 +117,59 @@ namespace BLL
             if (1 == dal.UpdateCustomer(customerInfo))
                 return true;
             return false;
+        }
+
+        /// <summary>
+        /// 查询所有客户信息
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchAllCustomers()
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn customerID = new DataColumn("客户ID");
+            DataColumn customerName = new DataColumn("客户名称");
+            DataColumn customerManager = new DataColumn("客户负责人");
+            DataColumn customerCity = new DataColumn("所在城市");
+            DataColumn customerType = new DataColumn("客户类别");
+            DataColumn customerRank = new DataColumn("级别");
+            DataColumn productRange = new DataColumn("产品范围");
+            DataColumn taxID = new DataColumn("税务登记号");
+            DataColumn organCode = new DataColumn("组织机构代码");
+
+            dataTable.Columns.Add(customerID);
+            dataTable.Columns.Add(customerName);
+            dataTable.Columns.Add(customerManager);
+            dataTable.Columns.Add(customerCity);
+            dataTable.Columns.Add(customerType);
+            dataTable.Columns.Add(customerRank);
+            dataTable.Columns.Add(productRange);
+            dataTable.Columns.Add(taxID);
+            dataTable.Columns.Add(organCode);
+
+            IList<CustomerInfo> customerInfos = GetCustomers(); //查询语句
+            Customer customer = new Customer();
+            User user = new User();
+
+            for (int i = 0; i < customerInfos.Count; ++i)
+            {
+                CustomerInfo customerInfo = customerInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["客户ID"] = customerInfo.CustomerID;
+                dataRow["客户名称"] = customerInfo.CustomerName;
+
+                UserInfo userInfo = user.GetUserById(customerInfo.UserID);
+                dataRow["客户负责人"] = userInfo.UserName;
+
+                dataRow["所在城市"] = customerInfo.CustomerCity;
+                dataRow["客户类别"] = customerInfo.CustomerType;
+                dataRow["级别"] = customerInfo.CustomerRank;
+                dataRow["产品范围"] = customerInfo.ProductRange;
+                dataRow["税务登记号"] = customerInfo.TaxID;
+                dataRow["组织机构代码"] = customerInfo.OrganCode;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
         }
 
     }

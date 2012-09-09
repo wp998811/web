@@ -1,0 +1,43 @@
+﻿<%@ Page Language="C#" Async="true" AutoEventWireup="true" MasterPageFile="~/web/index.master"  CodeFile="CustomerList.aspx.cs" Inherits="web_CustomerList" Title="项目列表" %>
+
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server" >
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <div>
+    
+        <asp:Label ID="Label1" runat="server" Text="项目一览"></asp:Label>
+    
+    </div>
+        <asp:GridView ID="CustomerGridView" runat="server" BackColor="White" 
+        BorderColor="#DEDFDE" BorderStyle="None" BorderWidth="1px" CellPadding="4" 
+        ForeColor="Black" GridLines="Vertical" AutoGenerateColumns="False" 
+        onrowediting="CustomerGridView_RowEditing" >
+        <Columns>
+            <asp:BoundField DataField="客户ID" HeaderText="ID" ReadOnly="True">
+                <FooterStyle CssClass="hidden" />
+                <HeaderStyle CssClass="hidden" />
+                <ItemStyle CssClass="hidden" />
+            </asp:BoundField>
+            <asp:BoundField DataField="客户名称" HeaderText="客户名称" ReadOnly="True" />
+            <asp:BoundField DataField="客户负责人" HeaderText="客户负责人" ReadOnly="True" />
+            <asp:BoundField DataField="所在城市" HeaderText="所在城市" ReadOnly="True" />                                                          
+            <asp:BoundField DataField="客户类别" HeaderText="客户类别" ReadOnly="True" />
+            <asp:BoundField DataField="级别" HeaderText="级别" ReadOnly="True" />
+             <asp:BoundField DataField="产品范围" HeaderText="产品范围" ReadOnly="True" />
+              <asp:BoundField DataField="税务登记号" HeaderText="税务登记号" ReadOnly="True" />
+               <asp:BoundField DataField="组织机构代码" HeaderText="组织机构代码" ReadOnly="True" />
+             <asp:CommandField HeaderText="选择" ShowSelectButton="True" />
+              <asp:CommandField HeaderText="编辑" ShowEditButton="True"/>
+              <asp:CommandField HeaderText="删除" ShowDeleteButton="True" />
+        </Columns>
+        <RowStyle BackColor="#F7F7DE" />
+        <FooterStyle BackColor="#CCCC99" />
+        <PagerStyle BackColor="#F7F7DE" ForeColor="Black" HorizontalAlign="Right" />
+        <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" />
+        <AlternatingRowStyle BackColor="White" />
+
+    </asp:GridView>
+</asp:Content>

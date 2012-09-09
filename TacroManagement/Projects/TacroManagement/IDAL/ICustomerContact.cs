@@ -11,10 +11,13 @@ namespace IDAL
     {
         int InsertCustomerContact(CustomerContactInfo userInfo);//新增客户联系人信息
         int DeleteCustomerContact(int id);//删除客户联系人信息
+        int DeleteCustomerContactByCustomerId(int customerId);//根据客户ID删除联系人信息
+        int DeleteCustomerContactByContactId(int contactId);//根据联系人ID删除联系人信息
         int UpdateCustomerContact(CustomerContactInfo userInfo);//更新客户联系人信息
 
         IList<ContactInfo> GetContactsByCustomerId(int customerId);//根据客户ID查找所有联系人信息
         IList<CustomerContactInfo> GetCustomerContacts();//查找所有客户联系人信息
         CustomerContactInfo GetCustomerContactById(int id);//根据ID查询所有联系人信息
+        CustomerInfo GetCustomerByContactId(int contactId);//根据联系人ID查询客户信息
     }
 }

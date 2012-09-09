@@ -6,6 +6,7 @@ using System.Text;
 using Model;
 using IDAL;
 using DALFactory;
+using System.Data;
 
 namespace BLL
 {
@@ -13,7 +14,7 @@ namespace BLL
     {
         private static readonly IUser dal = DALFactory.DataAccess.CreateUser();
 
-        #region 
+        #region
         /// <summary>
         /// 新增用户
         /// </summary>
@@ -80,14 +81,14 @@ namespace BLL
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public bool UserLogin(string userName,string password)
+        public bool UserLogin(string userName, string password)
         {
             if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(password))
             {
                 return false;
             }
             UserInfo userInfo = dal.GetUserByName(userName);
-            if (null==userInfo||1>userInfo.UserID)
+            if (null == userInfo || 1 > userInfo.UserID)
             {
                 return false;
             }
@@ -121,11 +122,11 @@ namespace BLL
         /// <param name="userPhone"></param>
         /// <param name="departID"></param>
         /// <returns></returns>
-        public bool AddUser(string userName,string password,string userType,string userEmail,string userPhone,int departID)
+        public bool AddUser(string userName, string password, string userType, string userEmail, string userPhone, int departID)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(userType))
                 return false;
-            if(departID<0)
+            if (departID < 0)
                 return false;
             if (1 == dal.InsertUser(new UserInfo(userName, password, userType, userEmail, userPhone, departID)))
                 return true;
@@ -142,7 +143,7 @@ namespace BLL
         /// <param name="userPhone"></param>
         /// <param name="departID"></param>
         /// <returns></returns>
-        public bool ModifyUser(int userID,string userName, string password, string userType, string userEmail, string userPhone, int departID)
+        public bool ModifyUser(int userID, string userName, string password, string userType, string userEmail, string userPhone, int departID)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(userType))
                 return false;
@@ -161,6 +162,86 @@ namespace BLL
             if (1 == dal.UpdateUser(userInfo))
                 return true;
             return false;
+        }
+
+        /// <summary>
+        /// 根据CustomerID查询所有联系人信息
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchUserByUserID(int userId)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn userID = new DataColumn("用户ID");
+            DataColumn userName = new DataColumn("用户名");
+            DataColumn userType = new DataColumn("用户类型");
+            DataColumn email = new DataColumn("邮箱");
+            DataColumn telephone = new DataColumn("手机");
+            DataColumn departmentName = new DataColumn("所在部门");
+
+            dataTable.Columns.Add(userID);
+            dataTable.Columns.Add(userName);
+            dataTable.Columns.Add(userType);
+            dataTable.Columns.Add(email);
+            dataTable.Columns.Add(telephone);
+            dataTable.Columns.Add(departmentName);
+
+            UserInfo userInfo = GetUserById(userId); //查询语句
+            Department department = new Department();
+            User user = new User();
+
+            DataRow dataRow = dataTable.NewRow();
+            dataRow["用户ID"] = userInfo.UserID;
+            dataRow["用户名"] = userInfo.UserName;
+            dataRow["用户类型"] = userInfo.UserType;
+            dataRow["手机"] = userInfo.UserPhone;
+            dataRow["邮箱"] = userInfo.UserEmail;
+            DepartmentInfo departmentInfo = department.GetDepartmentByID(userInfo.DepartID);
+            dataRow["所在部门"] = departmentInfo.DepartName;
+
+            dataTable.Rows.Add(dataRow);
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 根据CustomerID查询所有联系人信息
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchAllUsers()
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn userID = new DataColumn("用户ID");
+            DataColumn userName = new DataColumn("用户名");
+            DataColumn userType = new DataColumn("用户类型");
+            DataColumn email = new DataColumn("邮箱");
+            DataColumn telephone = new DataColumn("手机");
+            DataColumn departmentName = new DataColumn("所在部门");
+
+            dataTable.Columns.Add(userID);
+            dataTable.Columns.Add(userName);
+            dataTable.Columns.Add(userType);
+            dataTable.Columns.Add(email);
+            dataTable.Columns.Add(telephone);
+            dataTable.Columns.Add(departmentName);
+
+            IList<UserInfo> userInfos = GetUsers(); //查询语句
+            Department department = new Department();
+            User user = new User();
+
+            for (int i = 0; i < userInfos.Count; ++i)
+            {
+                UserInfo userInfo = userInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["用户ID"] = userInfo.UserID;
+                dataRow["用户名"] = userInfo.UserName;
+                dataRow["用户类型"] = userInfo.UserType;
+                dataRow["手机"] = userInfo.UserPhone;
+                dataRow["邮箱"] = userInfo.UserEmail;
+                DepartmentInfo departmentInfo = department.GetDepartmentByID(userInfo.DepartID);
+                dataRow["所在部门"] = departmentInfo.DepartName;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
         }
 
     }

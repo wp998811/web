@@ -6,6 +6,7 @@ using System.Text;
 using Model;
 using IDAL;
 using DALFactory;
+using System.Data;
 
 namespace BLL
 {
@@ -73,6 +74,16 @@ namespace BLL
             return dal.GetContactByName(contactName);
         }
 
+        /// <summary>
+        /// 通过联系人名字和电话查找联系人
+        /// </summary>
+        /// <param name="contactName"></param>
+        /// <returns></returns>
+        public ContactInfo GetContactByContactNameAndTelephone(string contactName, string telephone)
+        {
+            return dal.GetContactByNameAndTelephone(contactName, telephone);
+        }
+
         #endregion
 
         /// <summary>
@@ -129,6 +140,56 @@ namespace BLL
             if (1 == dal.UpdateContact(contactInfo))
                 return true;
             return false;
+        }
+
+        /// <summary>
+        /// 根据CustomerID查询所有联系人信息
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchAllContacts()
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn contactID = new DataColumn("联系人ID");
+            DataColumn contactName = new DataColumn("联系人姓名");
+            DataColumn position = new DataColumn("职位");
+            DataColumn mobilephone = new DataColumn("手机");
+            DataColumn telephone = new DataColumn("固定电话");
+            DataColumn email = new DataColumn("邮箱");
+            DataColumn address = new DataColumn("地址");
+            DataColumn postcode = new DataColumn("邮编");
+            DataColumn fax = new DataColumn("传真号");
+
+            dataTable.Columns.Add(contactID);
+            dataTable.Columns.Add(contactName);
+            dataTable.Columns.Add(position);
+            dataTable.Columns.Add(mobilephone);
+            dataTable.Columns.Add(telephone);
+            dataTable.Columns.Add(email);
+            dataTable.Columns.Add(address);
+            dataTable.Columns.Add(postcode);
+            dataTable.Columns.Add(fax);
+
+            IList<ContactInfo> contactInfos = GetContacts(); //查询语句
+            Customer customer = new Customer();
+            User user = new User();
+
+            for (int i = 0; i < contactInfos.Count; ++i)
+            {
+                ContactInfo contactInfo = contactInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["联系人ID"] = contactInfo.ContactID;
+                dataRow["联系人姓名"] = contactInfo.ContactName;
+                dataRow["职位"] = contactInfo.Position;
+                dataRow["手机"] = contactInfo.Mobilephone;
+                dataRow["固定电话"] = contactInfo.Telephone;
+                dataRow["邮箱"] = contactInfo.Email;
+                dataRow["地址"] = contactInfo.Address;
+                dataRow["邮编"] = contactInfo.PostCode;
+                dataRow["传真号"] = contactInfo.FaxNumber;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
         }
 
     }

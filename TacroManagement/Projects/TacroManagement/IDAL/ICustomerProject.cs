@@ -14,7 +14,8 @@ namespace IDAL
         int UpdateCustomerProject(CustomerProjectInfo customerProject);//更新客户项目关系
 
         IList<CustomerProjectInfo> GetCustomerProjects();//查找所有客户项目
-        CustomerProjectInfo GetCustomerProjectByProjectId(int projectID);//通过项目查找客户项目
-        IList<CustomerProjectInfo> GetCustomerProjectsByUserId(int userID);// 通过负责人ID查找客户项目
+        IList<CustomerProjectInfo> GetCustomerProjectsByCustomerId(int customerID);// 通过负责人ID查找客户项目
+        CustomerProjectInfo GetCustomerProjByPorjId(int customerContactId);
+        IList<CustomerProjectInfo> GetCustomerProjectInfoByCondition(string selectCondition);
     }
 }
