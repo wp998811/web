@@ -11,6 +11,7 @@ using Model;
 public partial class web_Admin_UserLists : System.Web.UI.Page
 {
     User userBLL = new User();
+    Department departmentBLL = new Department();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -20,11 +21,9 @@ public partial class web_Admin_UserLists : System.Web.UI.Page
         }
     }
 
-
     private void BindUsers()
     {
         IList<UserInfo> userInfos = userBLL.GetUsers();
-
         this.AspNetPager1.RecordCount = userInfos.Count;
         PagedDataSource pds = new PagedDataSource();
         pds.DataSource = userInfos;
@@ -33,7 +32,6 @@ public partial class web_Admin_UserLists : System.Web.UI.Page
         pds.PageSize = AspNetPager1.PageSize;
         dlUser.DataSource = pds;
         dlUser.DataBind();
-        
     }
 
     protected void AspNetPager1_PageChanged(object sender, EventArgs e)
@@ -49,5 +47,16 @@ public partial class web_Admin_UserLists : System.Web.UI.Page
         userBLL.DeleteUser(userID);
         dlUser.EditItemIndex = -1;
         BindUsers();
+    }
+
+
+    protected string GetDepartName(string departID)
+    {
+        if (departID=="0")
+        {
+            return "暂无部门";
+        }
+        DepartmentInfo departmentInfo=departmentBLL.GetDepartmentByID(Int32.Parse(departID));
+        return departmentInfo.DepartName;
     }
 }

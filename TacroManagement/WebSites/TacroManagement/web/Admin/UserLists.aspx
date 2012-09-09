@@ -4,14 +4,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>用户列表</title>
 </head>
 <body>
     <form id="form1" runat="server">
     <div>
         <h3>
-            用户管理 > 用户信息</h3>
-        <div style="width: 800px; margin: 0 auto;">
+            用户管理 > 用户列表</h3>
+        <div style="width: 1000px; margin: 0 auto;">
             <div style="border-bottom: 2px solid gray; height: 20px;">
                 <div style="float: left; width: 100px; text-align: center;">
                     用户名
@@ -28,10 +28,13 @@
                 <div style="float: left; width: 200px; text-align: center;">
                     用户电话
                 </div>
+                <div style="float: left; width: 200px; text-align: center;">
+                    所属部门
+                </div>
             </div>
-            <asp:DataList ID="dlUser" runat="server" Width="599px" OnDeleteCommand="dlUser_DeleteCommand">
+            <asp:DataList ID="dlUser" runat="server" Width="1000px" OnDeleteCommand="dlUser_DeleteCommand">
                 <ItemTemplate>
-                    <div style="border-bottom: 1px dashed gray; width: 800px;">
+                    <div style="border-bottom: 1px dashed gray; width: 1000px;">
                         <div style="float: left; text-align: center;">
                             <asp:Label ID="lblUserID" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "UserID")%>'
                                 Visible="false"></asp:Label></a>
@@ -51,6 +54,11 @@
                         <div style="float: left; width: 200px; text-align: center;">
                             <asp:Label ID="lblUserPhone" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "UserPhone")%>'></asp:Label>
                         </div>
+                        
+                        <div style="float: left; width: 200px; text-align: center;">
+                            <asp:Label ID="lblDepartment" runat="server" Text='<%# GetDepartName(Eval("DepartID").ToString())%>'></asp:Label>
+                        </div>
+                        
                         <div style="float: left; width: 50px; text-align: center;">
                             <a href='EditUser.aspx?userId=<%# DataBinder.Eval(Container.DataItem, "UserID")%>'>
                                 <asp:Label ID="lblEditUser" Text="编辑" runat="server">
@@ -58,7 +66,7 @@
                             </a>
                         </div>
                         <div style="float: left; width: 50px; text-align: center;">
-                            <asp:LinkButton ID="lbDeleteUser" Text="删除" CommandName="Delete" runat="server"></asp:LinkButton>
+                            <asp:LinkButton ID="lbDeleteUser" Text="删除" CommandName="Delete" runat="server" OnClientClick="return confirm('确定删除吗？')"></asp:LinkButton>
                         </div>
                     </div>
                 </ItemTemplate>

@@ -78,7 +78,6 @@ namespace BLL
 
         #region 业务
 
-
         /// <summary>
         /// 判断部门是否已存在
         /// </summary>

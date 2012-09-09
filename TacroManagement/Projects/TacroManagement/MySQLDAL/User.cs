@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 namespace MySQLDAL
 {
-    public class User:IUser
+    public class User : IUser
     {
 
         private const string PARM_USERID = "@UserID";
@@ -56,9 +56,13 @@ namespace MySQLDAL
                 parms[2].Value = userInfo.UserType;
                 parms[3].Value = userInfo.UserEmail;
                 parms[4].Value = userInfo.UserPhone;
-                parms[5].Value = userInfo.DepartID;
 
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_INSERT_USER,parms);
+                if (userInfo.DepartID == 0)
+                    parms[5].Value = DBNull.Value;
+                else
+                    parms[5].Value = userInfo.DepartID;
+
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_USER, parms);
 
             }
             catch (MySqlException se)
@@ -78,13 +82,13 @@ namespace MySQLDAL
             int result = -1;
             try
             {
-                MySqlParameter parm = new MySqlParameter(PARM_USERID,MySqlDbType.Int32);
+                MySqlParameter parm = new MySqlParameter(PARM_USERID, MySqlDbType.Int32);
                 parm.Value = userId;
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_DELETE_USER,parm);
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_USER, parm);
             }
             catch (MySqlException se)
             {
-                Console.WriteLine(se.Message);    
+                Console.WriteLine(se.Message);
             }
             return result;
         }
@@ -116,10 +120,15 @@ namespace MySQLDAL
                 parms[2].Value = userInfo.UserType;
                 parms[3].Value = userInfo.UserEmail;
                 parms[4].Value = userInfo.UserPhone;
-                parms[5].Value = userInfo.DepartID;
+
+                if (userInfo.DepartID == 0)
+                    parms[5].Value = DBNull.Value;
+                else
+                    parms[5].Value = userInfo.DepartID;
+
                 parms[6].Value = userInfo.UserID;
 
-                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_UPDATE_USER,parms);
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_USER, parms);
             }
             catch (MySqlException se)
             {
@@ -138,11 +147,15 @@ namespace MySQLDAL
 
             try
             {
-                using(MySqlDataReader rdr=DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_SELECT_USERS,null))
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_USERS, null))
                 {
-                    while(rdr.Read())
+                    while (rdr.Read())
                     {
-                        UserInfo user = new UserInfo(rdr.GetInt32(0),rdr.GetString(1),rdr.GetString(2),rdr.GetString(3),rdr.GetString(4),rdr.GetString(5),rdr.GetInt32(6));
+                        UserInfo user;
+                        if (rdr.IsDBNull(6))
+                            user = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), 0);
+                        else
+                            user = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetInt32(6));
                         users.Add(user);
                     }
                 }
@@ -165,13 +178,18 @@ namespace MySQLDAL
             UserInfo userInfo = null;
             try
             {
-                MySqlParameter parm = new MySqlParameter(PARM_USERNAME,MySqlDbType.VarChar,50);
+                MySqlParameter parm = new MySqlParameter(PARM_USERNAME, MySqlDbType.VarChar, 50);
                 parm.Value = userName;
 
-                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_USER_BY_NAME,parm))
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_USER_BY_NAME, parm))
                 {
                     if (rdr.Read())
-                        userInfo = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetInt32(6));
+                    {
+                        if (rdr.IsDBNull(6))
+                            userInfo = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), 0);
+                        else
+                            userInfo = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetInt32(6));
+                    }
                     else
                         userInfo = new UserInfo();
                 }
@@ -194,14 +212,17 @@ namespace MySQLDAL
 
             try
             {
-                MySqlParameter parm = new MySqlParameter(PARM_USERID,MySqlDbType.Int32);
+                MySqlParameter parm = new MySqlParameter(PARM_USERID, MySqlDbType.Int32);
                 parm.Value = userId;
 
-                using(MySqlDataReader rdr=DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString,CommandType.Text,SQL_SELECT_USER_BY_ID,parm))
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_USER_BY_ID, parm))
                 {
                     if (rdr.Read())
                     {
-                        userInfo = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetInt32(6));
+                        if (rdr.IsDBNull(6))
+                            userInfo = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), 0);
+                        else
+                            userInfo = new UserInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetInt32(6));
                     }
                     else
                         userInfo = new UserInfo();
