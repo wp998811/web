@@ -13,7 +13,7 @@ namespace BLL
     {
         private static readonly IDocument dal = DALFactory.DataAccess.CreateDocument();
 
-        #region 
+        #region
         /// <summary>
         /// 新增文档
         /// </summary>
@@ -144,15 +144,14 @@ namespace BLL
             return dataTable;
         }
 
-
         public string GetSearchCondition(string docName, string docVersion, string docKey, string DepertID, string docCategoryID, string uploadUserName, string updateTimeBegin, string updateTimeEnd)
         {
-            string condition ="";
+            string condition = "";
             if (!string.IsNullOrEmpty(docName))
             {
                 if (condition != "")
                 {
-                    condition  +=" AND ";
+                    condition += " AND ";
                 }
                 condition += " DocName LIKE '%" + docName + "%' ";
             }
@@ -243,7 +242,7 @@ namespace BLL
             documentInfo.DocName = docName;
             documentInfo.DocVersion = docVersion;
             documentInfo.DocKey = docKey;
-            documentInfo.DocDescription = docDescription;          
+            documentInfo.DocDescription = docDescription;
             documentInfo.DocState = docState;
             documentInfo.UploadPath =  uploadPath;
             documentInfo.SavePath = savePath;
@@ -274,8 +273,9 @@ namespace BLL
                 }
             }
 
-            int reslut =InsertDocument(documentInfo);
-            if (reslut ==1)
+
+            int reslut = InsertDocument(documentInfo);
+            if (reslut == 1)
             {
                 return true;
             }

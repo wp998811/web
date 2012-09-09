@@ -16,5 +16,7 @@ namespace IDAL
         IList<ClinicalResourceInfo> GetClinicalResources();//查找所有临床资源
         ClinicalResourceInfo GetClinicalResourceById(int id);//通过临床资源ID查找临床资源
         IList<ClinicalResourceInfo> GetClinicalResourceByUserId(int userId);//通过用户ID查找临床资源
+        IList<ContactInfo> GetContactByClinicalResourceId(int clinicalResourceId);//通过临床资源ID查找联系人
+        IList<ClinicalResourceInfo> GetClinicalResourceByCondition(string selectCondition);
     }
 }

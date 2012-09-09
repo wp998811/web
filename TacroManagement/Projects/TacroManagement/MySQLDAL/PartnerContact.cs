@@ -22,12 +22,15 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_PARTNERCONTACT = "INSERT INTO partnercontact(PartnerID, ContactID) VALUES (@PartnerID, @ContactID) ";
         private const string SQL_DELETE_PARTNERCONTACT = "DELETE FROM partnercontact WHERE ID=@ID";
+        private const string SQL_DELETE_PARTNERCONTACT_BY_PARTNERID = "delete from partnercontact where PartnerID=@PartnerID";
+        private const string SQL_DELETE_PARTNERCONTACT_BY_CONTACTID = "delete from partnercontact where ContactID=@ContactID";
         private const string SQL_UPDATE_PARTNERCONTACT = "UPDATE partnercontact SET PartnerID = @PartnerID, ContactID = @ContactID WHERE ID = @ID";
         private const string SQL_SELECT_PARTNERCONTACT = "SELECT * FROM partnercontact";
         private const string SQL_SELECT_PARTNERCONTACT_BY_ID = "SELECT * FROM partnercontact WHERE ID = @ID";
         private const string SQL_SELECT_PARTNERCONTACT_BY_PARTNERID = "SELECT * FROM partnercontact WHERE PartnerID = @PartnerID";
         private const string SQL_SELECT_PARTNERCONTACT_BY_CONTACTID = "SELECT * FROM partnercontact WHERE ContactID = @ContactID";
         private const string SQL_SELECT_PARTNERCONTACT_BY_PARTNER_CONTACT = "SELECT * FROM partnercontact WHERE PartnerID = @PartnerID AND ContactID = @ContactID";
+        private const string SQL_SELECT_CONTACTS_BY_PARTNER_ID = "select * from contact where ContactID in (select ContactID from partnercontact where PartnerID = @PartnerID)";
 
         #endregion
 
@@ -79,6 +82,48 @@ namespace MySQLDAL
                 MySqlParameter parm = new MySqlParameter(PARM_ID, MySqlDbType.Int32);
                 parm.Value = id;
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_PARTNERCONTACT, parm);
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据联系人ID删除客户联系人信息
+        /// </summary>
+        /// <param name="contactId"></param>
+        /// <returns></returns>
+        public int DeletePartnerContactByPartnerId(int partnerId)
+        {
+            int result = -1;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_PARTNERID, MySqlDbType.Int32);
+                parm.Value = partnerId;
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_PARTNERCONTACT_BY_PARTNERID, parm);
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据客户ID删除客户联系人信息
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        public int DeletePartnerContactByContactId(int contactId)
+        {
+            int result = -1;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_CONTACTID, MySqlDbType.Int32);
+                parm.Value = contactId;
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_PARTNERCONTACT_BY_CONTACTID, parm);
             }
             catch (MySqlException se)
             {
@@ -232,6 +277,35 @@ namespace MySQLDAL
             }
             return partnerContactInfo;
         }
+
+        /// <summary>
+        /// 查找所有用户
+        /// </summary>
+        /// <returns></returns>
+        public IList<ContactInfo> GetContactsByPartnerId(int partnerID)
+        {
+            IList<ContactInfo> contactInfos = new List<ContactInfo>();
+
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_PARTNERID, MySqlDbType.Int32, 50);
+                parm.Value = partnerID;
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CONTACTS_BY_PARTNER_ID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        ContactInfo contactInfo = new ContactInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
+                        contactInfos.Add(contactInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return contactInfos;
+        }
+
         #endregion
 
     }

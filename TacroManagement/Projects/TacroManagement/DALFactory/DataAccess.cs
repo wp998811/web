@@ -35,51 +35,51 @@ namespace DALFactory
             return (IDAL.ICustomer)Assembly.Load(path).CreateInstance(className);
         }
 
+        public static IDAL.IDepartment CreateDepartment()
+        {
+            string className = path + ".Department";
+            return (IDAL.IDepartment)Assembly.Load(path).CreateInstance(className);
+        }
+
         public static IDAL.IContact CreateContact()
         {
-            string className = path + ".Customer";
+            string className = path + ".Contact";
             return (IDAL.IContact)Assembly.Load(path).CreateInstance(className);
         }
 
         public static IDAL.ICustomerContact CreateCustomerContact()
         {
-            string className = path + ".Customer";
+            string className = path + ".CustomerContact";
             return (IDAL.ICustomerContact)Assembly.Load(path).CreateInstance(className);
         }
 
         public static IDAL.IVisitRecord CreateVisitRecord()
         {
-            string className = path + ".Customer";
+            string className = path + ".VisitRecord";
             return (IDAL.IVisitRecord)Assembly.Load(path).CreateInstance(className);
         }
 
         public static IDAL.ICustomerProject CreateCustomerProject()
         {
-            string className = path + ".Customer";
+            string className = path + ".CustomerProject";
             return (IDAL.ICustomerProject)Assembly.Load(path).CreateInstance(className);
-        }
-
-        public static IDAL.ICustomerProjContact CreateCustomerProjContact()
-        {
-            string className = path + ".Customer";
-            return (IDAL.ICustomerProjContact)Assembly.Load(path).CreateInstance(className);
         }
 
         public static IDAL.IClinicalResource CreateClinicalResource()
         {
-            string className = path + ".Customer";
+            string className = path + ".ClinicalResource";
             return (IDAL.IClinicalResource)Assembly.Load(path).CreateInstance(className);
         }
 
         public static IDAL.IClinicalContact CreateClinicalContact()
         {
-            string className = path + ".Customer";
+            string className = path + ".ClinicalContact";
             return (IDAL.IClinicalContact)Assembly.Load(path).CreateInstance(className);
         }
 
         public static IDAL.IContactRecord CreateContactRecord()
         {
-            string className = path + ".Customer";
+            string className = path + ".ContactRecord";
             return (IDAL.IContactRecord)Assembly.Load(path).CreateInstance(className);
         }
 
@@ -135,12 +135,6 @@ namespace DALFactory
         {
             string className = path + ".ProjectUser";
             return (IDAL.IProjectUser)Assembly.Load(path).CreateInstance(className);
-        }
-
-        public static IDAL.IDepartment CreateDepartment()
-        {
-            string className = path + ".Department";
-            return (IDAL.IDepartment)Assembly.Load(path).CreateInstance(className);
         }
 
         public static IDAL.IClient CreateClient()

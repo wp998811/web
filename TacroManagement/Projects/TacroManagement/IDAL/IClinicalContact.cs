@@ -15,5 +15,7 @@ namespace IDAL
 
         IList<ClinicalContactInfo> GetClinicalContacts();//查找所有临床资源联系人关系
         ClinicalContactInfo GetClinicalContactById(int id);//通过资源ID查找临床资源联系人关系
+        IList<ContactInfo> GetContactsByClinicalID(int clinicalID);
+        ClinicalContactInfo GetClinicalContactByContactId(int contactId);
     }
 }

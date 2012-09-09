@@ -24,10 +24,10 @@ public partial class web_projectList : System.Web.UI.Page
 
     private void InitProject()
     {
-        //Project project = new Project();
-        //IList<ProjectInfo> projectInfos = project.GetProjects();
+        Project project = new Project();
+        IList<ProjectInfo> projectInfos = project.GetProjects();
 
-        //ProjectGridView.DataSource = project.SearchAllProjects();
-        //ProjectGridView.DataBind();
+        ProjectGridView.DataSource = project.SearchAllProjects();
+        ProjectGridView.DataBind();
     }
 }

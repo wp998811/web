@@ -50,7 +50,7 @@
                                                 <td width="57%" height="25">
                                                     <div align="center">
                                                         <asp:TextBox runat="Server" type="text" style="width: 105px; height: 18px; background-color: #a3fa40;
-                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff"></asp:TextBox>
+                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff" ID = "UserName"></asp:TextBox>
                                                     </div>
                                                 </td>
                                                 <td width="27%" height="25">
@@ -65,13 +65,13 @@
                                                 <td height="25">
                                                     <div align="center">
                                                         <asp:TextBox runat="Server" TextMode=Password  style="width: 105px; height: 18px; background-color: #a3fa40;
-                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff"></asp:TextBox>
+                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff" ID = "Password"></asp:TextBox>
                                                     </div>
                                                 </td>
                                                 <td height="25">
                                                     <div align="left">
                                                         <a href="">
-                                                            <img src="../images/dl.gif" width="49" height="18" border="0"></a></div>
+                                                            <asp:ImageButton ID="loginButton" runat="server"  ImageUrl="../images/dl.gif" OnClick="Login"></asp:ImageButton></a></div>                                             
                                                 </td>
                                             </tr>
                                         </table>

@@ -22,6 +22,7 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_GOVERCONTACT = "INSERT INTO govercontact(GoverID, ContactID) VALUES (@GoverID, @ContactID) ";
         private const string SQL_DELETE_GOVERCONTACT = "DELETE FROM govercontact WHERE ID=@ID";
+        private const string SQL_DELETE_GOVERCONTACT_BY_CONTACTID = "delete from govercontact where ContactID=@ContactID";
         private const string SQL_UPDATE_GOVERCONTACT = "UPDATE govercontact SET GoverID = @GoverID, ContactID = @ContactID WHERE ID = @ID";
         private const string SQL_SELECT_GOVERCONTACT = "SELECT * FROM govercontact";
         private const string SQL_SELECT_GOVERCONTACT_BY_ID = "SELECT * FROM govercontact WHERE ID = @ID";
@@ -80,6 +81,27 @@ namespace MySQLDAL
                 MySqlParameter parm = new MySqlParameter(PARM_ID, MySqlDbType.Int32);
                 parm.Value = id;
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_GOVERCONTACT, parm);
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据客户ID删除客户联系人信息
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        public int DeleteGoverContactByContactId(int contactId)
+        {
+            int result = -1;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_CONTACTID, MySqlDbType.Int32);
+                parm.Value = contactId;
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_GOVERCONTACT_BY_CONTACTID, parm);
             }
             catch (MySqlException se)
             {

@@ -9,7 +9,8 @@ namespace IDAL
     public interface IGoverContact
     {
         int InsertGoverContact(GoverContactInfo goverContactInfo);      //增加政府联系人
-        int DeleteGoverContact(int id);                                                     //删除政府联系人
+        int DeleteGoverContact(int id);        //删除政府联系人
+        int DeleteGoverContactByContactId(int contactId);
         int UpdateGoverContact(GoverContactInfo goverContactInfo);   //更新政府联系人
 
         IList<GoverContactInfo> GetGoverContact();                             //查找所以政府联系人

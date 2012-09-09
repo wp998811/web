@@ -1,9 +1,7 @@
 ﻿<%@ Page Language="C#"  Async="true" enableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="UploadDoc.aspx.cs" Inherits="web_UploadDoc" Title="上传文档" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
 <script type="text/javascript">
-
 var xmlHttp=null;              
         function $(id)
         {

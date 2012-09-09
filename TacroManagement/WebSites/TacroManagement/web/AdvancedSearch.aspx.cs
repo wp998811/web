@@ -27,7 +27,7 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
             InitDocCate();
             InitProjectDoc();
         }
-  
+ 
     }
 
     private void InitProjectDoc()

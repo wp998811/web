@@ -29,7 +29,7 @@ namespace MySQLDAL
         private const string SQL_UPDATE_CUSTOMER = "update customer set UserID=@UserID,CustomerCity=@CustomerCity,CustomerType=@CustomerType,CustomerRank=@CustomerRank,CustomerName=@CustomerName,ProductRange=@ProductRange, TaxID=@TaxID, OrganCode=@OrganCode where CustomerID=@CustomerID";
         private const string SQL_SELECT_CUSTOMER = "select * from customer";
         private const string SQL_SELECT_CUSTOMER_BY_NAME = "select * from customer where CustomerName=@CustomerName";
-        private const string SQL_SELECT_CUSTOMER_BY_ID = "select * from user customer CustomerID=@CustomerID";
+        private const string SQL_SELECT_CUSTOMER_BY_ID = "select * from customer where CustomerID=@CustomerID";
 
         #region ICustomer 成员
 

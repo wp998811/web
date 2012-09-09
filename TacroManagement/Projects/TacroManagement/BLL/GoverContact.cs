@@ -36,6 +36,16 @@ namespace BLL
         }
 
         /// <summary>
+        /// 删除政府联系人
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int DeleteGoverContactByContactId(int contactId)
+        {
+            return dal.DeleteGoverContactByContactId(contactId);
+        }
+
+        /// <summary>
         /// 更新政府联系人
         /// </summary>
         /// <param name="goverContactInfo"></param>
