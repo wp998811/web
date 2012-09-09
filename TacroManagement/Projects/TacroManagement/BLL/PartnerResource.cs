@@ -75,27 +75,131 @@ namespace BLL
             return dal.GetPartnerResourceByCondition(selectCondition);
         }
 
-        public DataTable GetPartnerResourceAndContactByCondition()
+        /// <summary>
+        /// 根据查询条件生成sql查询语句
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="cityName"></param>
+        /// <param name="organName"></param>
+        /// <returns>sql查询条件</returns>
+        public string GetPartnerResourceSearchCondition(string userName, string cityName, string organName)
         {
 
+            string condition = "";
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                User user = new User();
+                UserInfo userInfo = user.GetUserByName(userName);
+                if (string.IsNullOrEmpty(userInfo.UserName))
+                {
+                    return "";
+                }
+                if (condition != "")
+                {
+                    condition += " AND ";
+                }
+                condition += " UserID = '" + userInfo.UserID + "' ";
+            }
+
+            if (!string.IsNullOrEmpty(cityName))
+            {
+                if (condition != "")
+                {
+                    condition += " AND ";
+                }
+                condition += " GoverCity LIKE '%" + cityName + "%' ";
+            }
+
+            if (!string.IsNullOrEmpty(organName))
+            {
+                if (condition != "")
+                {
+                    condition += " AND ";
+                }
+                condition += " OrganName LIKE '%" + organName + "%' ";
+            }
+            return condition;
+
+        }
+
+        /// <summary>
+        /// 通过合作者资料List返回DataTable
+        /// </summary>
+        /// <param name="partnerResourceInfos"></param>
+        /// <returns></returns>
+        public DataTable GetDataTableByGoverList(IList<PartnerResourceInfo> partnerResourceInfos)
+        {
             DataTable dataTable = new DataTable();
 
-            //        DataRow dataRow = dataTable.NewRow();
-            //        User user1 = new User();
-            //        UserInfo userInfo1 = user1.GetUserById(goverResourceInfo.UserID);
-            //        dataRow["负责人"] = userInfo1.UserName;
-            //        dataRow["所属城市"] = goverResourceInfo.GoverCity;
-            //        dataRow["机构名称"] = goverResourceInfo.OrganName;
-            //        dataRow["联系人姓名"] = contactInfo.ContactName;
-            //        dataRow["职位"] = contactInfo.Position;
-            //        dataRow["手机"] = contactInfo.Mobilephone;
-            //        dataRow["固定电话"] = contactInfo.Telephone;
-            //        dataRow["电子邮箱"] = contactInfo.Email;
-            //        dataRow["地址"] = contactInfo.Address;
-            //        dataRow["邮编"] = contactInfo.PostCode;
-            //        dataRow["传真"] = contactInfo.FaxNumber;
+            DataColumn userNameColumn = new DataColumn("负责人");
+            DataColumn cityNameColumn = new DataColumn("所属城市");
+            DataColumn organNameColumn = new DataColumn("机构名称");
+            DataColumn organIntroColumn = new DataColumn("机构简介");
 
+            dataTable.Columns.Add(userNameColumn);
+            dataTable.Columns.Add(cityNameColumn);
+            dataTable.Columns.Add(organNameColumn);
+            dataTable.Columns.Add(organIntroColumn);
+
+            for (int i = 0; i < partnerResourceInfos.Count; ++i)
+            {
+                PartnerResourceInfo partnerResourceInfo = partnerResourceInfos[i];
+
+                DataRow dataRow = dataTable.NewRow();
+                User user = new User();
+                UserInfo userInfo = user.GetUserById(partnerResourceInfo.UserID);
+                dataRow["负责人"] = userInfo.UserName;
+                dataRow["所属城市"] = partnerResourceInfo.PartnerCity;
+                dataRow["机构名称"] = partnerResourceInfo.OrganName;
+                dataRow["机构简介"] = partnerResourceInfo.OrganIntro;
+
+                dataTable.Rows.Add(dataRow);
+            }
             return dataTable;
+
+        }
+
+        /// <summary>
+        /// 通过查询条件获取合作者资料List
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="cityName"></param>
+        /// <param name="organName"></param>
+        /// <param name="contactName"></param>
+        /// <returns>符合查询条件的List</returns>
+        public IList<PartnerResourceInfo> GetPartnerResearchBySearch(string userName, string cityName, string organName, string contactName)
+        {
+            string condition = GetPartnerResourceSearchCondition(userName, cityName, organName);
+            IList<PartnerResourceInfo> partnerResourceInfos = GetPartnerResourceByCondition(condition);
+            if (!string.IsNullOrEmpty(contactName))
+            {
+                Contact contact = new Contact();
+                ContactInfo contactInfo = contact.GetContactByContactName(contactName);
+                if (string.IsNullOrEmpty(contactInfo.ContactName))
+                {
+                    return new List<PartnerResourceInfo>();
+                }
+
+                PartnerContact partnerContact = new PartnerContact();
+                PartnerContactInfo partnerContactInfo = partnerContact.GetPartnerContactByContactId(contactInfo.ContactID);
+                if (partnerContactInfo.ContactID != contactInfo.ContactID)
+                {
+                    return new List<PartnerResourceInfo>();
+                }
+
+                IList<PartnerResourceInfo> pRIs = new List<PartnerResourceInfo>();
+                for (int i = 0; i < partnerResourceInfos.Count; ++i)
+                {
+                    if (partnerResourceInfos[i].PartnerID == partnerContactInfo.PartnerID)
+                    {
+                        pRIs.Add(partnerResourceInfos[i]);
+                    }
+                }
+                partnerResourceInfos = pRIs;
+            }
+
+            return partnerResourceInfos;
         }
         #endregion
     }

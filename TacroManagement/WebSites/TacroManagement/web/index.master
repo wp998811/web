@@ -462,7 +462,7 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">上传文档</span>
+                                                                                                                    <span class="STYLE3"><a href="UploadDoc.aspx">上传文档</a></span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -478,13 +478,12 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">搜索文档</span>
+                                                                                                                    <span class="STYLE3"><a href="Search.aspx">搜索文档</a></span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
                                                                                                     </td>
                                                                                                 </tr>
-                   
                                                                                             </table>
                                                                                         </td>
                                                                                     </tr>

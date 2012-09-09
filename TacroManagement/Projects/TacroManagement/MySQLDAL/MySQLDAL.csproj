@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="Admin.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="Department.cs" />
     <Compile Include="ClinicalContact.cs" />
     <Compile Include="ClinicalResource.cs" />
     <Compile Include="Contact.cs" />

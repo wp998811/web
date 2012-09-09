@@ -54,7 +54,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_VISIBILITY,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_CATEGORYNAME,MySqlDbType.VarChar,50)
                 };
-                parms[0].Value = departDocCateInfo.DepartID;
+                if (departDocCateInfo.DepartID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = departDocCateInfo.DepartID;
                 parms[1].Value = departDocCateInfo.Visibility;
                 parms[2].Value = departDocCateInfo.CategoryName;
 
@@ -105,7 +108,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CATEGORYNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = departDocCateInfo.DepartID;
+                if (departDocCateInfo.DepartID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = departDocCateInfo.DepartID;
                 parms[1].Value = departDocCateInfo.Visibility;
                 parms[2].Value = departDocCateInfo.CategoryName;
                 parms[3].Value = departDocCateInfo.Id;
@@ -133,7 +139,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        DepartDocCateInfo departDocCate = new DepartDocCateInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
+                        DepartDocCateInfo departDocCate = new DepartDocCateInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
                         departDocCates.Add(departDocCate);
                     }
                 }
@@ -161,7 +167,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DEPARTDOCCATE_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        departDocCateInfo = new DepartDocCateInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
+                        departDocCateInfo = new DepartDocCateInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
                     else
                         departDocCateInfo = new DepartDocCateInfo();
                 }
@@ -189,7 +195,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        DepartDocCateInfo departDocCate = new DepartDocCateInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
+                        DepartDocCateInfo departDocCate = new DepartDocCateInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
                         departDocCates.Add(departDocCate);
                     }
                 }
@@ -222,7 +228,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DEPARTDOCCATE_BY_DEPART_CATEGORY, parms))
                 {
                     if (rdr.Read())
-                        departDocCateInfo = new DepartDocCateInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
+                        departDocCateInfo = new DepartDocCateInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
                     else
                         departDocCateInfo = new DepartDocCateInfo();
                 }

@@ -64,9 +64,19 @@ namespace BLL
             return dal.GetGoverContactById(id);
         }
 
-        public GoverContactInfo GetGoverContactByGover(int goverId)
+        public IList<GoverContactInfo> GetGoverContactByGover(int goverId)
         {
             return dal.GetGoverContactByGover(goverId);
+        }
+
+        /// <summary>
+        /// 通过政府资料ID查找政府联系人
+        /// </summary>
+        /// <param name="goverId"></param>
+        /// <returns></returns>
+        public GoverContactInfo GetGoverContactByContactId(int contactId)
+        {
+            return dal.GetGoverContactByContactId(contactId);
         }
         #endregion
     }

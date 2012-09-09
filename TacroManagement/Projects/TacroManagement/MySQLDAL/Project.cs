@@ -100,7 +100,10 @@ namespace MySQLDAL
                 };
 
                 parms[0].Value = projectInfo.ProjectName;
-                parms[1].Value = projectInfo.ProjectAdminID;
+                if (projectInfo.ProjectAdminID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = projectInfo.ProjectAdminID;
                 parms[2].Value = projectInfo.ProjectDescription;
                 parms[3].Value = projectInfo.ProjectType;
                 parms[4].Value = projectInfo.ProjectClientName;
@@ -149,7 +152,10 @@ namespace MySQLDAL
                 };
 
                 parms[0].Value = projectInfo.ProjectName;
-                parms[1].Value = projectInfo.ProjectAdminID;
+                if (projectInfo.ProjectAdminID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = projectInfo.ProjectAdminID;
                 parms[2].Value = projectInfo.ProjectDescription;
                 parms[3].Value = projectInfo.ProjectType;
                 parms[4].Value = projectInfo.ProjectClientName;
@@ -176,7 +182,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
+                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
                         projects.Add(project);
                     }
                 }
@@ -200,7 +206,7 @@ namespace MySQLDAL
                 {
                     if(rdr.Read())
                     {
-                        projectInfo = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
+                        projectInfo = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
                     }
                     else
                         projectInfo = new ProjectInfo();
@@ -225,7 +231,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
+                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
                         projects.Add(project);
                     }
                 }

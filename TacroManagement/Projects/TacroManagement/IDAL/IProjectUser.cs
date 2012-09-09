@@ -17,5 +17,6 @@ namespace IDAL
         IList<ProjectUserInfo> GetProjectUsersByProjectNum(string projectNum);
         IList<ProjectUserInfo> GetProjectUsersByUserId(int userId);
         ProjectUserInfo GetProjectUserById(int id);
+        ProjectUserInfo GetProjectUserByProjectUser(string projectNum, int userId);
     }
 }

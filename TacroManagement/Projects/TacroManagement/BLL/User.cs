@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 using Model;
 using IDAL;
@@ -165,6 +166,41 @@ namespace BLL
             return false;
         }
 
+        public DataTable GetTableByUserList(IList<UserInfo> userInfos)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn userIDColumn = new DataColumn("userID");
+            DataColumn userNameColumn = new DataColumn("姓名");
+            DataColumn userTypeColumn = new DataColumn("用户类别");
+            DataColumn emailColumn = new DataColumn("电子邮箱");
+            DataColumn phoneColumn = new DataColumn("联系方式");
+            DataColumn departColumn = new DataColumn("所属部门");
+
+            dataTable.Columns.Add(userIDColumn);
+            dataTable.Columns.Add(userNameColumn);
+            dataTable.Columns.Add(userTypeColumn);
+            dataTable.Columns.Add(emailColumn);
+            dataTable.Columns.Add(phoneColumn);
+            dataTable.Columns.Add(departColumn);
+
+            for (int i = 0; i < userInfos.Count; ++i)
+            {
+                UserInfo userInfo = userInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["userID"] = userInfo.UserID;
+                dataRow["姓名"] = userInfo.UserName;
+                dataRow["用户类别"] = userInfo.UserType;
+                dataRow["电子邮箱"] = userInfo.UserEmail;
+                dataRow["联系方式"] = userInfo.UserPhone;
+
+                Department department = new Department();
+                DepartmentInfo departmentInfo = department.GetDepartmentByID(userInfo.DepartID);
+                dataRow["所属部门"] = departmentInfo.DepartName;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
+        }
         #endregion
     }
 }

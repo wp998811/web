@@ -47,7 +47,6 @@
   <ItemGroup>   
     <Compile Include="IAdmin.cs" />
     <Compile Include="IClient.cs" />
-    <Compile Include="IDepartment.cs" />
     <Compile Include="IClinicalContact.cs" />
     <Compile Include="IClinicalResource.cs" />
     <Compile Include="IContact.cs" />

@@ -33,7 +33,7 @@ public partial class web_ModifyProjectDoc : System.Web.UI.Page
             InitProject(projectDocInfo);
             InitSubTask(projectDocInfo);
             InitProjectDoc(projectDocInfo);
-            InitUsers();
+            InitUsers(Convert.ToInt32(docID));
         }
     }
 
@@ -89,16 +89,26 @@ public partial class web_ModifyProjectDoc : System.Web.UI.Page
         ProjectName.SelectedValue = Convert.ToString(subTaskInfo.ProjectNum);
     }
 
-    private void InitUsers()
+    private void InitUsers(int projDocID)
     {
         BLL.User user = new BLL.User();
         IList<UserInfo> userInfos = user.GetUsers();
-        for (int i = 0; i < userInfos.Count; ++i)
+        UserNameListView.DataSource = user.GetTableByUserList(userInfos);
+        UserNameListView.DataBind();
+
+        ProjectDocUser projectDocUser = new ProjectDocUser();
+        for (int i = 0; i < UserNameListView.Rows.Count; ++i)
         {
-            ListItem listItem = new ListItem();
-            listItem.Value = Convert.ToString(userInfos[i].UserID);
-            listItem.Text = userInfos[i].UserName;
-            UserNameList.Items.Add(listItem);
+            GridViewRow gvr = UserNameListView.Rows[i];
+            Control ctl = gvr.FindControl("ckb");
+            CheckBox ckb = (CheckBox)ctl;
+
+            string userId = UserNameListView.DataKeys[i][0].ToString();
+            ProjDocUserInfo projDocUserInfo = projectDocUser.GetProjectDocUserByProjectDocUser(projDocID, Convert.ToInt32(userId));
+            if (projDocUserInfo.ProjDocId == projDocID)
+            {
+                ckb.Checked = true;
+            }
         }
 
     }
@@ -122,15 +132,39 @@ public partial class web_ModifyProjectDoc : System.Web.UI.Page
             Response.Write("<script   language=javascript> window.alert( '  用户名不存在  '); </script>");
             return;
         }
+        projectDocInfo.UploadUserId = userInfo.UserID;
+
+        int oldDocPermission = projectDocInfo.DocPermission;
+        int newDocPermission = Convert.ToInt32(DownLoadPremission.SelectedValue);
+        projectDocInfo.DocPermission = newDocPermission;
 
         int isUpdate = projectDoc.UpdateProjectDoc(projectDocInfo);
         if (isUpdate == 1)
         {
+            projectDoc.ChangePermission(projectDocInfo.ProjDocId,oldDocPermission,newDocPermission,GetCheckedUserId());
             Response.Write("<script   language=javascript> window.alert( ' 保存成功  '); </script>");
         }
         else
         {
             Response.Write("<script   language=javascript> window.alert( '保存失败  '); </script>");
         }
+    }
+
+    private IList<int> GetCheckedUserId()
+    {
+        IList<int> userIds = new List<int>();
+        for (int i = 0; i < UserNameListView.Rows.Count; ++i)
+        {
+            GridViewRow gvr = UserNameListView.Rows[i];
+            Control ctl = gvr.FindControl("ckb");
+            CheckBox ckb = (CheckBox)ctl;
+
+            if (ckb.Checked)
+            {
+                string userId = UserNameListView.DataKeys[i][0].ToString();
+                userIds.Add(Convert.ToInt32(userId));
+            }
+        }
+        return userIds;
     }
 }

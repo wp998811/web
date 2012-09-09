@@ -64,7 +64,11 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_TAXID,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANCODE,MySqlDbType.VarChar,50)
                 };
-                parms[0].Value = customerProject.UserID;
+
+                if (customerProject.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = customerProject.UserID;
                 parms[1].Value = customerProject.CustomerCity;
                 parms[2].Value = customerProject.CustomerType;
                 parms[3].Value = customerProject.CustomerName;
@@ -135,7 +139,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANCODE,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_PROJID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = customerProject.UserID;
+                if (customerProject.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = customerProject.UserID;
                 parms[1].Value = customerProject.CustomerCity;
                 parms[2].Value = customerProject.CustomerType;
                 parms[3].Value = customerProject.CustomerName;
@@ -173,7 +180,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        CustomerProjectInfo customerProject = new CustomerProjectInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetFloat(9),
+                        CustomerProjectInfo customerProject = new CustomerProjectInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetFloat(9),
                                                                                                                                         rdr.GetString(10), rdr.GetString(11), rdr.GetString(12), rdr.GetString(13));
                         customerProjects.Add(customerProject);
                     }
@@ -205,7 +212,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        CustomerProjectInfo customerProject = new CustomerProjectInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetFloat(9),
+                        CustomerProjectInfo customerProject = new CustomerProjectInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetFloat(9),
                                                                                                                                         rdr.GetString(10), rdr.GetString(11), rdr.GetString(12), rdr.GetString(13));
                         customerProjects.Add(customerProject);
                     }
@@ -234,7 +241,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CUSTOMERPROJ_BY_PROJID, parm))
                 {
                     if (rdr.Read())
-                        customerProjInfo = new CustomerProjectInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetFloat(9),
+                        customerProjInfo = new CustomerProjectInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetFloat(9),
                                                                                                                                         rdr.GetString(10), rdr.GetString(11), rdr.GetString(12), rdr.GetString(13));
                     else
                         customerProjInfo = new CustomerProjectInfo();

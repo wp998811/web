@@ -13,8 +13,6 @@ namespace BLL
     {
         private static readonly IPartnerContact dal = DALFactory.DataAccess.CreatePartnerContact();
 
-
-
         #region IPartnerContact Members
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace BLL
         }
 
         /// <summary>
-        /// 根据文档合作伙伴联系人编号查找合作伙伴联系人
+        /// 根据合作伙伴联系人编号查找合作伙伴联系人
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -67,14 +65,25 @@ namespace BLL
         }
 
         /// <summary>
-        /// 根据文档合作伙伴ID查找合作伙伴联系人
+        /// 根据合作伙伴ID查找合作伙伴联系人
         /// </summary>
         /// <param name="PartnerId"></param>
         /// <returns></returns>
-        public PartnerContactInfo GetPartnerContactByPartner(int partnerId)
+        public IList<PartnerContactInfo> GetPartnerContactByPartner(int partnerId)
         {
             return dal.GetPartnerContactByPartner(partnerId);
         }
+
+        /// <summary>
+        /// 根据联系人ID查找合作伙伴联系人
+        /// </summary>
+        /// <param name="contactId"></param>
+        /// <returns></returns>
+        public PartnerContactInfo GetPartnerContactByContactId(int contactId)
+        {
+            return dal.GetPartnerContactByContactId(contactId);
+        }
+
         #endregion
 
 

@@ -48,6 +48,10 @@ namespace BLL
         {
             return dal.GetProjectUserById(id);
         }
+         public ProjectUserInfo GetProjectUserByProjectUser(string projectNum,int userId)
+        {
+            return dal.GetProjectUserByProjectUser(projectNum, userId);
+        }
         #endregion
     }
 }

@@ -13,7 +13,8 @@ namespace Model
         private string docName;
         private string docKey;
         private string docDescription;
-        private string docUrl;
+        private string uploadPath;
+        private string savePath;
         private int docPermission;
         private string uploadTime;
         private int uploadUserId;
@@ -24,21 +25,22 @@ namespace Model
         }
 
         public ProjectDocInfo(int taskId, string projDocCate, string docName, string docKey, string docDescription
-            , string docUrl, int docPermission, string uploadTime, int uploadUserId)
+            , string uploadPath,string savePath, int docPermission, string uploadTime, int uploadUserId)
         {
             this.taskId = taskId;
             this.projDocCate = projDocCate;
             this.docName = docName;
             this.docKey = docKey;
             this.docDescription = docDescription;
-            this.docUrl = docUrl;
+            this.uploadPath = uploadPath;
+            this.savePath = savePath;
             this.docPermission = docPermission;
             this.uploadTime = uploadTime;
             this.uploadUserId = uploadUserId;
         }
 
         public ProjectDocInfo(int projDocId, int taskId, string projDocCate, string docName, string docKey, string docDescription
-            , string docUrl, int docPermission, string uploadTime, int uploadUserId)
+            , string uploadPath,string savePath, int docPermission, string uploadTime, int uploadUserId)
         {
             this.projDocId = projDocId;
             this.taskId = taskId;
@@ -46,7 +48,8 @@ namespace Model
             this.docName = docName;
             this.docKey = docKey;
             this.docDescription = docDescription;
-            this.docUrl = docUrl;
+            this.uploadPath = uploadPath;
+            this.savePath = savePath;
             this.docPermission = docPermission;
             this.uploadTime = uploadTime;
             this.uploadUserId = uploadUserId;
@@ -70,10 +73,16 @@ namespace Model
             set { docPermission = value; }
         }
 
-        public string DocUrl
+        public string UploadPath
         {
-            get { return docUrl; }
-            set { docUrl = value; }
+            get { return uploadPath; }
+            set { uploadPath = value; }
+        }
+
+        public string SavePath
+        {
+            get { return savePath; }
+            set { savePath  = value; }
         }
 
         public string DocDescription

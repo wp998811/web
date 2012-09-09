@@ -38,9 +38,17 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_PROJECT_NUM, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_CLIENT_ID, MySqlDbType.Int32)
                 };
-                parms[0].Value = projectClientInfo.ProjectNum;
-                parms[1].Value = projectClientInfo.ClientId;
 
+                if (projectClientInfo.ProjectNum == "")
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = projectClientInfo.ProjectNum;
+               
+                if(projectClientInfo.ClientId == 0)
+                    parms[1].Value=DBNull.Value;
+                else
+                    parms[1].Value=projectClientInfo.ClientId;
+             
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_PROJECT_CLIENT, parms);
             }
             catch (MySqlException ex)
@@ -77,8 +85,15 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CLIENT_ID, MySqlDbType.Int32),
                     new MySqlParameter(PARM_ID, MySqlDbType.Int32)
                 };
-                parms[0].Value = projectClientInfo.ProjectNum;
-                parms[1].Value = projectClientInfo.ClientId;
+                if (projectClientInfo.ProjectNum == "")
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = projectClientInfo.ProjectNum;
+
+                if (projectClientInfo.ClientId == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = projectClientInfo.ClientId;
                 parms[2].Value = projectClientInfo.ID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_PROJECT_CLIENT, parms);
@@ -99,7 +114,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectClientInfo projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2));
+                        ProjectClientInfo projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? "" : rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         projectClients.Add(projectClient);
                     }
                 }
@@ -122,7 +137,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2));
+                        projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? "" : rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     }
                     else
                         projectClient = new ProjectClientInfo();
@@ -146,7 +161,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectClientInfo projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2));
+                        ProjectClientInfo projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? "" : rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         projectClients.Add(projectClient);
                     }
                 }
@@ -169,7 +184,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectClientInfo projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2));
+                        ProjectClientInfo projectClient = new ProjectClientInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? "" : rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         projectClients.Add(projectClient);
                     }
                 }

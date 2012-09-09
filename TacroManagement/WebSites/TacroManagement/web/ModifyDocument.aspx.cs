@@ -31,7 +31,7 @@ public partial class web_ModifyDocument : System.Web.UI.Page
             DocID.Text = docID;
             IntiDepartment();
             InitDocument(documentInfo);
-            InitUsers();
+            InitUsers(Convert.ToInt32(docID) ,1);
         }
     }
 
@@ -79,18 +79,27 @@ public partial class web_ModifyDocument : System.Web.UI.Page
         UploadUserName.Text = userInfo.UserName;
     }
 
-    private void InitUsers()
+    private void InitUsers(int docID,int userID)
     {
         BLL.User user = new BLL.User();
         IList<UserInfo> userInfos = user.GetUsers();
-        for (int i = 0; i < userInfos.Count; ++i)
-        {
-            ListItem listItem = new ListItem();
-            listItem.Value = Convert.ToString(userInfos[i].UserID);
-            listItem.Text = userInfos[i].UserName;
-            UserNameList.Items.Add(listItem);
-        }
+        UserNameListView.DataSource = user.GetTableByUserList(userInfos);
+        UserNameListView.DataBind();
 
+        DocUser docUser = new DocUser();
+        for (int i = 0; i < UserNameListView.Rows.Count; ++i)
+        {
+            GridViewRow gvr = UserNameListView.Rows[i];
+            Control ctl = gvr.FindControl("ckb");
+            CheckBox ckb = (CheckBox)ctl;
+
+            string userId = UserNameListView.DataKeys[i][0].ToString();
+            DocUserInfo docUserInfo = docUser.GetDocUserByDocUser(Convert.ToInt32(userId), docID);
+            if (docUserInfo.DocID == docID)
+            {
+                ckb.Checked = true;
+            }
+        }
     }
     protected void ModifyButton_Click(object sender, EventArgs e)
     {
@@ -102,7 +111,6 @@ public partial class web_ModifyDocument : System.Web.UI.Page
         documentInfo.DocVersion = DocVersionText.Text.Trim();
         documentInfo.DepartID = Convert.ToInt32(DepartName.SelectedValue);
         documentInfo.DocCategoryID = Convert.ToInt32(DocCate.SelectedValue);
-        documentInfo.DocPermission = Convert.ToInt32(DownLoadPremission.SelectedValue);
         documentInfo.DocState = DocState.SelectedValue;
         documentInfo.UploadTime = uploadTime.Text.Trim();
         
@@ -113,10 +121,16 @@ public partial class web_ModifyDocument : System.Web.UI.Page
             Response.Write("<script   language=javascript> window.alert( '  用户名不存在  '); </script>");
             return;
         }
+        documentInfo.UploadUserID = userInfo.UserID;
 
+        int oldDocPermission = documentInfo.DocPermission ;
+        int newDocPermission =Convert.ToInt32(DownLoadPremission.SelectedValue);
+        documentInfo.DocPermission = newDocPermission;
+        
         int isUpdate = document.UpdateDocument(documentInfo);
         if (isUpdate ==1)
         {
+            document.ChangePermission(documentInfo.DocID,oldDocPermission, newDocPermission, GetCheckedUserId());
             Response.Write("<script   language=javascript> window.alert( ' 保存成功  '); </script>");
         } 
         else
@@ -124,5 +138,23 @@ public partial class web_ModifyDocument : System.Web.UI.Page
             Response.Write("<script   language=javascript> window.alert( '保存失败  '); </script>");
         }
 
+    }
+
+    private IList<int> GetCheckedUserId()
+    {
+        IList<int> userIds = new List<int>();
+        for (int i = 0; i < UserNameListView.Rows.Count; ++i)
+        {
+            GridViewRow gvr = UserNameListView.Rows[i];
+            Control ctl = gvr.FindControl("ckb");
+            CheckBox ckb = (CheckBox)ctl;
+
+            if (ckb.Checked)
+            {
+                string userId = UserNameListView.DataKeys[i][0].ToString();
+                userIds.Add(Convert.ToInt32(userId));
+            }
+        }
+        return userIds;
     }
 }

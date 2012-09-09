@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Async="true"   EnableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="AdvancedSearch.aspx.cs" Inherits="web_AdvancedSearch" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" Async="true"   EnableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="AdvancedSearch.aspx.cs" Inherits="web_AdvancedSearch" Title="高级查询" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 <script type="text/javascript">
@@ -244,9 +244,7 @@
 
 function setDocCateID(val)
 {
-
     document.getElementById("<%=DocCateIDText.ClientID%>").value = val;
-
 }
 function setSubTaskID(val)
 {

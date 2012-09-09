@@ -47,7 +47,12 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_DEPARTMENT,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DEPARTMENTINTRO,MySqlDbType.VarChar,50)
                 };
-                parms[0].Value = clinicalResourceInfo.UserID;
+
+                if (clinicalResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = clinicalResourceInfo.UserID;
+
                 parms[1].Value = clinicalResourceInfo.City;
                 parms[2].Value = clinicalResourceInfo.Hospital;
                 parms[3].Value = clinicalResourceInfo.Department;
@@ -102,7 +107,11 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_DEPARTMENTINTRO,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_CLINICALID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = clinicalResourceInfo.UserID;
+
+                if (clinicalResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = clinicalResourceInfo.UserID;
                 parms[1].Value = clinicalResourceInfo.City;
                 parms[2].Value = clinicalResourceInfo.Hospital;
                 parms[3].Value = clinicalResourceInfo.Department;
@@ -132,7 +141,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ClinicalResourceInfo clinicalResourceInfo = new ClinicalResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5));
+                        ClinicalResourceInfo clinicalResourceInfo = new ClinicalResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0: rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5));
                         clinicalResourceInfos.Add(clinicalResourceInfo);
                     }
                 }
@@ -161,7 +170,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CLINICALRESOURCE_BY_CLINICALID, parm))
                 {
                     if (rdr.Read())
-                        clinicalResourceInfo = new ClinicalResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5));
+                        clinicalResourceInfo = new ClinicalResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5));
                     else
                         clinicalResourceInfo = new ClinicalResourceInfo();
                 }
@@ -191,7 +200,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ClinicalResourceInfo clinicalResource = new ClinicalResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5));
+                        ClinicalResourceInfo clinicalResource = new ClinicalResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5));
                         clinicalResourceInfos.Add(clinicalResource);
                     }
                 }

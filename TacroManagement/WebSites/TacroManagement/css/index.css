@@ -63,3 +63,19 @@
 		{
 			text-decoration:underline;  /*鼠标放上去有下划线*/
 		}
+		
+		#ShowContent
+		{
+			bgcolor:Black;
+			margin:1em;
+		}
+		
+		.docName
+		{
+			text-align:center;
+			color:Blue;
+			font-size:x-large;
+			
+		}
+		
+
