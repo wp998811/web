@@ -17,8 +17,5 @@ public partial class AdvancedSearch : System.Web.UI.Page
     {
 
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/wp
+
