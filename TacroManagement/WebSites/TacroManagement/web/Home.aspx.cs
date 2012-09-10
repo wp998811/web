@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,7 +14,7 @@ using System.Xml.Linq;
 using BLL;
 using Model;
 
-public partial class web_index : System.Web.UI.Page
+public partial class web_Home : System.Web.UI.Page
 {
     User userManage = new User();
     Project projectManage = new Project();
@@ -22,17 +22,17 @@ public partial class web_index : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(!IsPostBack)
+        if (!IsPostBack)
         {
             string userName = Session["UserName"].ToString();
             UserInfo userInfo = userManage.GetUserByName(userName);
             int userId = 0;
-            if(userInfo != null && userInfo.UserID != 0)
+            if (userInfo != null && userInfo.UserID != 0)
             {
                 userId = userInfo.UserID;
                 BindData(userId);
             }
-            
+
         }
     }
     protected void BindData(int userId)
@@ -41,10 +41,10 @@ public partial class web_index : System.Web.UI.Page
         IList<ProjectUserInfo> projectUserInfoList = projectUserManage.GetProjectUsersByUserId(userId);
         IList<ProjectInfo> projectInfoList = new List<ProjectInfo>();
 
-        foreach(ProjectUserInfo projectUserInfo in projectUserInfoList)
+        foreach (ProjectUserInfo projectUserInfo in projectUserInfoList)
         {
             ProjectInfo projectInfo = projectManage.GetProjectByNum(projectUserInfo.ProjectNum);
-            if(projectInfo != null)
+            if (projectInfo != null)
             {
                 projectInfoList.Add(projectInfo);
             }

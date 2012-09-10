@@ -1,13 +1,14 @@
-<%@ Page Language="C#" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="web_index" Title="无标题页" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="web_Home" Title="无标题页" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
+    <script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
     <script src="../bootstrap/js/jquery-1.8.1.min.js" type="text/javascript"></script>
 
-    
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div style="width:100%">
         <div style="width:40%;float:left;">
             <table class="table table-condensed">
@@ -120,3 +121,4 @@
         <div style="width:60%;float:right;"></div>
     </div>
 </asp:Content>
+

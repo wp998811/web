@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -117,6 +117,23 @@ namespace Model
             this.adminPhone = adminPhone;
         }
 
+        public RichSubTaskInfo(string projectNum, int taskId, string taskName, int period, string startTime,
+            string endTime, string product, string foreTask, string resource,
+            int isRemind, string taskState)
+        {
+            this.projectNum = projectNum;
+            this.taskId = taskId;
+            this.taskName = taskName;
+            this.period = period;
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.product = product;
+            this.foreTask = foreTask;
+            this.resource = resource;
+            this.isRemind = isRemind;
+            this.taskState = taskState;
+        }
+
         public string AdminName
         {
             get { return adminName; }
@@ -136,7 +153,5 @@ namespace Model
             get { return adminPhone; }
             set { adminPhone = value; }
         }
-
-
     }
 }

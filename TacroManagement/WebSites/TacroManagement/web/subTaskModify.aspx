@@ -76,7 +76,8 @@
             <tr>
                 <td>负责人</td>
                 <td>
-                    <asp:DropDownList runat="Server" ID="ddlTaskManager" ></asp:DropDownList>
+                    <asp:DropDownList runat="Server" ID="ddlTaskManager" 
+                        onselectedindexchanged="ddlTaskManager_SelectedIndexChanged" ></asp:DropDownList>
                 </td>
             </tr>
             <tr>
@@ -103,4 +104,3 @@
         </table>
     </div>
 </asp:Content>
-

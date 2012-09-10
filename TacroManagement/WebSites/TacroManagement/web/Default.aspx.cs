@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -11,14 +11,16 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 
-public partial class AdvancedSearch : System.Web.UI.Page
+public partial class web_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
 
     }
-<<<<<<< HEAD
+    protected void btnOk_Click(object sender, EventArgs e)
+    {
+        Session["userName"] = "user1";
+        string url = "Home.aspx";
+        Response.Redirect(url);
+    }
 }
-=======
-}
->>>>>>> origin/wp
