@@ -16,6 +16,8 @@ namespace Model
         private string beginTime;
         private string endTime;
 
+        
+
         public ProjectInfo()
         {
 
@@ -87,7 +89,11 @@ namespace Model
         }
 
         public string EndTime
+<<<<<<< HEAD
         {
+=======
+        {
+>>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
             get { return endTime; }
             set { endTime = value; }
         }
@@ -97,6 +103,9 @@ namespace Model
         //    get { return this.endTime; }
         //    set { this.endTime = EndTime; }
         //}
+<<<<<<< HEAD
 
+=======
+>>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
     }
 }

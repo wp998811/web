@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%@ Page Language="C#" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="web_index" Title="无标题页" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
@@ -39,6 +40,54 @@
             	</tr>
                 <asp:Repeater runat="Server" ID="rpProjectState">
                 <ItemTemplate>
+=======
+﻿<%@ Page Language="C#" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="web_index" Title="无标题页" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<div style="width: 100%;">
+        <div style="width: 100%; height: 10px;">
+        </div>
+        <div style="width: 100%">
+            <div style="width: 40%; float: left;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="30" background="../images/tab_05.gif">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="12" height="30">
+                                        <img src="../images/tab_03.gif" width="12" height="30" />
+                                    </td>
+                                    <td>
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="46%" valign="middle">
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td width="5%">
+                                                                <div align="center">
+                                                                    <img src="../images/tb.gif" width="16" height="16" /></div>
+                                                            </td>
+                                                            <td width="90%" class="STYLE1">
+                                                                <span class="STYLE3">待办事宜</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td width="54%">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="16">
+                                        <img src="../images/tab_07.gif" width="16" height="30" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+>>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
                     <tr>
                         <td>
                             <asp:Label runat="Server" ID="lblAffairDes" Text='<%#Eval("AffairDescription") %>'></asp:Label>
@@ -120,4 +169,8 @@
         <div style="width:60%;float:right;"></div>
     </div>
 </asp:Content>
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf

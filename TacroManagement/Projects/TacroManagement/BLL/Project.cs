@@ -84,6 +84,7 @@ namespace BLL
                 return true;
             if ("0" == projectInfo.ProjectNum)
                 return true;
+<<<<<<< HEAD
             return false;
         }
 
@@ -128,5 +129,9 @@ namespace BLL
             }
             return dataTable;
         }
+=======
+            return false;
+        }
+>>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
     }
 }
