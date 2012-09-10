@@ -11,10 +11,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
-<<<<<<< HEAD
 using System.Text;
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
 using BLL;
 using Model;
 
@@ -24,13 +21,9 @@ public partial class web_projectInfo : System.Web.UI.Page
     ProjectUser projectUserManage = new ProjectUser();
     User userManage = new User();
     SubTask subTaskManage = new SubTask();
-<<<<<<< HEAD
     Department departmentManage = new Department();
     public static string projectNum = "";
     public string strProgress = "";
-=======
-    public static string projectNum = "";
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
 
 
     protected void Page_Load(object sender, EventArgs e)
@@ -43,10 +36,8 @@ public partial class web_projectInfo : System.Web.UI.Page
                 BindProjectInfo(projectNum);
                 BindSubTasks(projectNum);
                 BindProjectUser(projectNum);
-<<<<<<< HEAD
                 SetProgress(projectNum);
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
+
             }
         }
     }
@@ -81,14 +72,11 @@ public partial class web_projectInfo : System.Web.UI.Page
                 tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, subTaskInfo.StartTime, subTaskInfo.EndTime,
                      subTaskInfo.Product, subTaskInfo.ForeTask, subTaskInfo.Resource, subTaskInfo.IsRemind, subTaskInfo.TaskState, 
                      userInfo.UserName, userInfo.UserEmail, userInfo.UserPhone));
-<<<<<<< HEAD
             else
             {
                 tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, subTaskInfo.StartTime, subTaskInfo.EndTime,
                      subTaskInfo.Product, subTaskInfo.ForeTask, subTaskInfo.Resource, subTaskInfo.IsRemind, subTaskInfo.TaskState));
             }
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
         }
         //dlSubTask.DataSource = tasks;
         //dlSubTask.DataBind();
@@ -99,7 +87,6 @@ public partial class web_projectInfo : System.Web.UI.Page
     private void BindProjectUser(string projectNum)
     {
         IList<UserInfo> userInfoList = projectUserManage.GetProjectUserInfosByProjectNum(projectNum);
-<<<<<<< HEAD
         
 
         gvUser.DataSource = userInfoList;
@@ -130,11 +117,6 @@ public partial class web_projectInfo : System.Web.UI.Page
         strProgress = sbList.ToString();
         string lblShow = rateI + "%";
         lblRate.Text = lblShow;
-=======
-
-        gvUser.DataSource = userInfoList;
-        gvUser.DataBind();
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
     }
     protected void gvSubTask_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -169,7 +151,6 @@ public partial class web_projectInfo : System.Web.UI.Page
         if (e.CommandName == "del")
         {
             int id = Convert.ToInt32(e.CommandArgument.ToString());
-<<<<<<< HEAD
             ProjectInfo projectInfo = projectManage.GetProjectByNum(projectNum);
             if(id == projectInfo.ProjectAdminID)
             {
@@ -186,8 +167,6 @@ public partial class web_projectInfo : System.Web.UI.Page
                     subTaskManage.UpdateSubTask(subTaskInfo);
                 }
             }
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
             if (projectUserManage.DeleteProjectUserByProjectNumAndUserID(projectNum, id) > 0)
             {
                 Response.Write("<script language='javascript'>alert('删除成功')</script>");
@@ -196,7 +175,6 @@ public partial class web_projectInfo : System.Web.UI.Page
             }
         }
     }
-<<<<<<< HEAD
     protected void lbtnAddUser_Command(object sender, CommandEventArgs e)
     {
         if(e.CommandName == "add")
@@ -223,6 +201,4 @@ public partial class web_projectInfo : System.Web.UI.Page
                 Response.Write("<script language='javascript'>alert('添加出错！')</script>");
         }
     }
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
 }

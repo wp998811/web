@@ -26,13 +26,9 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_PROJECT = "insert into project(ProjectName, ProjectAdminID, ProjectDescription, ProjectType, ProjectClientName, BeginTime, EndTime) values(@ProjectName, @ProjectAdminID, @ProjectDescription, @ProjectType, @ProjectClientName, @BeginTime, @EndTime)";
         private const string SQL_DELETE_PROJECT = "delete from project where ProjectNum=@ProjectNum";
-<<<<<<< HEAD
 
         private const string SQL_UPDATE_PROJECT = "update project set ProjectName=@ProjectName, ProjectAdminID=@ProjectAdminID, ProjectDescription=@ProjectDescription, ProjectType=@ProjectType, ProjectClientName=@ProjectClientName, BeginTime=@BeginTime, EndTime=@EndTime where ProjectNum=@ProjectNum";
 
-=======
-        private const string SQL_UPDATE_PROJECT = "update project set ProjectName=@ProjectName, ProjectAdminID=@ProjectAdminID, ProjectDescription=@ProjectDescription, ProjectType=@ProjectType, ProjectClientName=@ProjectClientName, BeginTime=@BeginTime, EndTime=@EndTime where ProjectNum=@ProjectNum";
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
         private const string SQL_SELECT_PROJECTS = "select * from project";
         private const string SQL_SELECT_PROJECT_BY_NUM = "select * from project where ProjectNum=@ProjectNum";
         private const string SQL_SELECT_PROJECT_BY_ADMIN_ID = "select * from project where ProjectAdminID=@ProjectAdminID";

@@ -80,18 +80,12 @@
             <div width="100%">
                 <span> <strong>项目成员</strong> </span><i class="icon-plus-sign"></i>
                 <a  data-toggle="modal" href="#myModal" data-keyboard="false" data-backdrop="false">添加</a>
-<<<<<<< HEAD
-                <div class="modal hide  fade" id="myModal">
-=======
                 <div class="modal hide fade" id="myModal">
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
                     <div class="modal-header">
                         <a class="close" data-dismiss="modal">×</a>
                         <h3>新增项目员工</h3>
                     </div>
-                    <div class="modal-body" style="margin:0px auto">
-<<<<<<< HEAD
-               
+                    <div class="modal-body" style="margin:0px auto">            
                         <asp:DropDownList  runat="server" ID="ddlUser"></asp:DropDownList>
                     </div>
                     <div class="modal-footer">
@@ -99,13 +93,6 @@
                         <asp:LinkButton class="btn btn-primary" ID="lbtnAddUser" runat="Server" 
                             CommandName="add" CausesValidation="false" Text="确定" 
                             oncommand="lbtnAddUser_Command"></asp:LinkButton>
-=======
-                        <asp:DropDownList runat="Server" ID="ddlDepartMent"></asp:DropDownList>
-                        <asp:DropDownList runat="server" ID="ddlUser"></asp:DropDownList>
-                    </div>
-                    <div class="modal-footer">
-                        <a data-dismiss="modal" href="#" class="btn">关闭</a> <a href="#" class="btn btn-primary">确定</a>
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
                     </div>
                 </div>
             </div>
@@ -132,7 +119,6 @@
                         </asp:TemplateField>  
                         </Columns>
                     </asp:GridView>
-<<<<<<< HEAD
                     
                     <div style="padding-top:10px;"></div>
                 <table class="table table-striped table-bordered table-condensed" cellspacing="0" cellpadding="0" border="0" style="width: 100%">
@@ -160,10 +146,6 @@
                             </tr>
                         </ItemTemplate>
                     </asp:Repeater>
-=======
-                <table cellspacing="0" cellpadding="0" border="0" style="width: 100%">
-                    
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
                 </table>
             </div>
         </div>
@@ -230,16 +212,9 @@
             <span> <strong>项目进度</strong> </span>
         </div>
         <div>
-<<<<<<< HEAD
             <div>时间进度：<asp:Label runat="server" ID="lblRate" Text=""></asp:Label></div>
             <div class="progress progress-success">
                 <%=strProgress %>
-=======
-            <div>时间进度</div>
-            <div class="progress progress-success">
-                <div class="bar" style="width: 80%;">
-                </div>
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
             </div>
         </div>
         

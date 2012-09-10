@@ -117,7 +117,6 @@ namespace Model
             this.adminPhone = adminPhone;
         }
 
-<<<<<<< HEAD
         public RichSubTaskInfo(string projectNum, int taskId, string taskName, int period, string startTime,
             string endTime, string product, string foreTask, string resource,
             int isRemind, string taskState)
@@ -135,8 +134,6 @@ namespace Model
             this.taskState = taskState;
         }
 
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
         public string AdminName
         {
             get { return adminName; }

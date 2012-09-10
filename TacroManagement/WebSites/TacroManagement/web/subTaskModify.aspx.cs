@@ -112,12 +112,10 @@ public partial class web_subTaskModify : System.Web.UI.Page
         else if (type == 2)
         {
             #region 添加子任务
-<<<<<<< HEAD
             ProjectInfo projectInfo = projectManage.GetProjectByNum(projectNum);
             lblProjectName.Text = projectInfo.ProjectName;
             lblSubTaskName.Text = "添加子任务";
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
+
             lblProjectNum.Text = projectNum;
             IList<UserInfo> userInfos = projectUserManage.GetProjectUserInfosByProjectNum(projectNum);
             ddlTaskManager.DataSource = userInfos;
@@ -147,13 +145,10 @@ public partial class web_subTaskModify : System.Web.UI.Page
         string taskProduct = txtProduct.Text;
         string taskForeTask = txtForeTask.Text;
         string taskResource = txtResource.Text;
-<<<<<<< HEAD
+
         int taskManager;
         //TODO
          taskManager = Convert.ToInt32(ddlTaskManager.SelectedValue);
-=======
-        int taskManager = Convert.ToInt32(ddlTaskManager.SelectedValue);
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
         //string taskManagerEmail = txtTaskManagerEmail.Text;
         //string taskManagerPhone = txtTaskManegerPhone.Text;
         int taskIsRemind = 0;
@@ -214,11 +209,9 @@ public partial class web_subTaskModify : System.Web.UI.Page
         string url = "projectInfo.aspx?projectNum=" + num;
         Response.Redirect(url);
     }
-<<<<<<< HEAD
     protected void ddlTaskManager_SelectedIndexChanged(object sender, EventArgs e)
     {
 
     }
-=======
->>>>>>> e9c41c9142fc706bc282ac57b52204e5e3e806cf
+
 }
