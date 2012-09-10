@@ -58,22 +58,6 @@ namespace BLL
             return userInfos;
         }
 
-        //获取项目所有员工的信息
-        public IList<UserInfo> GetProjectUserInfosByProjectNum(string projectNum)
-        {
-            IList<UserInfo> userInfos = new List<UserInfo>();
-            IList<ProjectUserInfo> projectUsers = GetProjectUsersByProjectNum(projectNum);
-            foreach(ProjectUserInfo projectUserInfo in projectUsers)
-            {
-                UserInfo userInfo = userMange.GetUserById(projectUserInfo.UserId);
-                if(userInfo != null)
-                {
-                    userInfos.Add(userInfo);
-                }
-            }
-            return userInfos;
-        }
-
         public IList<ProjectUserInfo> GetProjectUsersByUserId(int userId)
         {
             return dal.GetProjectUsersByUserId(userId);
