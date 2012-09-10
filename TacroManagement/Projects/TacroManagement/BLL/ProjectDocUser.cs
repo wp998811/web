@@ -53,6 +53,7 @@ namespace BLL
         {
             return dal.GetProjectDocUserById(id);
         }
+
          public ProjDocUserInfo GetProjectDocUserByProjectDocUser(int docID,int userID)
         {
             return dal.GetProjectDocUserByProjectDocUser(docID, userID);

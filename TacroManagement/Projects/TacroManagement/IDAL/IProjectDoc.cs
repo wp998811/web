@@ -20,7 +20,6 @@ namespace IDAL
         IList<ProjectDocInfo> GetProjectDocs(string projectDocCate, string projectDocName, string projectDocKey
             , int projectDocTaskId, int uploadUserId, string uploadTime);
         IList<ProjectDocInfo> GetProjectDocBySearchCondition(string selectCondition);
-        
 
     }
 }

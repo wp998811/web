@@ -116,5 +116,15 @@ namespace BLL
             }
             return dataTable;
         }
+
+        //判断项目是否为空
+        public bool IsNullOrEmpty(ProjectInfo projectInfo)
+        {
+            if (null == projectInfo)
+                return true;
+            if ("0" == projectInfo.ProjectNum)
+                return true;
+            return false;
+        }
     }
 }

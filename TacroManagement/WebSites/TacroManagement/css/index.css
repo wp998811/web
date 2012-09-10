@@ -16,9 +16,7 @@
             font-size: 12px;
             color: #FFFFFF;
             float:left;
-    width: 101px;
-    height: 19px;
-}
+        }
         .STYLE2
         {
             font-size: 9px;
@@ -55,8 +53,7 @@
             color: white;
             font-family: Webdings;
             font-size: 9pt;
-        }
-        
+        }   
         a:link,a:visited
         {
 			text-decoration:none;  /*超链接无下划线*/

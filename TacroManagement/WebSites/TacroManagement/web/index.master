@@ -1,5 +1,4 @@
 ﻿<%@ Master Language="C#" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <script runat="server">
@@ -706,7 +705,6 @@
                         <td width="100%" align="left" valign="top">                  
                             <div>
                                 <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                                <iframe src="../projectList.aspx" name="mainFrame" id="mainFrame" height="100%" width="100%" frameborder="0"/>
                                 </asp:ContentPlaceHolder>
                             </div>
                         </td>

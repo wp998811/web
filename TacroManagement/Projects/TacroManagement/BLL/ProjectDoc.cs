@@ -39,10 +39,12 @@ namespace BLL
         {
             return dal.GetProjectDocsByTaskId(taskId);
         }
-          public ProjectDocInfo GetProjectDocByName(string docName)
+
+        public ProjectDocInfo GetProjectDocByName(string docName)
         {
             return dal.GetProjectDocByName(docName);
         }
+
         public IList<ProjectDocInfo> GetProjectDocsByUpLoadUserId(int userId)
         {
             return dal.GetProjectDocsByUpLoadUserId(userId);

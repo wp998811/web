@@ -20,7 +20,6 @@ namespace MySQLDAL
         private const string PARM_DOC_NAME = "@DocName";
         private const string PARM_DOC_KEY = "@DocKey";
         private const string PARM_DOC_DESCRIPTION = "@DocDescription";
-        private const string PARM_DOC_URL = "@DocUrl";
         private const string PARM_UPLOADPATH = "@UploadPath";
         private const string PARM_SAVEPATH = "@SavePath";
         private const string PARM_DOC_PERMISSION = "@DocPermission";
