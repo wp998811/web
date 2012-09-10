@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.Text;
 using BLL;
 using Model;
 
@@ -20,7 +21,9 @@ public partial class web_projectInfo : System.Web.UI.Page
     ProjectUser projectUserManage = new ProjectUser();
     User userManage = new User();
     SubTask subTaskManage = new SubTask();
+    Department departmentManage = new Department();
     public static string projectNum = "";
+    public string strProgress = "";
 
 
     protected void Page_Load(object sender, EventArgs e)
@@ -33,6 +36,7 @@ public partial class web_projectInfo : System.Web.UI.Page
                 BindProjectInfo(projectNum);
                 BindSubTasks(projectNum);
                 BindProjectUser(projectNum);
+                SetProgress(projectNum);
             }
         }
     }
@@ -67,6 +71,11 @@ public partial class web_projectInfo : System.Web.UI.Page
                 tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, subTaskInfo.StartTime, subTaskInfo.EndTime,
                      subTaskInfo.Product, subTaskInfo.ForeTask, subTaskInfo.Resource, subTaskInfo.IsRemind, subTaskInfo.TaskState, 
                      userInfo.UserName, userInfo.UserEmail, userInfo.UserPhone));
+            else
+            {
+                tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, subTaskInfo.StartTime, subTaskInfo.EndTime,
+                     subTaskInfo.Product, subTaskInfo.ForeTask, subTaskInfo.Resource, subTaskInfo.IsRemind, subTaskInfo.TaskState));
+            }
         }
         //dlSubTask.DataSource = tasks;
         //dlSubTask.DataBind();
@@ -77,9 +86,36 @@ public partial class web_projectInfo : System.Web.UI.Page
     private void BindProjectUser(string projectNum)
     {
         IList<UserInfo> userInfoList = projectUserManage.GetProjectUserInfosByProjectNum(projectNum);
+        
 
         gvUser.DataSource = userInfoList;
         gvUser.DataBind();
+
+        rpUserList.DataSource = userInfoList;
+        rpUserList.DataBind();
+
+        //绑定用户ddlUser
+        IList<UserInfo> userInfos = userManage.GetUsers();
+        ddlUser.DataTextField = "UserName";
+        ddlUser.DataValueField = "UserID";
+
+        ddlUser.DataSource = userInfos;
+        ddlUser.DataBind();
+    }
+
+    private void SetProgress(string num)
+    {
+        int timeLength = projectManage.GetProjectTimeLength(num);
+        int timeSpare = projectManage.GetProjectSpareTime(num);
+        float rateF = (float)timeSpare / (float)timeLength;
+        rateF *= 100;
+        int rateI = (int)rateF;
+        StringBuilder sbList = new StringBuilder();
+        string str = "<div class=\"bar\" style=\"width: {0}%;\"></div>";
+        sbList.Append(string.Format(str, rateI.ToString()));
+        strProgress = sbList.ToString();
+        string lblShow = rateI + "%";
+        lblRate.Text = lblShow;
     }
     protected void gvSubTask_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -114,12 +150,54 @@ public partial class web_projectInfo : System.Web.UI.Page
         if (e.CommandName == "del")
         {
             int id = Convert.ToInt32(e.CommandArgument.ToString());
+            ProjectInfo projectInfo = projectManage.GetProjectByNum(projectNum);
+            if(id == projectInfo.ProjectAdminID)
+            {
+                Response.Write("<script language='javascript'>alert('不能删除项目负责人！')</script>");
+                return;
+            }
+            IList<SubTaskInfo> subTaskInfos = subTaskManage.GetSubTasksByProjectNum(projectNum);
+            foreach(SubTaskInfo subTaskInfo in subTaskInfos)
+            {
+                if(subTaskInfo.UserId == id)
+                {
+                    //TODO 如果该子任务的负责人是要删除的用户，则将该项设为null
+                    subTaskInfo.UserId = -1;
+                    subTaskManage.UpdateSubTask(subTaskInfo);
+                }
+            }
             if (projectUserManage.DeleteProjectUserByProjectNumAndUserID(projectNum, id) > 0)
             {
                 Response.Write("<script language='javascript'>alert('删除成功')</script>");
                 string url = "projectInfo.aspx?projectNum=" + projectNum;
                 Response.Redirect(url);
             }
+        }
+    }
+    protected void lbtnAddUser_Command(object sender, CommandEventArgs e)
+    {
+        if(e.CommandName == "add")
+        {
+            if (ddlUser.Items.Count == 0)
+                return;
+            int id = Convert.ToInt32(ddlUser.SelectedValue);
+            IList<UserInfo> userInfos = projectUserManage.GetProjectUserInfosByProjectNum(projectNum);
+            foreach(UserInfo userInfo in userInfos)
+            {
+                if(userInfo.UserID == id)
+                {
+                    Response.Write("<script language='javascript'>alert('该员工已经存在于该项目！')</script>");
+                    return;
+                }
+            }
+            ProjectUserInfo projectUser = new ProjectUserInfo(projectNum, id);
+            if(projectUserManage.InsertProjectUser(projectUser) > 0)
+            {
+                string url = "projectInfo.aspx?projectNum=" + projectNum;
+                Response.Redirect(url);
+            }
+            else
+                Response.Write("<script language='javascript'>alert('添加出错！')</script>");
         }
     }
 }

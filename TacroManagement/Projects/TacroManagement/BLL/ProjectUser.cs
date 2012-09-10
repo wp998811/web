@@ -12,9 +12,12 @@ namespace BLL
     public class ProjectUser
     {
         private static readonly IProjectUser dal = DALFactory.DataAccess.CreateProjectUser();
+
         User userMange = new User();
 
         #region
+
+
         public int InsertProjectUser(ProjectUserInfo projectUserInfo)
         {
             return dal.InsertProjectUser(projectUserInfo);
@@ -55,6 +58,7 @@ namespace BLL
             }
             return userInfos;
         }
+
 
         public IList<ProjectUserInfo> GetProjectUsersByUserId(int userId)
         {

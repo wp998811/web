@@ -97,5 +97,6 @@ namespace Model
         //    get { return this.endTime; }
         //    set { this.endTime = EndTime; }
         //}
+
     }
 }

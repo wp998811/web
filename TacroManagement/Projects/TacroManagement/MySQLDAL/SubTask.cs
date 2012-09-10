@@ -116,7 +116,6 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_REMIND_TIME, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_TASKID, MySqlDbType.Int32)
                 };
-
                 parms[0].Value = subTaskInfo.ProjectNum;
                 parms[1].Value = subTaskInfo.TaskName;
                 parms[2].Value = subTaskInfo.Period;
@@ -125,7 +124,10 @@ namespace MySQLDAL
                 parms[5].Value = subTaskInfo.Product;
                 parms[6].Value = subTaskInfo.ForeTask;
                 parms[7].Value = subTaskInfo.Resource;
-                parms[8].Value = subTaskInfo.UserId;
+                if (subTaskInfo.UserId == -1)
+                    parms[8].Value = DBNull.Value;
+                else
+                    parms[8].Value = subTaskInfo.UserId;
                 parms[9].Value = subTaskInfo.TaskState;
                 parms[10].Value = subTaskInfo.IsRemind;
                 parms[11].Value = subTaskInfo.RemindTime;
@@ -157,7 +159,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        subTask = new SubTaskInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetInt32(9), rdr.GetString(10), rdr.GetInt32(11), rdr.GetString(12));
+                        subTask = new SubTaskInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.IsDBNull(9)?0:rdr.GetInt32(9), rdr.GetString(10), rdr.GetInt32(11), rdr.GetString(12));
                     }
                     else
                         subTask = new SubTaskInfo();
@@ -182,7 +184,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        SubTaskInfo subTask = new SubTaskInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetInt32(9), rdr.GetString(10), rdr.GetInt32(11), rdr.GetString(12));
+                        SubTaskInfo subTask = new SubTaskInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.IsDBNull(9) ? 0 : rdr.GetInt32(9), rdr.GetString(10), rdr.GetInt32(11), rdr.GetString(12));
                         subTasks.Add(subTask);
                     }
                 }
@@ -206,7 +208,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        SubTaskInfo subTask = new SubTaskInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.GetInt32(9), rdr.GetString(10), rdr.GetInt32(11), rdr.GetString(12));
+                        SubTaskInfo subTask = new SubTaskInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8), rdr.IsDBNull(9) ? 0 : rdr.GetInt32(9), rdr.GetString(10), rdr.GetInt32(11), rdr.GetString(12));
                         subTasks.Add(subTask);
                     }
                 }

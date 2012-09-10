@@ -1,14 +1,20 @@
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 bin
 <<<<<<< HEAD
+<<<<<<< HEAD
 obj
 config
 
 =======
+=======
+>>>>>>> origin/MacGrady
 obj
 suo
 config
 
+<<<<<<< HEAD
+>>>>>>> origin/MacGrady
+=======
 >>>>>>> origin/MacGrady
 # mstest test results
 TestResults

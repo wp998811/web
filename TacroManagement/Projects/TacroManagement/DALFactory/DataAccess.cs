@@ -71,6 +71,8 @@ namespace DALFactory
             return (IDAL.IClinicalResource)Assembly.Load(path).CreateInstance(className);
         }
 
+
+
         public static IDAL.IClinicalContact CreateClinicalContact()
         {
             string className = path + ".Customer";

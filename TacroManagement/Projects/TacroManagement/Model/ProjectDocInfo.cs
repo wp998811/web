@@ -11,7 +11,6 @@ namespace Model
         private int taskId;
 
         private string projDocCate;
-
         private string docName;
         private string docKey;
         private string docDescription;

@@ -21,6 +21,5 @@ namespace IDAL
             , int projectDocTaskId, int uploadUserId, string uploadTime);
         IList<ProjectDocInfo> GetProjectDocBySearchCondition(string selectCondition);
 
-
     }
 }

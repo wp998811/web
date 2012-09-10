@@ -80,17 +80,20 @@
             <div width="100%">
                 <span> <strong>项目成员</strong> </span><i class="icon-plus-sign"></i>
                 <a  data-toggle="modal" href="#myModal" data-keyboard="false" data-backdrop="false">添加</a>
-                <div class="modal hide fade" id="myModal">
+                <div class="modal hide  fade" id="myModal">
                     <div class="modal-header">
                         <a class="close" data-dismiss="modal">×</a>
                         <h3>新增项目员工</h3>
                     </div>
                     <div class="modal-body" style="margin:0px auto">
-                        <asp:DropDownList runat="Server" ID="ddlDepartMent"></asp:DropDownList>
-                        <asp:DropDownList runat="server" ID="ddlUser"></asp:DropDownList>
+               
+                        <asp:DropDownList  runat="server" ID="ddlUser"></asp:DropDownList>
                     </div>
                     <div class="modal-footer">
-                        <a data-dismiss="modal" href="#" class="btn">关闭</a> <a href="#" class="btn btn-primary">确定</a>
+                        <a data-dismiss="modal" href="#" class="btn">关闭</a> 
+                        <asp:LinkButton class="btn btn-primary" ID="lbtnAddUser" runat="Server" 
+                            CommandName="add" CausesValidation="false" Text="确定" 
+                            oncommand="lbtnAddUser_Command"></asp:LinkButton>
                     </div>
                 </div>
             </div>
@@ -117,8 +120,33 @@
                         </asp:TemplateField>  
                         </Columns>
                     </asp:GridView>
-                <table cellspacing="0" cellpadding="0" border="0" style="width: 100%">
                     
+                    <div style="padding-top:10px;"></div>
+                <table class="table table-striped table-bordered table-condensed" cellspacing="0" cellpadding="0" border="0" style="width: 100%">
+                    <tr align="center">
+                        <td align="center">员工</td>
+                        <td align="center">电子邮件</td>
+                        <td align="center">电话</td>
+                        <td align="center"></td>
+                    </tr>
+                    <asp:Repeater runat="Server"  ID="rpUserList">
+                        <ItemTemplate>
+                            <tr align="center">
+                                <td align="center">
+                                    <asp:Label runat="Server" ID="lblRpUserName" Text='<%#Eval("UserName") %>'></asp:Label>
+                                </td>
+                                <td align="center">
+                                    <a><asp:Label runat="Server" ID="lblRpUserEmail" Text='<%#Eval("UserEmail") %>'></asp:Label></a>
+                                </td>
+                                <td align="center">
+                                    <asp:Label runat="Server" ID="lblRpUserPhone" Text='<%#Eval("UserPhone") %>'></asp:Label>
+                                </td>
+                                <td align="center">
+                                    <asp:LinkButton runat="Server" ID="lbtnRpDelete" CommandName="delete" Text="删除" CausesValidation="false" CCommandArgument='<%#Eval("UserID") %>'></asp:LinkButton>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                    </asp:Repeater>
                 </table>
             </div>
         </div>
@@ -185,10 +213,9 @@
             <span> <strong>项目进度</strong> </span>
         </div>
         <div>
-            <div>时间进度</div>
+            <div>时间进度：<asp:Label runat="server" ID="lblRate" Text=""></asp:Label></div>
             <div class="progress progress-success">
-                <div class="bar" style="width: 80%;">
-                </div>
+                <%=strProgress %>
             </div>
         </div>
         
