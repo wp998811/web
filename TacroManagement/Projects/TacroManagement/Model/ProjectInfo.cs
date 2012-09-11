@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,8 +15,6 @@ namespace Model
         private string projectClientName;
         private string beginTime;
         private string endTime;
-
-        
 
         public ProjectInfo()
         {
@@ -91,7 +89,7 @@ namespace Model
         public string EndTime
         {
             get { return endTime; }
-            set { endTime = value; }
+            set { this.endTime = value; }
         }
 
         //public string EndTime

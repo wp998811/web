@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,10 +13,7 @@ namespace BLL
     {
         private static readonly IProjectUser dal = DALFactory.DataAccess.CreateProjectUser();
         User userMange = new User();
-
-        #region
-
-
+        #region 
         public int InsertProjectUser(ProjectUserInfo projectUserInfo)
         {
             return dal.InsertProjectUser(projectUserInfo);
@@ -47,10 +44,10 @@ namespace BLL
         {
             IList<UserInfo> userInfos = new List<UserInfo>();
             IList<ProjectUserInfo> projectUsers = GetProjectUsersByProjectNum(projectNum);
-            foreach (ProjectUserInfo projectUserInfo in projectUsers)
+            foreach(ProjectUserInfo projectUserInfo in projectUsers)
             {
                 UserInfo userInfo = userMange.GetUserById(projectUserInfo.UserId);
-                if (userInfo != null)
+                if(userInfo != null)
                 {
                     userInfos.Add(userInfo);
                 }
@@ -68,6 +65,10 @@ namespace BLL
             return dal.GetProjectUserById(id);
         }
 
+         public ProjectUserInfo GetProjectUserByProjectUser(string projectNum,int userId)
+        {
+            return dal.GetProjectUserByProjectUser(projectNum, userId);
+        }
         #endregion
 
         //根据projectNum和userId删除projectUser
@@ -75,10 +76,9 @@ namespace BLL
         {
             IList<ProjectUserInfo> projectUserInfoList = GetProjectUsersByProjectNum(projectNum);
             int id = -1;
-
-            foreach (ProjectUserInfo projectUserInfo in projectUserInfoList)
+            foreach(ProjectUserInfo projectUserInfo in projectUserInfoList)
             {
-                if (projectUserInfo.UserId == userId)
+                if(projectUserInfo.UserId == userId)
                 {
                     id = projectUserInfo.ID;
                     break;
@@ -89,8 +89,6 @@ namespace BLL
                 return DeleteProjectUser(id);
             }
             return -1;
-
         }
-
     }
 }

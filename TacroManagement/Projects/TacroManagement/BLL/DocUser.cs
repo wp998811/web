@@ -35,6 +35,16 @@ namespace BLL
         }
 
         /// <summary>
+        /// 通过文档ID删除文档用户
+        /// </summary>
+        /// <param name="docId"></param>
+        /// <returns></returns>
+        public int DeleteDocUserByDocId(int docId)
+        {
+            return dal.DeleteDocUserByDocId(docId);
+        }
+
+        /// <summary>
         /// 更新文档用户
         /// </summary>
         /// <param name="docUserInfo"></param>
@@ -71,10 +81,15 @@ namespace BLL
         /// <param name="userID"></param>
         /// <param name="DocumentID"></param>
         /// <returns></returns>
-      public DocUserInfo GetDocUserByDocUser(int userID, int DocumentID)
+      public DocUserInfo GetDocUserByDocUser(int userID ,int DocumentID)
         {
             return dal.GetDocUserByDocUser(userID, DocumentID);
         }
+
+        public  IList<DocUserInfo>  GetDocUserByDocId(int docId)
+      {
+          return dal.GetDocUserByDocId(docId);
+      }
     
     
     }

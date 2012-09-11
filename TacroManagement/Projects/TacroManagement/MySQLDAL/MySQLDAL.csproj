@@ -57,7 +57,6 @@
     <Compile Include="ContactRecord.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerContact.cs" />
-    <Compile Include="CustomerProjContact.cs" />
     <Compile Include="CustomerProject.cs" />
     <Compile Include="DepartDocCate.cs" />
     <Compile Include="Department.cs" />

@@ -55,7 +55,6 @@ namespace BLL
         }
         #endregion
 
-        //通过userid获得该用户所在的项目组的项目动态
         public IList<AffairInfo> GetAffairsByUserID(int userID)
         {
             ProjectUser projectUserManage = new ProjectUser();

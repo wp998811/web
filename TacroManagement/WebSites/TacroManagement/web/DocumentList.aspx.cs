@@ -22,7 +22,8 @@ public partial class web_DocumentList : System.Web.UI.Page
     {
         string searchCondition = Request.QueryString["SearchCondition"];
         Document document = new Document();
-        DataTable documents = document.SearchDocument(searchCondition);
+        IList<DocumentInfo> documentInfos = document.GetDocumentBySearchCondition(searchCondition);
+        DataTable documents = document.GetDataTableByDocumentList(documentInfos);
         DocGridView.DataSource = documents;
         DocGridView.DataBind();
     }

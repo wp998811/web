@@ -13,7 +13,7 @@ namespace BLL
     {
         private static readonly IDocument dal = DALFactory.DataAccess.CreateDocument();
 
-        #region 
+        #region
         /// <summary>
         /// 新增文档
         /// </summary>
@@ -87,6 +87,11 @@ namespace BLL
         {
             return dal.GetDocumentBySearchCondition(selectCondition);
         }
+
+       public  IList<DocumentInfo> GetDocumentByLatelyTime(string latelyTime)
+        {
+            return dal.GetDocumentByLatelyTime(latelyTime);
+        }
 #endregion  
 
         /// <summary>
@@ -94,10 +99,11 @@ namespace BLL
         /// </summary>
         /// <param name="searchCondition"></param>
         /// <returns></returns>
-        public DataTable SearchDocument(string searchCondition)
+        public DataTable GetDataTableByDocumentList(IList<DocumentInfo> documentInfos)
         {
+
             DataTable dataTable = new DataTable();
-            DataColumn docIDColumn= new DataColumn("docID");
+            DataColumn docIDColumn = new DataColumn("docID");
             DataColumn docNameColumn = new DataColumn("名称");
             DataColumn docVersionColumn = new DataColumn("版本");
             DataColumn docCateColumn = new DataColumn("类别");
@@ -107,13 +113,11 @@ namespace BLL
 
             dataTable.Columns.Add(docIDColumn);
             dataTable.Columns.Add(docNameColumn);
-            dataTable.Columns.Add(docVersionColumn);    
+            dataTable.Columns.Add(docVersionColumn);
             dataTable.Columns.Add(docCateColumn);
             dataTable.Columns.Add(departColumn);
             dataTable.Columns.Add(uploadColumn);
             dataTable.Columns.Add(uploadTimeColumn);
-
-            IList<DocumentInfo> documentInfos = GetDocumentBySearchCondition(searchCondition); //查询语句
 
             for (int i = 0; i < documentInfos.Count; ++i)
             {
@@ -123,11 +127,11 @@ namespace BLL
                 dataRow["名称"] = documentInfo.DocName;
                 dataRow["版本"] = documentInfo.DocVersion;
                 DepartDocCate departDocCate = new DepartDocCate();
-                DepartDocCateInfo departDocCateInfo =departDocCate.GetDepartDocCateById(documentInfo.DocCategoryID);
+                DepartDocCateInfo departDocCateInfo = departDocCate.GetDepartDocCateById(documentInfo.DocCategoryID);
                 dataRow["类别"] = departDocCateInfo.CategoryName;
-                
+
                 Department department = new Department();
-                DepartmentInfo departmentInfo=department.GetDepartmentByID(departDocCateInfo.DepartID);
+                DepartmentInfo departmentInfo = department.GetDepartmentByID(departDocCateInfo.DepartID);
                 dataRow["所属部门"] = departmentInfo.DepartName;
 
                 User user = new User();
@@ -142,12 +146,12 @@ namespace BLL
 
         public string GetSearchCondition(string docName, string docVersion, string docKey, string DepertID, string docCategoryID, string uploadUserName, string updateTimeBegin, string updateTimeEnd)
         {
-            string condition ="";
+            string condition = "";
             if (!string.IsNullOrEmpty(docName))
             {
                 if (condition != "")
                 {
-                    condition  +=" AND ";
+                    condition += " AND ";
                 }
                 condition += " DocName LIKE '%" + docName + "%' ";
             }
@@ -232,15 +236,16 @@ namespace BLL
             return condition;
         }
 
-        public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertID,string docCategoryID, string docState, string docUrl,string docPermission,string userId)
+        public bool AddDocument(string docName, string docVersion, string docKey, string docDescription,string DepertID,string docCategoryID, string docState, string uploadPath,string savePath,string docPermission,string userId)
         {
             DocumentInfo documentInfo = new DocumentInfo();
             documentInfo.DocName = docName;
             documentInfo.DocVersion = docVersion;
             documentInfo.DocKey = docKey;
-            documentInfo.DocDescription = docDescription;          
+            documentInfo.DocDescription = docDescription;
             documentInfo.DocState = docState;
-            documentInfo.DocUrl = "Documents/" + docUrl;      
+            documentInfo.UploadPath =  uploadPath;
+            documentInfo.SavePath = savePath;
             documentInfo.UploadUserID = Convert.ToInt32(userId);
 
             //处理
@@ -268,12 +273,71 @@ namespace BLL
                 }
             }
 
-            int reslut =InsertDocument(documentInfo);
-            if (reslut ==1)
+
+            int reslut = InsertDocument(documentInfo);
+            if (reslut == 1)
             {
                 return true;
             }
             return false;
+        }
+
+        public bool isPremissionToDownload(int downloadPremission, int docID, int userID)
+        {
+            if (downloadPremission ==1)
+            {
+                return true;
+            }
+            User user = new User(); 
+            UserInfo userInfo = user.GetUserById(userID);
+            DocumentInfo documentInfo = GetDocumentById(docID);
+            if (downloadPremission ==2)
+            {
+                if (userInfo.DepartID == documentInfo.DepartID)
+                {
+                    return true;
+                }
+                return false;    
+            }
+            else
+            {
+                DocUser docUser = new DocUser();
+                DocUserInfo docUserInfo=docUser.GetDocUserByDocUser(userInfo.UserID,documentInfo.DocID);
+                if (docUserInfo.DocID == docID)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+        }
+
+        public void ChangePermission(int docID, int oldPermission , int newPremission, IList<int> userIdList)
+        {
+            if (oldPermission != 3 && newPremission !=3)
+            {
+                return;
+            }
+            DocUser docUer=new DocUser();
+            if (oldPermission == 3)
+            {
+                docUer.DeleteDocUserByDocId(docID);
+            }
+
+            if (newPremission ==3)
+            {
+                for (int i=0;i<userIdList.Count;++i)
+                {
+                    DocUserInfo docUserInfo=new DocUserInfo(docID,userIdList[i]);
+                    docUer.InsertDocUser(docUserInfo);
+                }  
+            }
+        }
+
+        public IList<DocumentInfo> GetDocumentLately()
+        {
+            string dateTime = DateTime.Today.AddDays(-7).ToString("yyyy-mm-dd");
+            return GetDocumentByLatelyTime(dateTime);
         }
     }
 }

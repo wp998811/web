@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 using Model;
 using IDAL;
-
 using DALFactory;
 using System.Data;
+
 
 
 namespace BLL
@@ -61,10 +61,10 @@ namespace BLL
         //项目负责人修改项目信息
         public bool ModifyProject(string projectNum, string clientName, string projectType, string projectDescription, string startTime, string endTime)
         {
-            if (string.IsNullOrEmpty(projectNum))
+            if(string.IsNullOrEmpty(projectNum))
                 return false;
             ProjectInfo projectInfo = dal.GetProjectByProjectNum(projectNum);
-            if (projectInfo == null)
+            if(projectInfo == null)
                 return false;
             projectInfo.ProjectClientName = clientName;
             projectInfo.ProjectType = projectType;
@@ -72,17 +72,6 @@ namespace BLL
             projectInfo.BeginTime = startTime;
             projectInfo.EndTime = endTime;
             if (dal.UpdateProject(projectInfo) == 1)
-                return true;
-            return false;
-
-        }
-
-        //判断项目是否为空
-        public bool IsNullOrEmpty(ProjectInfo projectInfo)
-        {
-            if (null == projectInfo)
-                return true;
-            if ("0" == projectInfo.ProjectNum)
                 return true;
             return false;
         }
@@ -127,6 +116,16 @@ namespace BLL
                 dataTable.Rows.Add(dataRow);
             }
             return dataTable;
+        }
+
+        //判断项目是否为空
+        public bool IsNullOrEmpty(ProjectInfo projectInfo)
+        {
+            if (null == projectInfo)
+                return true;
+            if ("0" == projectInfo.ProjectNum)
+                return true;
+            return false;
         }
     }
 }

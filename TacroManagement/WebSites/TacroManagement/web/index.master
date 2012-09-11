@@ -1,10 +1,5 @@
 ﻿<%@ Master Language="C#" %>
-
-
-
-<%--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">--%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <script runat="server">
 
@@ -381,10 +376,8 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-
                                                                                                     <td height="23">
                                                                                                         <div align="center">
-
                                                                                                             <img src="../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td height="23">
@@ -406,11 +399,9 @@
                                                                                                     <td height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
                                                                                                             <tr>
-
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
                                                                                                                     <span class="STYLE3">项目一览</span>
-
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -467,7 +458,7 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">上传文档</span>
+                                                                                                                    <span class="STYLE3"><a href="UploadDoc.aspx">上传文档</a></span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -482,18 +473,13 @@
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
-
-
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">搜索文档</span>
-
-
+                                                                                                                    <span class="STYLE3"><a href="Search.aspx">搜索文档</a></span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
                                                                                                     </td>
                                                                                                 </tr>
-                   
                                                                                             </table>
                                                                                         </td>
                                                                                     </tr>

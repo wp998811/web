@@ -29,7 +29,7 @@ namespace MySQLDAL
         private const string SQL_UPDATE_CUSTOMER = "update customer set UserID=@UserID,CustomerCity=@CustomerCity,CustomerType=@CustomerType,CustomerRank=@CustomerRank,CustomerName=@CustomerName,ProductRange=@ProductRange, TaxID=@TaxID, OrganCode=@OrganCode where CustomerID=@CustomerID";
         private const string SQL_SELECT_CUSTOMER = "select * from customer";
         private const string SQL_SELECT_CUSTOMER_BY_NAME = "select * from customer where CustomerName=@CustomerName";
-        private const string SQL_SELECT_CUSTOMER_BY_ID = "select * from user customer CustomerID=@CustomerID";
+        private const string SQL_SELECT_CUSTOMER_BY_ID = "select * from customer where CustomerID=@CustomerID";
 
         #region ICustomer 成员
 
@@ -53,7 +53,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_TAXID,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANCODE,MySqlDbType.VarChar,50)
                 };
-                parms[0].Value = customerInfo.UserID;
+                if (customerInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = customerInfo.UserID;
                 parms[1].Value = customerInfo.CustomerCity;
                 parms[2].Value = customerInfo.CustomerType;
                 parms[3].Value = customerInfo.CustomerRank;
@@ -114,7 +117,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANCODE,MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_CUSTOMERID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = customerInfo.UserID;
+                if (customerInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = customerInfo.UserID;
                 parms[1].Value = customerInfo.CustomerCity;
                 parms[2].Value = customerInfo.CustomerType;
                 parms[3].Value = customerInfo.CustomerRank;
@@ -147,7 +153,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        CustomerInfo customer = new CustomerInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
+                        CustomerInfo customer = new CustomerInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
                         customers.Add(customer);
                     }
                 }
@@ -176,7 +182,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CUSTOMER_BY_NAME, parm))
                 {
                     if (rdr.Read())
-                        customerInfo = new CustomerInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
+                        customerInfo = new CustomerInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
                     else
                         customerInfo = new CustomerInfo();
                 }
@@ -206,7 +212,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        customerInfo = new CustomerInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
+                        customerInfo = new CustomerInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
                     }
                     else
                         customerInfo = new CustomerInfo();

@@ -47,16 +47,15 @@
   <ItemGroup>
     <Compile Include="AdminInfo.cs" />
     <Compile Include="ClientInfo.cs" />
-    <Compile Include="DepartmentInfo.cs" />
     <Compile Include="ClinicalContactInfo.cs" />
     <Compile Include="ClinicalResourceInfo.cs" />
     <Compile Include="ContactInfo.cs" />
     <Compile Include="ContactRecordInfo.cs" />
     <Compile Include="CustomerContactInfo.cs" />
     <Compile Include="CustomerInfo.cs" />
-    <Compile Include="CustomerProjContactInfo.cs" />
     <Compile Include="CustomerProjectInfo.cs" />
     <Compile Include="DepartDocCateInfo.cs" />
+    <Compile Include="DepartmentInfo.cs" />
     <Compile Include="DocumentInfo.cs" />
     <Compile Include="DocUserInfo.cs" />
     <Compile Include="GoverContactInfo.cs" />

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +40,11 @@ namespace BLL
             return dal.GetProjectDocsByTaskId(taskId);
         }
 
+        public ProjectDocInfo GetProjectDocByName(string docName)
+        {
+            return dal.GetProjectDocByName(docName);
+        }
+
         public IList<ProjectDocInfo> GetProjectDocsByUpLoadUserId(int userId)
         {
             return dal.GetProjectDocsByUpLoadUserId(userId);
@@ -57,14 +62,15 @@ namespace BLL
         }
         #endregion
 
-        public bool AddProjectDoc(string taskId, string projDocCate, string docName, string docKey, string docDescription, string docUrl, string docPermission, string uploadUserId)
+        public bool AddProjectDoc(string taskId, string projDocCate, string docName, string docKey, string docDescription, string uploadPath,string savePath, string docPermission, string uploadUserId)
         {
             ProjectDocInfo projectDocInfo = new ProjectDocInfo();
             projectDocInfo.ProjDocCate = projDocCate;
             projectDocInfo.DocName = docName;
             projectDocInfo.DocKey = docKey;
             projectDocInfo.DocDescription = docDescription;
-            projectDocInfo.DocUrl = "ProjectDocs/"+docUrl;
+            projectDocInfo.UploadPath = uploadPath;
+            projectDocInfo.SavePath = savePath;
             projectDocInfo.UploadUserId = Convert.ToInt32(uploadUserId);
 
             if (!string.IsNullOrEmpty(docPermission))
@@ -219,6 +225,64 @@ namespace BLL
                 condition += " UploadTime <= '" + updateTimeEnd + "' ";
             }
             return condition;
+        }
+
+        public bool isPremissionToDownload(int downloadPremission, int docID, int userID)
+        {
+            if (downloadPremission == 1)
+            {
+                return true;
+            }
+            User user = new User();
+            UserInfo userInfo = user.GetUserById(userID);
+            ProjectDocInfo projectDocInfo = GetProjectDocById(docID);
+           
+
+            if (downloadPremission == 2)
+            {
+                SubTask subTask = new SubTask();
+                SubTaskInfo subTaskInfo = subTask.GetSubTaskById(projectDocInfo.TaskId);
+                ProjectUser projectUser = new ProjectUser();
+                ProjectUserInfo projectUserInfo = projectUser.GetProjectUserByProjectUser(subTaskInfo.ProjectNum, userInfo.UserID);
+                if (projectUserInfo.UserId == userInfo.UserID)
+                {
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                ProjectDocUser projectDocUser = new ProjectDocUser();
+                ProjDocUserInfo projDocUserInfo = projectDocUser.GetProjectDocUserByProjectDocUser(docID ,userInfo.UserID);
+                if (projDocUserInfo.ProjDocId == docID)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+        }
+
+        public void ChangePermission(int projDocID, int oldPermission, int newPremission, IList<int> userIdList)
+        {
+            if (oldPermission != 3 && newPremission != 3)
+            {
+                return;
+            }
+            ProjectDocUser projectDocUer = new ProjectDocUser();
+            if (oldPermission == 3)
+            {
+                projectDocUer.DeleteProjectDocUserByDocId(projDocID);
+            }
+
+            if (newPremission == 3)
+            {
+                for (int i = 0; i < userIdList.Count; ++i)
+                {
+                    ProjDocUserInfo projDocUserInfo = new ProjDocUserInfo(projDocID, Convert.ToString(userIdList[i]));
+                    projectDocUer.InsertProjDocUser(projDocUserInfo);
+                }
+            }
         }
 
     }

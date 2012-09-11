@@ -20,6 +20,11 @@ namespace Model
             this.docID = docID;
             this.UserID = UserID;
         }
+        public DocUserInfo(int docID, int UserID)
+        {
+            this.docID = docID;
+            this.UserID = UserID;
+        }
         public int Id
         {
             get { return id; }

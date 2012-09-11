@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
 
 using System.Collections.Generic;
 using BLL;
@@ -26,7 +27,7 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
             InitDocCate();
             InitProjectDoc();
         }
-  
+ 
     }
 
     private void InitProjectDoc()
@@ -118,8 +119,9 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
             string docCateID = DocCateIDText.Value;
 
             Document document = new Document();
-            string searchCondition = document.GetSearchCondition(docName, docVersion, docKey, departID, docCateID, uploadUserName, uploadTimeBegin, uploadTimeEnd);       
-            DataTable documents =  document.SearchDocument(searchCondition);
+            string searchCondition = document.GetSearchCondition(docName, docVersion, docKey, departID, docCateID, uploadUserName, uploadTimeBegin, uploadTimeEnd);
+            IList<DocumentInfo> documentInfos = document.GetDocumentBySearchCondition(searchCondition);
+            DataTable documents = document.GetDataTableByDocumentList(documentInfos);
 
             DataColumn subTaskColumn = new DataColumn("项目子任务");//与页面的GirdView一致
             documents.Columns.Add(subTaskColumn);
@@ -170,14 +172,19 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
 
         if (e.CommandName == "ExploreDocument")
         {
-            string path = Server.MapPath("./");
             if (isDocument)
-            { 
-                Response.Write("<script  language='javascript'> window.open('ExploreDoc.aspx?DocID=" + docID + "','_blank'); </script>");
-            }else
             {
-                Response.Write("<script  language='javascript'> window.open('ExploreProjectDoc.aspx?DocID=" + docID + "','_blank'); </script>");
-            }   
+                Document document = new Document();
+                DocumentInfo documentInfo = document.GetDocumentById(Convert.ToInt32(docID));
+                Response.Write("<script  language='javascript'> window.open('ExploreDocument.aspx?emotion=../" + documentInfo.SavePath + "&DocID=" + docID + "&DocumentCate=Document','_blank'); </script>");
+            }
+            else
+            {
+                ProjectDoc projectDoc = new ProjectDoc();
+                ProjectDocInfo projectDocInfo = projectDoc.GetProjectDocById(Convert.ToInt32(docID));
+                //Response.Write("<script  language='javascript'> window.open('ExploreProjectDoc.aspx?DocID=" + docID + "','_blank'); </script>");
+                Response.Redirect("ExploreDocument.aspx?emotion=../" + projectDocInfo.SavePath + "&DocID=" + docID + "&DocumentCate=ProjectDoc");
+            }
             //Response.Redirect("Search.aspx");
             //Server.Transfer("Default.aspx");
         }
@@ -190,14 +197,24 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
             {
                 Document document = new Document();
                 DocumentInfo documentInfo = document.GetDocumentById(Convert.ToInt32(docID));
+                if (!document.isPremissionToDownload(documentInfo.DocPermission, documentInfo.DocID, 1))
+                {
+                    Response.Write("<script   language=javascript> window.alert( '   下载权限不够，无法下载  '); </script>");
+                    return;
+                }
                 docName = documentInfo.DocName;
-                docUrl = documentInfo.DocUrl;
+                docUrl = documentInfo.UploadPath;
             }else
             {
                 ProjectDoc projectDoc = new ProjectDoc();
                 ProjectDocInfo projectDocInfo = projectDoc.GetProjectDocById(Convert.ToInt32(docID));
+                if (!projectDoc.isPremissionToDownload(projectDocInfo.DocPermission, projectDocInfo.ProjDocId, 1))
+                {
+                    Response.Write("<script   language=javascript> window.alert( '   下载权限不够，无法下载  '); </script>");
+                    return;
+                }
                 docName= projectDocInfo.DocName;
-                docUrl = projectDocInfo.DocUrl;
+                docUrl = projectDocInfo.UploadPath;
             }
 
             //获取后缀名
@@ -230,20 +247,33 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         else if (e.CommandName == "DeleteDocument")
         {
             int isDelete = 0;
+            string uploadPath = null;
+            string savePath = null;
             if (isDocument)
             {
                 Document document = new Document();
+                DocumentInfo documentInfo = document.GetDocumentById(Convert.ToInt32(docID));
+                uploadPath = documentInfo.UploadPath;
+                savePath = documentInfo.SavePath;
                 isDelete = document.DeleteDocument(Convert.ToInt32(docID));
             }
             else
             {
                 ProjectDoc projectDoc = new ProjectDoc();
+                
+                ProjectDocInfo projectDocInfo = projectDoc.GetProjectDocById(Convert.ToInt32(docID));
+
+                uploadPath = projectDocInfo.UploadPath;
+                savePath = projectDocInfo.SavePath;
                 isDelete = projectDoc.DeleteProjectDoc(Convert.ToInt32(docID));
 
             }
            
              if (isDelete == 1)
             {
+                string path = Server.MapPath(@"~/");
+                File.Delete(path + uploadPath);
+                File.Delete(path + savePath);
                 AdvancedSearchButton_Click(null, null);
                 Response.Write("<script   language=javascript> window.alert( '  删除成功  '); </script>");
                

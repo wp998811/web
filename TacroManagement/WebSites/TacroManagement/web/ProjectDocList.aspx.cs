@@ -21,7 +21,8 @@ public partial class web_ProjectDocList : System.Web.UI.Page
     {
         string searchCondition = Request.QueryString["SearchCondition"];
         Document document = new Document();
-        DataTable documents = document.SearchDocument(searchCondition);
+        IList<DocumentInfo> documentInfos = document.GetDocumentBySearchCondition(searchCondition);
+        DataTable documents = document.GetDataTableByDocumentList(documentInfos);
         DocGridView.DataSource = documents;
         DocGridView.DataBind();
     }
@@ -63,7 +64,7 @@ public partial class web_ProjectDocList : System.Web.UI.Page
             Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
             Response.AppendHeader("Content-Disposition", "attachment;filename=" + documentInfo.DocName);
             string path = Server.MapPath("~/");
-            Response.WriteFile(path + documentInfo.DocUrl);
+            Response.WriteFile(path + documentInfo.UploadPath);
             Response.End();
         }
 

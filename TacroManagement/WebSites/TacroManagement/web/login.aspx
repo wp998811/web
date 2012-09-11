@@ -29,7 +29,7 @@
             <td>
                 <table width="962" border="0" align="center" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td height="235" background="../images/login_03.gif">
+                        <td height="235" style="background-image:url(../images/login_03.gif)">
                             &nbsp;
                         </td>
                     </tr>
@@ -37,10 +37,10 @@
                         <td height="53">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td width="394" height="53" background="../images/login_05.gif">
+                                    <td width="394" height="53" style="background-image:url(../images/login_05.gif)">
                                         &nbsp;
                                     </td>
-                                    <td width="206" background="../images/login_06.gif">
+                                    <td width="206" style="background-image:url(../images/login_06.gif)">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td width="16%" height="25">
@@ -50,7 +50,8 @@
                                                 <td width="57%" height="25">
                                                     <div align="center">
                                                         <asp:TextBox runat="Server" type="text" style="width: 105px; height: 18px; background-color: #a3fa40;
-                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff"></asp:TextBox>
+                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff" 
+                                                            ID="txtUserName"></asp:TextBox>
                                                     </div>
                                                 </td>
                                                 <td width="27%" height="25">
@@ -64,19 +65,21 @@
                                                 </td>
                                                 <td height="25">
                                                     <div align="center">
-                                                        <asp:TextBox runat="Server" TextMode=Password  style="width: 105px; height: 18px; background-color: #a3fa40;
-                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff"></asp:TextBox>
+                                                        <asp:TextBox runat="Server" TextMode="Password" style="width: 105px; height: 18px; background-color: #a3fa40;
+                                                            border: solid 1px #7dbad7; font-size: 12px; color: #6cd0ff" 
+                                                            ID="txtPassword"></asp:TextBox>
                                                     </div>
                                                 </td>
                                                 <td height="25">
                                                     <div align="left">
-                                                        <a href="">
-                                                            <img src="../images/dl.gif" width="49" height="18" border="0"></a></div>
+                                                        <asp:ImageButton runat="server" style="width:49; height:18; border:0" 
+                                                            ImageUrl="~/images/dl.gif" ID="imgbtnLogin" onclick="imgbtnLogin_Click"/>
+                                                   </div>
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>
-                                    <td width="362" background="../images/login_07.gif">
+                                    <td width="362"  style="background-image:url(../images/login_07.gif)">
                                         &nbsp;
                                     </td>
                                 </tr>
@@ -84,7 +87,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td height="213" background="../images/login_08.gif">
+                        <td height="213" style="background-image:url(../images/login_08.gif)" >
                             &nbsp;
                         </td>
                     </tr>

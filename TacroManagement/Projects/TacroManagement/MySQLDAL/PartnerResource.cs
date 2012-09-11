@@ -27,10 +27,7 @@ namespace MySQLDAL
         private const string SQL_UPDATE_PARTNERRESOURCE = "UPDATE partnerresource SET UserID = @UserID, PartnerCity =@PartnerCity, OrganName =@OrganName, OrganIntro =@OrganIntro WHERE PartnerID = @PartnerID";
         private const string SQL_SELECT_PARTNERRESOURCE = "SELECT * FROM partnerresource";
         private const string SQL_SELECT_PARTNERRESOURCE_BY_ID = "SELECT * FROM partnerresource WHERE PartnerID = @PartnerID";
-
-
-
-
+        private const string SQL_SELECT_CONTACT_BY_PARTNERID = "select * from contact where ContactID  in (select ContactID from partnercontact where PartnerID=@PartnerID)";
 
         #endregion
 
@@ -55,7 +52,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200)
                 };
-                parms[0].Value = partnerResourceInfo.UserID;
+                if (partnerResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = partnerResourceInfo.UserID;
                 parms[1].Value = partnerResourceInfo.PartnerCity;
                 parms[2].Value = partnerResourceInfo.OrganName;
                 parms[3].Value = partnerResourceInfo.OrganIntro;
@@ -108,7 +108,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_PARTNERID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = partnerResourceInfo.UserID;
+                if (partnerResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = partnerResourceInfo.UserID;
                 parms[1].Value = partnerResourceInfo.PartnerCity;
                 parms[2].Value = partnerResourceInfo.OrganName;
                 parms[3].Value = partnerResourceInfo.OrganIntro;
@@ -138,7 +141,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        PartnerResourceInfo partnerResource = new PartnerResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        PartnerResourceInfo partnerResource = new PartnerResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         partnerResources.Add(partnerResource);
                     }
                 }
@@ -166,7 +169,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERRESOURCE_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                     else
                         partnerResourceInfo = new PartnerResourceInfo();
                 }
@@ -202,7 +205,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        PartnerResourceInfo partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        PartnerResourceInfo partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         partnerResources.Add(partnerResourceInfo);
                     }
                 }
@@ -214,6 +217,37 @@ namespace MySQLDAL
             return partnerResources;
 
         }
+
+        /// <summary>
+        /// 根据ID查找合作伙伴资源
+        /// </summary>
+        /// <param name="partnerResourceId"></param>
+        /// <returns></returns>
+        public IList<ContactInfo> GetContactsByPartnerResourceId(int partnerResourceId)
+        {
+            IList<ContactInfo> contactInfos = new List<ContactInfo>();
+
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_PARTNERID, MySqlDbType.Int32, 50);
+                parm.Value = partnerResourceId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CONTACT_BY_PARTNERID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        ContactInfo contactInfo = new ContactInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
+                        contactInfos.Add(contactInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return contactInfos;
+        }
+
         #endregion
     }
 }

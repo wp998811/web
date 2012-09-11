@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BLL")]
-[assembly: AssemblyCopyright("Copyright © 2012")]
+[assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -24,10 +24,10 @@ using System.Runtime.InteropServices;
 
 // 程序集的版本信息由下面四个值组成:
 //
-// 主版本
-// 次版本
-// 内部版本号
-// 修订号
+//      主版本
+//      次版本 
+//      内部版本号
+//      修订号
 //
 // 可以指定所有这些值，也可以使用“内部版本号”和“修订号”的默认值，
 // 方法是按如下所示使用“*”:

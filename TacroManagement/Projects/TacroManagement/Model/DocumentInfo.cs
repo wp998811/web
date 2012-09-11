@@ -16,7 +16,8 @@ namespace Model
         private int departID;       
         private int docCategoryID;
         private string docState;    
-        private string docUrl;
+        private string uploadPath;
+        private string savePath;
         private int docPermission;
         private int uploadUserID;
         private string uploadTime;
@@ -26,7 +27,7 @@ namespace Model
         {
         }
 
-        public DocumentInfo(int docID, string docName, string docVersion, string docDescription, string docKey, int departID, int docCategoryID, string docState, string docUrl, int docPermission, int uploadUserID, string uploadTime)
+        public DocumentInfo(int docID, string docName, string docVersion, string docDescription, string docKey, int departID, int docCategoryID, string docState, string uploadPath, string savePath, int docPermission, int uploadUserID, string uploadTime)
         {
             this.docID = docID;
             this.docName = docName;
@@ -36,7 +37,8 @@ namespace Model
             this.departID = departID;
             this.docCategoryID = docCategoryID;
             this.docState = docState;
-            this.docUrl = docUrl;
+            this.uploadPath = uploadPath;
+            this.savePath = savePath;
             this.docPermission = docPermission;
             this.uploadUserID = uploadUserID;
             this.uploadTime = uploadTime;
@@ -95,12 +97,17 @@ namespace Model
         }
      
 
-        public string DocUrl
+        public string UploadPath
         {
-            get { return docUrl; }
-            set { docUrl = value; }
+            get { return uploadPath; }
+            set { uploadPath = value; }
         }
-        
+
+        public string SavePath
+        {
+            get { return savePath; }
+            set { savePath = value; }
+        }
 
         public int DocPermission
         {

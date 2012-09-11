@@ -23,6 +23,8 @@ namespace MySQLDAL
         private const string SQL_UPDATE_CLINICALCONTACT = "update clinicalcontact set ClinicalID=@ClinicalID,ContactID=@ContactID where ID=@ID";
         private const string SQL_SELECT_CLINICALCONTACTS = "select * from clinicalcontact";
         private const string SQL_SELECT_CLINICALCONTACT_BY_ID = "select * from clinicalcontact where ID=@ID";
+        private const string SQL_SELECT_CLINICALCONTACT_BY_CONTACTID = "SELECT * FROM partnercontact WHERE ContactID = @ContactID";
+        private const string SQL_SELECT_CONTACTS_BY_CLINICAL_ID = "select * from contact where ContactID in (select ContactID from clinicalcontact where ClinicalID = @ClinicalID)";
 
         #region IClinicalContact 成员
 
@@ -40,8 +42,14 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CLINICALID,MySqlDbType.Int32,50),
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = clinicalContactInfo.ClinicalID;
-                parms[1].Value = clinicalContactInfo.ContactID;
+                if (clinicalContactInfo.ClinicalID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = clinicalContactInfo.ClinicalID;
+                if (clinicalContactInfo.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = clinicalContactInfo.ContactID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_CLINICALCONTACT, parms);
 
@@ -89,8 +97,14 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,50),
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = clinicalContactInfo.ClinicalID;
-                parms[1].Value = clinicalContactInfo.ContactID;
+                if (clinicalContactInfo.ClinicalID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = clinicalContactInfo.ClinicalID;
+                if (clinicalContactInfo.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = clinicalContactInfo.ContactID;
                 parms[2].Value = clinicalContactInfo.ID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_CLINICALCONTACT, parms);
@@ -116,7 +130,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ClinicalContactInfo clinicalContactInfo = new ClinicalContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        ClinicalContactInfo clinicalContactInfo = new ClinicalContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         clinicalContactInfos.Add(clinicalContactInfo);
                     }
                 }
@@ -127,6 +141,34 @@ namespace MySQLDAL
             }
             return clinicalContactInfos;
 
+        }
+
+        // <summary>
+        /// 根据联系人编号查找合作伙伴联系人
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ClinicalContactInfo GetClinicalContactByContactId(int contactId)
+        {
+            ClinicalContactInfo clinicalContactInfo = null;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_CONTACTID, MySqlDbType.Int32, 11);
+                parm.Value = contactId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CLINICALCONTACT_BY_CONTACTID, parm))
+                {
+                    if (rdr.Read())
+                        clinicalContactInfo = new ClinicalContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
+                    else
+                        clinicalContactInfo = new ClinicalContactInfo();
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return clinicalContactInfo;
         }
 
         /// <summary>
@@ -145,7 +187,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CLINICALCONTACT_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        clinicalContactInfo = new ClinicalContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        clinicalContactInfo = new ClinicalContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     else
                         clinicalContactInfo = new ClinicalContactInfo();
                 }
@@ -155,6 +197,34 @@ namespace MySQLDAL
                 Console.WriteLine(se.Message);
             }
             return clinicalContactInfo;
+        }
+
+        /// <summary>
+        /// 查找所有用户
+        /// </summary>
+        /// <returns></returns>
+        public IList<ContactInfo> GetContactsByClinicalID(int clinicalID)
+        {
+            IList<ContactInfo> contactInfos = new List<ContactInfo>();
+
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_CLINICALID, MySqlDbType.Int32, 50);
+                parm.Value = clinicalID;
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CONTACTS_BY_CLINICAL_ID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        ContactInfo contactInfo = new ContactInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
+                        contactInfos.Add(contactInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return contactInfos;
         }
 
         #endregion

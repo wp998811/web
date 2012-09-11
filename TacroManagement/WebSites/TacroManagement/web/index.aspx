@@ -1,4 +1,3 @@
-
 <%@ Page Language="C#" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="web_index" Title="无标题页" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
@@ -121,4 +120,3 @@
         <div style="width:60%;float:right;"></div>
     </div>
 </asp:Content>
-

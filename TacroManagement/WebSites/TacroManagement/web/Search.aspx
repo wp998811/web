@@ -1,15 +1,23 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="Search.aspx.cs" Inherits="web_Search" Title="Untitled Page" %>
+﻿<%@ Page Language="C#"  EnableEventValidation = "false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="Search.aspx.cs" Inherits="web_Search" Title="搜索" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
     <script type="text/javascript">
 </script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server" >
+<div style="float:right">
+<asp:LinkButton ID="ExportExcel" runat="server" onclick="ExportExcel_Click" >导出Excel</asp:LinkButton>
+</div>
+<div align="center">
+    <asp:Image ID="Image1" runat="server" Height="150px" 
+        ImageUrl="~/images/search.png" Width="450px" />
+</div>
     <div align="center">
-        <asp:TextBox ID="SearchText" runat="server"></asp:TextBox>
-        <asp:Button ID="SearchSubmit" runat="server" Text="查找" onclick="SearchSubmit_Click" 
-           /> 
+        <asp:TextBox ID="SearchText" runat="server" Height="27px" Width="266px" 
+            Font-Size="Larger"></asp:TextBox>
+        <asp:ImageButton ID="SearchSubmit" runat="server" onclick="SearchSubmit_Click" 
+            Height="30px" ImageUrl="~/images/searchButton.png"/>
         <asp:HyperLink ID="AdvancedSearch" runat="server" NavigateUrl="~/web/AdvancedSearch.aspx" 
             >高级查询</asp:HyperLink>  
             </div>

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net.Mail;
+using System.Timers;
 
 using BLL;
 using Model;
@@ -160,7 +162,7 @@ public partial class _Default : System.Web.UI.Page
                         FileUpload1.PostedFile.SaveAs(serverfilename);
                       //  this.Page.RegisterStartupScript("", "<script>alert('文件上传成功！');</script>");
                     }
-                    catch (Exception exc)
+                    catch
                     {
                     //    this.Page.RegisterStartupScript("", "<script>alert('文件上传失败！');</script>");
                     }
@@ -246,14 +248,99 @@ public partial class _Default : System.Web.UI.Page
     #endregion
     protected void Button1_Click(object sender, EventArgs e)
     {
-        Response.Clear();
-        Response.Buffer = true;
-        Response.ContentType = "text/xml/rmvb";
-        Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
-        Response.AppendHeader("Content-Disposition", "attachment;filename=exam.rmvb");
-        string path = Server.MapPath("./");
-        Response.WriteFile(path + "upload/b.rmvb");
-        Response.End();
-     
+
+
+        Document document = new Document();
+        document.GetDocumentLately();
+        //SendMail("fwangjie@gmail.com", "smtp.gmail.com", "fwangjie@gmail.com", "nbyx884483", "240791524@qq.com", "auto send message", "hello", Server.MapPath("~/")+"Documents/decision.docx");
+        //StartReminder();
+        //txtUserName.Text = "sdfeodicxe";
+        //GoverResourceInfo gof = new GoverResourceInfo();
+        //gof.GoverCity = "ningb";
+        //gof.OrganIntro = "good";
+        //gof.OrganName = "IT";
+   
+        //GoverResource gov = new GoverResource();
+        //gov.InsertGoverResource(gof);
+
+        //Response.Clear();
+        //Response.Buffer = true;
+        //Response.ContentType = "text/xml/rmvb";
+        //Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+        //Response.AppendHeader("Content-Disposition", "attachment;filename=exam.rmvb");
+        //string path = Server.MapPath("./");
+        //Response.WriteFile(path + "upload/b.rmvb");
+        //Response.End();
     }
+
+
+    /// 发送邮件
+    /// </summary>
+    /// <param name="arrFrom">发送邮件的邮箱地址</param>
+    /// <param name="mailHost">发送邮件的邮箱host</param>
+    /// <param name="mailUserName">发送邮件的邮箱用户名</param>
+    /// <param name="mailPassWord">发送邮件的邮箱密码</param>
+    /// <param name="mailTo">接收邮件的邮箱地址</param>
+    /// <param name="mailCC">抄送邮件的邮箱地址</param>
+    /// <param name="mailSubject">邮件的主题</param>
+    /// <param name="mailMessage">邮件的内容</param>
+    /// <param name="mailAttachmentURL">邮件的附件</param>
+    /// <returns></returns>
+    public bool SendMail(string mailFrom, string mailHost, string mailUserName, string mailPassWord, string mailTo, string mailSubject, string mailMessage, string mailAttachmentURL)
+
+    {
+
+        MailMessage emailMessage = new MailMessage();//邮件对象
+
+        string sToEmail = mailTo.Trim();
+        emailMessage = new MailMessage(mailFrom, sToEmail, mailSubject, mailMessage);
+        emailMessage.IsBodyHtml = true;
+        emailMessage.SubjectEncoding = System.Text.Encoding.Default;
+
+        emailMessage.BodyEncoding = System.Text.Encoding.Default;
+
+        if (mailAttachmentURL != null && mailAttachmentURL != "")
+
+            emailMessage.Attachments.Add(new Attachment(mailAttachmentURL));//附件
+        
+        //加入
+        //emailMessage.Headers.Add("X-Priority", "3");
+        //emailMessage.Headers.Add("X-MSMail-Priority", "Normal");
+        //emailMessage.Headers.Add("X-Mailer", "Microsoft Outlook Express 6.00.2900.2869");
+        //emailMessage.Headers.Add("X-MimeOLE", "Produced By Microsoft MimeOLE V6.00.2900.2869");
+
+        SmtpClient client = new SmtpClient();//邮件发送客户端smtp客户端对象
+        client.Host = mailHost;//邮件服务器
+        client.Port = 587;
+        System.Net.NetworkCredential Credential = new System.Net.NetworkCredential();
+        Credential.UserName = mailUserName;   //邮箱帐号,可以在资源文件中配置
+        Credential.Password = mailPassWord;//邮箱密码
+        client.Credentials = Credential;
+        client.EnableSsl = true;
+        try
+        {
+            client.Send(emailMessage);
+        }
+        catch (Exception e)
+        {
+            email.Text = e.Message;
+            return false;
+        }
+        return true;
+    }
+
+    public void StartReminder()
+    {
+
+        System.Timers.Timer aTimer = new System.Timers.Timer();
+        aTimer.Elapsed += new ElapsedEventHandler(TimedEvent);
+        aTimer.Interval = 10 * 1000;    //配置文件中配置的秒数
+        aTimer.Enabled = true;
+    }
+     private  void TimedEvent(object source,ElapsedEventArgs e)
+    {
+        //SendMail("fwangjie@gmail.com", "smtp.gmail.com", "fwangjie@gmail.com", "nbyx884483", "240791524@qq.com", "auto send message", "hello", Server.MapPath("~/") + "Documents/decision.docx");
+
+    }
+   
 }

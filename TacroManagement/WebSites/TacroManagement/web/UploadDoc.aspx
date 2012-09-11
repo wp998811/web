@@ -1,9 +1,7 @@
-﻿<%@ Page Language="C#"  Async="true" enableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="UploadDoc.aspx.cs" Inherits="web_UploadDoc" Title="Untitled Page" %>
-
+﻿<%@ Page Language="C#"  Async="true" enableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="UploadDoc.aspx.cs" Inherits="web_UploadDoc" Title="上传文档" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
 <script type="text/javascript">
-
 var xmlHttp=null;              
         function $(id)
         {
@@ -206,7 +204,7 @@ var xmlHttp=null;
         
         function setDocumentDoc()
         {
-            document.getElementById("<%=UserNameList.ClientID%>").style.display ="none";
+            document.getElementById("<%=UserNameListView.ClientID%>").style.display ="none";
             document.getElementById("<%=DownLoadPremission.ClientID%>").options[2].text = "本部门用户";
 
             document.getElementById("<%=项目名称.ClientID%>").style.display ="none";
@@ -231,11 +229,11 @@ var xmlHttp=null;
             var index = document.getElementById("<%=DownLoadPremission.ClientID%>").selectedIndex;
             if ( index == 3) 
             {
-              document.getElementById("<%=UserNameList.ClientID%>").style.display ="";
+              document.getElementById("<%=UserNameListView.ClientID%>").style.display ="";
             }
             else
             {
-             document.getElementById("<%=UserNameList.ClientID%>").style.display ="none";
+             document.getElementById("<%=UserNameListView.ClientID%>").style.display ="none";
             }
         }
 
@@ -329,6 +327,21 @@ function setSubTaskID(val)
         </asp:DropDownList>  
             <asp:CheckBoxList ID="UserNameList" runat="server">               
             </asp:CheckBoxList>
+            <asp:GridView ID="UserNameListView" runat="server"  AutoGenerateColumns="false" datakeynames="userID">
+                <Columns>
+                       <asp:TemplateField HeaderText="选择">   
+                          <HeaderStyle HorizontalAlign="Center" Height="25px" Width="45px" />   
+                          <ItemTemplate>   
+                             <asp:CheckBox ID="ckb" runat="server" />   
+                          </ItemTemplate>   
+                       </asp:TemplateField> 
+                       <asp:BoundField DataField="姓名" HeaderText="姓名" />
+                        <asp:BoundField DataField="用户类别" HeaderText="用户类别" />
+                        <asp:BoundField DataField="联系方式" HeaderText="联系方式" />
+                        <asp:BoundField DataField="所属部门" HeaderText="所属部门" />
+                        <asp:BoundField DataField="电子邮箱" HeaderText="电子邮箱" />
+                </Columns>
+            </asp:GridView>
     </div>
      <div>  
         <asp:Label ID="文档状态" runat="server" Text="文档状态"></asp:Label>   
@@ -340,30 +353,7 @@ function setSubTaskID(val)
     </div>
      <div>  
        <br />
-        
-    </div>
-        <asp:GridView ID="DocGridView" runat="server" CellPadding="4" 
-        ForeColor="#333333" GridLines="None" >
-        <RowStyle BackColor="#EFF3FB" />
-        <Columns>
-            <asp:BoundField DataField="名称" HeaderText="名称" />
-            <asp:BoundField DataField="版本" HeaderText="版本" />
-            <asp:BoundField DataField="类别" HeaderText="类别" />
-            <asp:BoundField DataField="所属部门" HeaderText="所属部门" />
-            <asp:BoundField DataField="项目子任务" HeaderText="项目子任务" />
-            <asp:BoundField DataField="上传人" HeaderText="上传人" />
-            <asp:BoundField DataField="上传时间" HeaderText="上传时间" />
-            <asp:HyperLinkField HeaderText="浏览" Text="浏览" />
-            <asp:HyperLinkField HeaderText="编辑" Text="编辑" />
-            <asp:HyperLinkField HeaderText="删除" Text="删除" />
-        </Columns>
-        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-        <EditRowStyle BackColor="#2461BF" />
-        <AlternatingRowStyle BackColor="White" />
-    </asp:GridView>
+       </div>
     <asp:Button ID="UploadButton" runat="server" Text="上传文档" 
         onclick="UploadButton_Click"  />
     <script type="text/javascript">setDocCate();</script>

@@ -44,7 +44,11 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_PROJECT_NUM, MySqlDbType.VarChar, 50)
                 };
                 parms[0].Value = affairInfo.AffairDescription;
-                parms[1].Value = affairInfo.AffairOperatorId;
+                if(affairInfo.AffairOperatorId == 0)
+                    parms[1].Value=DBNull.Value;
+                else
+                    parms[1].Value= affairInfo.AffairOperatorId;
+
                 parms[2].Value = affairInfo.AffairTime;
                 parms[3].Value = affairInfo.ProjectNum;
 
@@ -87,7 +91,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_AFFAIRID, MySqlDbType.Int32)
                 };
                 parms[0].Value = affairInfo.AffairDescription;
-                parms[1].Value = affairInfo.AffairOperatorId;
+                if (affairInfo.AffairOperatorId == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = affairInfo.AffairOperatorId;
                 parms[2].Value = affairInfo.AffairTime;
                 parms[3].Value = affairInfo.ProjectNum;
                 parms[4].Value = affairInfo.AffairId;
@@ -110,7 +117,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
+                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
                         affairs.Add(affair);
                     }
                 }
@@ -133,7 +140,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
+                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
                         affairs.Add(affair);
                     }
                 }
@@ -156,7 +163,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
+                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
                         affairs.Add(affair);
                     }
                 }
@@ -179,7 +186,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
+                        AffairInfo affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
                         affairs.Add(affair);
                     }
                 }
@@ -202,7 +209,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
+                        affair = new AffairInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4));
                     }
                     else
                         affair = new AffairInfo();

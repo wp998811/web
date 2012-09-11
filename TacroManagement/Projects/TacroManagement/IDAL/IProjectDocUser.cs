@@ -11,11 +11,13 @@ namespace IDAL
     {
         int InsertProjectDocUser(ProjDocUserInfo projectDocInfo);
         int DeleteProjectDocUser(int id);
+        int DeleteProjectDocUserByDocId(int ProjDocId);
         int UpdateProjectDocUser(ProjDocUserInfo projectDocInfo);
 
         ProjDocUserInfo GetProjectDocUserById(int id);
         IList<ProjDocUserInfo> GetProjectDocUsers();
         IList<ProjDocUserInfo> GetProjectDocUserByDocId(int docId);
         IList<ProjDocUserInfo> GetProjectDocUserByUserId(int userId);
+        ProjDocUserInfo GetProjectDocUserByProjectDocUser(int docID, int userID);
     }
 }

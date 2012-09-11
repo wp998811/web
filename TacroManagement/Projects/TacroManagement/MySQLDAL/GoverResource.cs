@@ -29,9 +29,7 @@ namespace MySQLDAL
         private const string SQL_SELECT_GOVERRESOURCE = "SELECT * FROM goverresource";
         private const string SQL_SELECT_GOVERRESOURCE_BY_ID = "SELECT * FROM goverresource WHERE GoverID = @GoverID";
         private const string SQL_SELECT_GOVERRESOURCE_BY_ORGANNAME = "SELECT * FROM goverresource WHERE  OrganName = @OrganName";
-
-
-
+        private const string SQL_SELECT_CONTACT_BY_GOVERID = "select * from contact where ContactID  in (select ContactID from govercontact where GoverID=@GoverID)";
 
 
         #endregion
@@ -58,7 +56,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200)
                 };
-                parms[0].Value = goverResourceInfo.UserID;
+                if (goverResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = goverResourceInfo.UserID;
                 parms[1].Value = goverResourceInfo.GoverCity;
                 parms[2].Value = goverResourceInfo.OrganName;
                 parms[3].Value = goverResourceInfo.OrganIntro;
@@ -111,7 +112,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_GOVERID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = goverResourceInfo.UserID;
+                if (goverResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = goverResourceInfo.UserID;
                 parms[1].Value = goverResourceInfo.GoverCity;
                 parms[2].Value = goverResourceInfo.OrganName;
                 parms[3].Value = goverResourceInfo.OrganIntro;
@@ -141,7 +145,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         goverResources.Add(goverResource);
                     }
                 }
@@ -169,7 +173,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                     else
                         goverResourceInfo = new GoverResourceInfo();
                 }
@@ -197,7 +201,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE_BY_ORGANNAME, parm))
                 {
                     if (rdr.Read())
-                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                     else
                         goverResourceInfo = new GoverResourceInfo();
                 }
@@ -220,13 +224,13 @@ namespace MySQLDAL
             string sqlString;
             if (selectCondition == "")
             {
-                sqlString = "SELECT * FROM goverresouece ";
+                sqlString = "SELECT * FROM goverresource ";
             }
             else
             {
                 //sqlString = "SELECT goverresouece.GoverID,goverresouece.UserID,goverresouece.GoverCity,goverresouece.OrgonName,goverresouece.OrganIntro"
                 //    + " FROM goverresouece,govercontact,contact WHERE " + selectCondition;
-                sqlString = "SELECT * FROM goverresouece" + selectCondition;
+                sqlString = "SELECT * FROM goverresource where " + selectCondition;
             }
             IList<GoverResourceInfo> goverResources = new List<GoverResourceInfo>();
             try
@@ -235,7 +239,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         goverResources.Add(goverResource);
                     }
                 }
@@ -245,8 +249,38 @@ namespace MySQLDAL
                 Console.WriteLine(se.Message);
             }
             return goverResources;
-
         }
+
+        /// <summary>
+        /// 根据ID查找合作伙伴资源
+        /// </summary>
+        /// <param name="partnerResourceId"></param>
+        /// <returns></returns>
+        public IList<ContactInfo> GetContactsByGoverResourceId(int goverResourceId)
+        {
+            IList<ContactInfo> contactInfos = new List<ContactInfo>();
+
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_GOVERID, MySqlDbType.Int32, 50);
+                parm.Value = goverResourceId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CONTACT_BY_GOVERID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        ContactInfo contactInfo = new ContactInfo(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), rdr.GetString(8));
+                        contactInfos.Add(contactInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return contactInfos;
+        }
+
         #endregion
     }
 }

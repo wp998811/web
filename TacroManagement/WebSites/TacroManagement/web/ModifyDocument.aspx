@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Async ="true"  enableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="ModifyDocument.aspx.cs" Inherits="web_ModifyDocument" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" Async ="true"  enableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="ModifyDocument.aspx.cs" Inherits="web_ModifyDocument" Title="修改资料库文档" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 <script type="text/jscript">
@@ -106,11 +106,11 @@
             var index = document.getElementById("<%=DownLoadPremission.ClientID%>").selectedIndex;
             if ( index == 3) 
             {
-              document.getElementById("<%=UserNameList.ClientID%>").style.display ="";
+              document.getElementById("<%=UserNameListView.ClientID%>").style.display ="";
             }
             else
             {
-             document.getElementById("<%=UserNameList.ClientID%>").style.display ="none";
+             document.getElementById("<%=UserNameListView.ClientID%>").style.display ="none";
             }
         }
 </script>
@@ -157,8 +157,21 @@
              <asp:ListItem Value="2">本部门用户</asp:ListItem>
              <asp:ListItem Value="3">自定义用户</asp:ListItem>
         </asp:DropDownList>  
-            <asp:CheckBoxList ID="UserNameList" runat="server">               
-            </asp:CheckBoxList>
+        <asp:GridView ID="UserNameListView" runat="server"  AutoGenerateColumns="false" datakeynames="userID">
+                <Columns>
+                       <asp:TemplateField HeaderText="选择">   
+                          <HeaderStyle HorizontalAlign="Center" Height="25px" Width="45px" />   
+                          <ItemTemplate>   
+                             <asp:CheckBox ID="ckb" runat="server" />   
+                          </ItemTemplate>   
+                       </asp:TemplateField> 
+                       <asp:BoundField DataField="姓名" HeaderText="姓名" />
+                        <asp:BoundField DataField="用户类别" HeaderText="用户类别" />
+                        <asp:BoundField DataField="联系方式" HeaderText="联系方式" />
+                        <asp:BoundField DataField="所属部门" HeaderText="所属部门" />
+                        <asp:BoundField DataField="电子邮箱" HeaderText="电子邮箱" />
+                </Columns>
+            </asp:GridView>
     </div>
      <div>  
         <asp:Label ID="文档状态" runat="server" Text="文档状态"></asp:Label>   

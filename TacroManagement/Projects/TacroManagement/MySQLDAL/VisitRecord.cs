@@ -46,10 +46,16 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_RECORDTIME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = visitRecord.ContactID;
+                if (visitRecord.ContactID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = visitRecord.ContactID;
                 parms[1].Value = visitRecord.VisitDetail;
                 parms[2].Value = visitRecord.RecordTime;
-                parms[3].Value = visitRecord.UserID;
+                if (visitRecord.UserID == 0)
+                    parms[3].Value = DBNull.Value;
+                else
+                    parms[3].Value = visitRecord.UserID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_VISITRECORD, parms);
 
@@ -99,10 +105,16 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,50),
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = visitRecord.ContactID;
+                if (visitRecord.ContactID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = visitRecord.ContactID;
                 parms[1].Value = visitRecord.VisitDetail;
                 parms[2].Value = visitRecord.RecordTime;
-                parms[3].Value = visitRecord.UserID;
+                if (visitRecord.UserID == 0)
+                    parms[3].Value = DBNull.Value;
+                else
+                    parms[3].Value = visitRecord.UserID;
                 parms[4].Value = visitRecord.ID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_VISITRECORD, parms);
@@ -131,7 +143,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                     }
                     else
                         visitRecord = new VisitRecordInfo();
@@ -158,7 +170,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                         visitRecords.Add(visitRecord);
                     }
                 }
@@ -188,7 +200,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                         visitRecords.Add(visitRecord);
                     }
                 }
@@ -217,7 +229,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        VisitRecordInfo visitRecord = new VisitRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                         visitRecords.Add(visitRecord);
                     }
                 }
