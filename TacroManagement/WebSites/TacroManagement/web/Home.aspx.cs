@@ -19,6 +19,8 @@ public partial class web_Home : System.Web.UI.Page
     User userManage = new User();
     Project projectManage = new Project();
     ProjectUser projectUserManage = new ProjectUser();
+    SubTask subTaskManage = new SubTask();
+    Affair affairManage = new Affair();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -37,6 +39,26 @@ public partial class web_Home : System.Web.UI.Page
     }
     protected void BindData(int userId)
     {
+        //绑定项目动态rp
+        IList<AffairInfo> affairInfoList = affairManage.GetAffairsByUserID(userId);
+        IList<RichAffairInfo> richAffairInfoList = new List<RichAffairInfo>();
+        foreach(AffairInfo affairInfo in affairInfoList)
+        {
+            if(affairInfo != null && affairInfo.AffairId != 0)
+            {
+                ProjectInfo projectInfo = projectManage.GetProjectByNum(affairInfo.ProjectNum);
+                UserInfo userInfo = userManage.GetUserById(affairInfo.AffairOperatorId);
+                RichAffairInfo rAffairInfo = new RichAffairInfo(affairInfo.AffairId, affairInfo.AffairDescription, affairInfo.AffairTime, userInfo.UserName, projectInfo.ProjectName);
+                richAffairInfoList.Add(rAffairInfo);
+            }
+        }
+        rpProjectState.DataSource = richAffairInfoList;
+        rpProjectState.DataBind();
+        
+        //绑定待办事宜rp
+        IList<SubTaskInfo> subTaskInfoList = subTaskManage.GetSubTasksDescIsRemind(userId, 5);
+        rpTask.DataSource = subTaskInfoList;
+        rpTask.DataBind();
         //绑定项目管理rp
         IList<ProjectUserInfo> projectUserInfoList = projectUserManage.GetProjectUsersByUserId(userId);
         IList<ProjectInfo> projectInfoList = new List<ProjectInfo>();

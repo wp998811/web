@@ -22,6 +22,7 @@ public partial class web_projectInfo : System.Web.UI.Page
     User userManage = new User();
     SubTask subTaskManage = new SubTask();
     Department departmentManage = new Department();
+    Affair affairManage = new Affair();
     public static string projectNum = "";
     public string strProgress = "";
 
@@ -123,8 +124,18 @@ public partial class web_projectInfo : System.Web.UI.Page
         if(e.CommandName == "del")
         {
             int taskId = Convert.ToInt32(e.CommandArgument.ToString());
+            SubTaskInfo subTaskInfo = subTaskManage.GetSubTaskById(taskId);
             if(subTaskManage.DeleteSubTask(taskId) > 0)
             {
+                //添加项目动态
+                if(subTaskInfo != null && subTaskInfo.TaskId != 0)
+                {
+                    string des = "删除子任务：" + subTaskInfo.TaskName;
+                    AffairInfo affair = new AffairInfo(des, subTaskInfo.UserId, DateTime.Now.ToString(), projectNum);
+                    affairManage.InsertAffair(affair);
+                }
+                
+
                 Response.Write("<script language='javascript'>alert('删除成功')</script>");
                 string url = "projectInfo.aspx?projectNum=" + projectNum;
                 Response.Redirect(url);

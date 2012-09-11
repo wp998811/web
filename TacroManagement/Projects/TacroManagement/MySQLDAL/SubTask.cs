@@ -34,7 +34,7 @@ namespace MySQLDAL
         private const string SQL_GET_SUBTASKS = "select * from subtask";
         private const string SQL_GET_SUBTASK_BY_ID = "select * from subtask where TaskID=@TaskID";
         private const string SQL_GET_SUBTASKS_BY_PROJECT_NUM = "select * from subtask where ProjectNum=@ProjectNum";
-        private const string SQL_GET_SUBTASKS_BY_USERID = "select * from subtask where UserID=@UserID";
+        private const string SQL_GET_SUBTASKS_BY_USERID = "select * from subtask where UserID=@UserID ORDER BY EndTime ASC";
 
         #region ISubTask 成员
 
