@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 using Model;
 using IDAL;
@@ -53,5 +54,33 @@ namespace BLL
             return dal.GetAffairById(id);
         }
         #endregion
+
+        //通过userid获得该用户所在的项目组的项目动态
+        public IList<AffairInfo> GetAffairsByUserID(int userID)
+        {
+            ProjectUser projectUserManage = new ProjectUser();
+            IList<AffairInfo> affairInfoList = new List<AffairInfo>();
+            IList<ProjectUserInfo> projectUserInfoList = projectUserManage.GetProjectUsersByUserId(userID);
+
+            foreach(ProjectUserInfo projectUserInfo in projectUserInfoList)
+            {
+                //affairInfoList.AddRange(GetAffairsByProjectNumDes(projectUserInfo.ProjectNum));
+                IList<AffairInfo> list = GetAffairsByProjectNumDes(projectUserInfo.ProjectNum);
+
+                foreach(AffairInfo affairInfo in list)
+                {
+                    affairInfoList.Add(affairInfo);
+                }
+            }
+            var orderedList = affairInfoList.OrderBy(x => x.AffairTime).ToList();
+            return orderedList.ToList();
+        }
+
+        private static int SortA(AffairInfo a1, AffairInfo a2)
+        {
+            return a1.AffairTime.CompareTo(a2.AffairTime);
+        }
+
+
     }
 }

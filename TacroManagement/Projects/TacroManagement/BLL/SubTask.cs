@@ -49,5 +49,30 @@ namespace BLL
             return dal.GetSubTaskById(id);
         }
         #endregion
+
+        //获得该用户所负责的子任务中设置了自动提醒功能的未完成的子任务
+        //count为前几项，为0表示所有
+        public IList<SubTaskInfo> GetSubTasksDescIsRemind(int userID, int count)
+        {
+            IList<SubTaskInfo> tasks = GetSubTasksByUserId(userID);
+            IList<SubTaskInfo> taskUser = new List<SubTaskInfo>();
+
+            foreach(SubTaskInfo subTaskInfo in tasks)
+            {
+                if (subTaskInfo.IsRemind == 1)
+                {
+                    if (subTaskInfo.TaskState != "已完成" && subTaskInfo.TaskState != "已取消")
+                    {
+                        taskUser.Add(subTaskInfo);
+                    }
+                }
+                if(count != 0)
+                {
+                    if (taskUser.Count == count)
+                        break;
+                }
+            }
+            return taskUser;          
+        }
     }
 }
