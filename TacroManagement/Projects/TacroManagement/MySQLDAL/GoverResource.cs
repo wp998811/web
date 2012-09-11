@@ -56,7 +56,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200)
                 };
-                parms[0].Value = goverResourceInfo.UserID;
+                if (goverResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = goverResourceInfo.UserID;
                 parms[1].Value = goverResourceInfo.GoverCity;
                 parms[2].Value = goverResourceInfo.OrganName;
                 parms[3].Value = goverResourceInfo.OrganIntro;
@@ -109,7 +112,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_GOVERID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = goverResourceInfo.UserID;
+                if (goverResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = goverResourceInfo.UserID;
                 parms[1].Value = goverResourceInfo.GoverCity;
                 parms[2].Value = goverResourceInfo.OrganName;
                 parms[3].Value = goverResourceInfo.OrganIntro;
@@ -139,7 +145,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         goverResources.Add(goverResource);
                     }
                 }
@@ -167,7 +173,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                     else
                         goverResourceInfo = new GoverResourceInfo();
                 }
@@ -195,7 +201,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE_BY_ORGANNAME, parm))
                 {
                     if (rdr.Read())
-                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                     else
                         goverResourceInfo = new GoverResourceInfo();
                 }
@@ -233,7 +239,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        GoverResourceInfo goverResource = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         goverResources.Add(goverResource);
                     }
                 }

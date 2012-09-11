@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
 
 using System.Collections.Generic;
 using BLL;
@@ -22,21 +23,17 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         //初始化部门
         if (!IsPostBack)
         {
-            DocRadioButtonList.SelectedValue = "Document";
+          //  DocRadioButtonList.SelectedValue = "Document";
             InitDocCate();
             InitProjectDoc();
         }
-
-        //ProjectName.Visible = false;
-        //ProjectDocCate.Visible = false;
-        //SubTaskName.Visible = false;    
+ 
     }
 
     private void InitProjectDoc()
     {
         Project project = new Project();
         IList<ProjectInfo> projectInfos = project.GetProjects();
-
 
         ProjectName.Items.Clear();
         ProjectName.Items.Add(new ListItem("选择项目","0"));
@@ -57,6 +54,8 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
 
         SubTask subTask = new SubTask();
         IList<SubTaskInfo> subTaskInfos = subTask.GetSubTasksByProjectNum(ProjectName.SelectedValue);
+        SubTaskName.Items.Clear();
+        SubTaskName.Items.Add(new ListItem("选择子任务", "0"));
 
         for (int i = 0; i < subTaskInfos.Count; ++i)
         {
@@ -74,36 +73,36 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
 
     private void InitDocCate()
     {
-        //Department department = new Department();
-        //IList<DepartmentInfo> departmentInfos = department.GetDepartment();
-        //DepartName.Items.Clear();
-        //DepartName.Items.Add(new ListItem("选择部门", "0"));
-        //for (int i = 0; i < departmentInfos.Count; ++i)
-        //{
-        //    ListItem listItem = new ListItem();
-        //    listItem.Text = departmentInfos[i].DepartName;
-        //    listItem.Value = Convert.ToString(departmentInfos[i].DepartID);
-        //    DepartName.Items.Add(listItem);
-        //}
-        //if (DepartName.Items.Count <= 0)
-        //{
-        //    return;
-        //}
-        //DepartName.SelectedIndex = 0;
+        Department department = new Department();
+        IList<DepartmentInfo> departmentInfos = department.GetDepartments();
+        DepartName.Items.Clear();
+        DepartName.Items.Add(new ListItem("选择部门", "0"));
+        for (int i = 0; i < departmentInfos.Count; ++i)
+        {
+            ListItem listItem = new ListItem();
+            listItem.Text = departmentInfos[i].DepartName;
+            listItem.Value = Convert.ToString(departmentInfos[i].DepartID);
+            DepartName.Items.Add(listItem);
+        }
+        if (DepartName.Items.Count <= 0)
+        {
+            return;
+        }
+        DepartName.SelectedIndex = 0;
 
-        //DepartDocCate departDocCate = new DepartDocCate();
-        //IList<DepartDocCateInfo> departDocCateInfos = departDocCate.GetDepartDocCateByDepartId(DepartName.SelectedItem.Value);
-        //for (int i = 0; i < departDocCateInfos.Count; ++i)
-        //{
-        //    ListItem listItem = new ListItem();
-        //    listItem.Value = Convert.ToString(departDocCateInfos[i].Id);
-        //    listItem.Text = departDocCateInfos[i].CategoryName;
-        //    DocCate.Items.Add(listItem);
-        //}
-        //if (DocCate.Items.Count >= 1)
-        //{
-        //    DocCate.SelectedIndex = 0;
-        //}
+        DepartDocCate departDocCate = new DepartDocCate();
+        IList<DepartDocCateInfo> departDocCateInfos = departDocCate.GetDepartDocCateByDepartId(Convert.ToInt32(DepartName.SelectedItem.Value));
+        for (int i = 0; i < departDocCateInfos.Count; ++i)
+        {
+            ListItem listItem = new ListItem();
+            listItem.Value = Convert.ToString(departDocCateInfos[i].Id);
+            listItem.Text = departDocCateInfos[i].CategoryName;
+            DocCate.Items.Add(listItem);
+        }
+        if (DocCate.Items.Count >= 1)
+        {
+            DocCate.SelectedIndex = 0;
+        }
     }
     protected void AdvancedSearchButton_Click(object sender, EventArgs e)
     {
@@ -117,11 +116,13 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         {//资料文档查询
             string docVersion = DocVersionText.Text.Trim();       
             string departID = DepartName.SelectedValue;
-            string docCateID = DocCate.SelectedValue;
+            string docCateID = DocCateIDText.Value;
 
             Document document = new Document();
-            string searchCondition = document.GetSearchCondition(docName, docVersion, docKey, departID, docCateID, uploadUserName, uploadTimeBegin, uploadTimeEnd);       
-            DataTable documents =  document.SearchDocument(searchCondition);
+            string searchCondition = document.GetSearchCondition(docName, docVersion, docKey, departID, docCateID, uploadUserName, uploadTimeBegin, uploadTimeEnd);
+            IList<DocumentInfo> documentInfos = document.GetDocumentBySearchCondition(searchCondition);
+            DataTable documents = document.GetDataTableByDocumentList(documentInfos);
+
             DataColumn subTaskColumn = new DataColumn("项目子任务");//与页面的GirdView一致
             documents.Columns.Add(subTaskColumn);
             DocGridView.DataSource = documents;
@@ -130,9 +131,29 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         }
         else
         {// 项目文档
-            string projectDocCateName = ProjectDocCate.Text.Trim();
+            string projectDocCateName = null;
+            if (ProjectDocCate.SelectedIndex != 0)
+            {
+                projectDocCateName = ProjectDocCate.Text.Trim();
+            }
+          
+           
             string projectNum = ProjectName.SelectedValue;
-            string subTaskID = SubTaskName.SelectedValue;
+            string subTaskID = SubTaskIDText.Value;
+
+            ProjectDoc projectDoc = new ProjectDoc();
+            string searchCondition = projectDoc.GetSearchCondition(docName, docKey, subTaskID, projectDocCateName, uploadUserName, uploadTimeBegin, uploadTimeEnd);
+            DataTable projecctDocs = projectDoc.SearchProjectDoc(searchCondition);
+
+            DataColumn docVersionColumn = new DataColumn("版本");//与页面的GirdView一致
+            projecctDocs.Columns.Add(docVersionColumn);
+            DataColumn departNameColumn = new DataColumn("所属部门");//与页面的GirdView一致
+            projecctDocs.Columns.Add(departNameColumn);
+
+            DocGridView.DataSource = projecctDocs;
+            DocGridView.DataBind();
+            DocGridView.Columns[1].Visible = false;
+            DocGridView.Columns[3].Visible = false;
 
         }
 
@@ -140,69 +161,128 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
 
     protected void DocGridView_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-    }
-    protected void DepartName_SelectedIndexChanged(object sender, EventArgs e)
-    {
+        int index = Convert.ToInt32(e.CommandArgument);
+        string docID = DocGridView.DataKeys[index][0].ToString();
 
-        //DepartDocCate departDocCate = new DepartDocCate();
-        //IList<DepartDocCateInfo> departDocCateInfos = departDocCate.GetDepartDocCateByDepartId(int.Parse(DepartName.SelectedValue));
+        bool isDocument = false;
+        if ( DocRadioButtonList.SelectedValue == "Document")
+        {
+            isDocument= true;
+        }
 
-        //for (int i = 0; i < departDocCateInfos.Count;++i )
-        //{
-        //    ListItem listItem = new ListItem();
-        //    listItem.Value = Convert.ToString(departDocCateInfos[i].Id);
-        //    listItem.Text = departDocCateInfos[i].CategoryName;
-        //    DocCate.Items.Add(listItem);
-        //}
-        //if (DocCate.Items.Count >= 1)
-        //{
-        //    DocCate.SelectedIndex = 0;
-        //}
+        if (e.CommandName == "ExploreDocument")
+        {
+            if (isDocument)
+            {
+                Document document = new Document();
+                DocumentInfo documentInfo = document.GetDocumentById(Convert.ToInt32(docID));
+                Response.Write("<script  language='javascript'> window.open('ExploreDocument.aspx?emotion=../" + documentInfo.SavePath + "&DocID=" + docID + "&DocumentCate=Document','_blank'); </script>");
+            }
+            else
+            {
+                ProjectDoc projectDoc = new ProjectDoc();
+                ProjectDocInfo projectDocInfo = projectDoc.GetProjectDocById(Convert.ToInt32(docID));
+                //Response.Write("<script  language='javascript'> window.open('ExploreProjectDoc.aspx?DocID=" + docID + "','_blank'); </script>");
+                Response.Redirect("ExploreDocument.aspx?emotion=../" + projectDocInfo.SavePath + "&DocID=" + docID + "&DocumentCate=ProjectDoc");
+            }
+            //Response.Redirect("Search.aspx");
+            //Server.Transfer("Default.aspx");
+        }
+        else if (e.CommandName == "DownloadDocument")
+        {
+            //查看下载权限是否允许
+            string docName = null;
+            string docUrl=null;
+            if (isDocument)
+            {
+                Document document = new Document();
+                DocumentInfo documentInfo = document.GetDocumentById(Convert.ToInt32(docID));
+                if (!document.isPremissionToDownload(documentInfo.DocPermission, documentInfo.DocID, 1))
+                {
+                    Response.Write("<script   language=javascript> window.alert( '   下载权限不够，无法下载  '); </script>");
+                    return;
+                }
+                docName = documentInfo.DocName;
+                docUrl = documentInfo.UploadPath;
+            }else
+            {
+                ProjectDoc projectDoc = new ProjectDoc();
+                ProjectDocInfo projectDocInfo = projectDoc.GetProjectDocById(Convert.ToInt32(docID));
+                if (!projectDoc.isPremissionToDownload(projectDocInfo.DocPermission, projectDocInfo.ProjDocId, 1))
+                {
+                    Response.Write("<script   language=javascript> window.alert( '   下载权限不够，无法下载  '); </script>");
+                    return;
+                }
+                docName= projectDocInfo.DocName;
+                docUrl = projectDocInfo.UploadPath;
+            }
 
-    }
-    protected void ProjectName_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        //Project project = new Project();
-        //ProjectInfo projectInfo = project.GetProjectByNum(ProjectName.SelectedValue);
-        //SubTask subTask = new SubTask();
-        //IList<SubTaskInfo> subTaskInfos = subTask.GetSubTasksByProjectNum(ProjectName.SelectedValue);
+            //获取后缀名
+            string fileName = docName;
+             fileName = fileName + "." + docUrl.Substring(docUrl.LastIndexOf(".") + 1);
 
-        //for (int i = 0; i < subTaskInfos.Count; ++i)
-        //{
-        //    ListItem listItem = new ListItem();
-        //    listItem.Value = Convert.ToString(subTaskInfos[i].TaskId);
-        //    listItem.Text = subTaskInfos[i].TaskName;
-        //    SubTaskName.Items.Add(listItem);
-        //}
+            Response.Clear();
+            Response.Buffer = true;
+            // Response.ContentType = "text/xml/rmvb";
+            Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Response.AppendHeader("Content-Disposition", "attachment;filename=" + fileName);
+            string path = Server.MapPath("~/");
+            Response.WriteFile(path + docUrl);
+            Response.End();
 
-        //if (SubTaskName.Items.Count >=0)
-        //{
-        //    SubTaskName.SelectedIndex = 0;
-        //}      
-    }
-    protected void DocRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        //if (DocRadioButtonList.SelectedValue == "Document")
-        //{
-        //    DepartName.Visible = true;
-        //    DocCate.Visible = true;
-        //    DocVersionText.Visible = true;
-        //    Label2.Visible = true;
+        }
+        else if (e.CommandName == "ModifyDocument")
+        {
+            string address=null;
+            if (DocRadioButtonList.SelectedValue == "Document")
+            {
+                 address = "ModifyDocument.aspx?DocID=" + docID;
+                
+            }else
+            {
+                 address = "ModifyProjectDoc.aspx?DocID=" + docID;
+            }
+            Response.Redirect(address);
+        }
+        else if (e.CommandName == "DeleteDocument")
+        {
+            int isDelete = 0;
+            string uploadPath = null;
+            string savePath = null;
+            if (isDocument)
+            {
+                Document document = new Document();
+                DocumentInfo documentInfo = document.GetDocumentById(Convert.ToInt32(docID));
+                uploadPath = documentInfo.UploadPath;
+                savePath = documentInfo.SavePath;
+                isDelete = document.DeleteDocument(Convert.ToInt32(docID));
+            }
+            else
+            {
+                ProjectDoc projectDoc = new ProjectDoc();
+                
+                ProjectDocInfo projectDocInfo = projectDoc.GetProjectDocById(Convert.ToInt32(docID));
 
-        //    ProjectName.Visible = false;
-        //    ProjectDocCate.Visible = false;
-        //    SubTaskName.Visible = false;          
-        //} 
-        //else
-        //{
-        //    DepartName.Visible = false;
-        //    DocCate.Visible = false;
-        //    DocVersionText.Visible = false;
-        //    Label2.Visible = false;
+                uploadPath = projectDocInfo.UploadPath;
+                savePath = projectDocInfo.SavePath;
+                isDelete = projectDoc.DeleteProjectDoc(Convert.ToInt32(docID));
 
-        //    ProjectName.Visible = true;
-        //    ProjectDocCate.Visible = true;
-        //    SubTaskName.Visible = true;
-        //}
+            }
+           
+             if (isDelete == 1)
+            {
+                string path = Server.MapPath(@"~/");
+                File.Delete(path + uploadPath);
+                File.Delete(path + savePath);
+                AdvancedSearchButton_Click(null, null);
+                Response.Write("<script   language=javascript> window.alert( '  删除成功  '); </script>");
+               
+            }
+             else
+             {
+                 Response.Write("<script   language=javascript> window.alert( '  删除失败  '); </script>");
+             }
+
+        }
     }
 }

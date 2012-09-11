@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -136,7 +136,11 @@ namespace DALFactory
             string className = path + ".ProjectUser";
             return (IDAL.IProjectUser)Assembly.Load(path).CreateInstance(className);
         }
-
+        public static IDAL.IClient CreateClient()
+        {
+            string className = path + ".Client";
+            return (IDAL.IClient)Assembly.Load(path).CreateInstance(className);
+        }
         public static IDAL.IProjectClient CreateProjectClient()
         {
             string className = path + ".ProjectClient";

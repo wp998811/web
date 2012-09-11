@@ -1,6 +1,4 @@
 ﻿<%@ Master Language="C#" %>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <script runat="server">
@@ -403,7 +401,7 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3"><a href="projectList.aspx">项目一览</a></span>
+                                                                                                                    <span class="STYLE3">项目一览</span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -460,7 +458,7 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">上传文档</span>
+                                                                                                                    <span class="STYLE3"><a href="UploadDoc.aspx">上传文档</a></span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -476,13 +474,12 @@
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">搜索文档</span>
+                                                                                                                    <span class="STYLE3"><a href="Search.aspx">搜索文档</a></span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
                                                                                                     </td>
                                                                                                 </tr>
-                   
                                                                                             </table>
                                                                                         </td>
                                                                                     </tr>
@@ -708,7 +705,6 @@
                         <td width="100%" align="left" valign="top">                  
                             <div>
                                 <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                                <iframe src="../projectList.aspx" name="mainFrame" id="mainFrame" height="100%" width="100%" frameborder="0"/>
                                 </asp:ContentPlaceHolder>
                             </div>
                         </td>

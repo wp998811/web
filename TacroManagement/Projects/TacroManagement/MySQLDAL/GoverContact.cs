@@ -49,8 +49,14 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_GOVERID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,11) 
                 };
-                parms[0].Value = goverContactInfo.GoverID;
-                parms[1].Value = goverContactInfo.ContactID;
+                if (goverContactInfo.GoverID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = goverContactInfo.GoverID;
+                if(goverContactInfo.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = goverContactInfo.ContactID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_GOVERCONTACT, parms);
 
@@ -119,8 +125,14 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,11) ,
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = goverContactInfo.GoverID;
-                parms[1].Value = goverContactInfo.ContactID;
+                if (goverContactInfo.GoverID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = goverContactInfo.GoverID;
+                if (goverContactInfo.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = goverContactInfo.ContactID;
                 parms[2].Value = goverContactInfo.Id;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_GOVERCONTACT, parms);
@@ -146,7 +158,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        GoverContactInfo goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        GoverContactInfo goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         goverContactInfos.Add(goverContactInfo);
                     }
                 }
@@ -174,7 +186,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERCONTACT_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     else
                         goverContactInfo = new GoverContactInfo();
                 }
@@ -203,7 +215,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        GoverContactInfo goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        GoverContactInfo goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         goverContactInfos.Add(goverContactInfo);
                     }
                 }
@@ -231,7 +243,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERCONTACT_BY_CONTACTID, parm))
                 {
                     if (rdr.Read())
-                        goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        goverContactInfo = new GoverContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     else
                         goverContactInfo = new GoverContactInfo();
                 }

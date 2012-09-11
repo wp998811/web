@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 using Model;
 using IDAL;
@@ -14,7 +15,7 @@ namespace BLL
     {
         private static readonly IUser dal = DALFactory.DataAccess.CreateUser();
 
-        #region
+        #region 基本方法
         /// <summary>
         /// 新增用户
         /// </summary>
@@ -43,6 +44,7 @@ namespace BLL
         public int DeleteUser(int userID)
         {
             return dal.DeleteUser(userID);
+  
         }
 
         /// <summary>
@@ -75,6 +77,8 @@ namespace BLL
         }
         #endregion
 
+
+        #region 业务
         /// <summary>
         ///用户登录 
         /// </summary>
@@ -165,8 +169,9 @@ namespace BLL
         }
 
         /// <summary>
-        /// 根据CustomerID查询所有联系人信息
+        /// 
         /// </summary>
+        /// <param name="userId"></param>
         /// <returns></returns>
         public DataTable SearchUserByUserID(int userId)
         {
@@ -203,7 +208,7 @@ namespace BLL
         }
 
         /// <summary>
-        /// 根据CustomerID查询所有联系人信息
+        /// 
         /// </summary>
         /// <returns></returns>
         public DataTable SearchAllUsers()
@@ -231,6 +236,7 @@ namespace BLL
             {
                 UserInfo userInfo = userInfos[i];
                 DataRow dataRow = dataTable.NewRow();
+
                 dataRow["用户ID"] = userInfo.UserID;
                 dataRow["用户名"] = userInfo.UserName;
                 dataRow["用户类型"] = userInfo.UserType;
@@ -244,5 +250,57 @@ namespace BLL
             return dataTable;
         }
 
+        public DataTable GetTableByUserList(IList<UserInfo> userInfos)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn userIDColumn = new DataColumn("userID");
+            DataColumn userNameColumn = new DataColumn("姓名");
+            DataColumn userTypeColumn = new DataColumn("用户类别");
+            DataColumn emailColumn = new DataColumn("电子邮箱");
+            DataColumn phoneColumn = new DataColumn("联系方式");
+            DataColumn departColumn = new DataColumn("所属部门");
+
+            dataTable.Columns.Add(userIDColumn);
+            dataTable.Columns.Add(userNameColumn);
+            dataTable.Columns.Add(userTypeColumn);
+            dataTable.Columns.Add(emailColumn);
+            dataTable.Columns.Add(phoneColumn);
+            dataTable.Columns.Add(departColumn);
+
+            for (int i = 0; i < userInfos.Count; ++i)
+            {
+                UserInfo userInfo = userInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["userID"] = userInfo.UserID;
+                dataRow["姓名"] = userInfo.UserName;
+                dataRow["用户类别"] = userInfo.UserType;
+                dataRow["电子邮箱"] = userInfo.UserEmail;
+                dataRow["联系方式"] = userInfo.UserPhone;
+
+                Department department = new Department();
+                DepartmentInfo departmentInfo = department.GetDepartmentByID(userInfo.DepartID);
+                dataRow["所属部门"] = departmentInfo.DepartName;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
+        }
+
+        ///判断用户类型是否为系统管理员 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public bool IsSysAdmin(string userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+                return false;
+            UserInfo user = dal.GetUserByName(userName);
+            if (user.UserType.Equals("系统管理员"))
+                return true;
+            return true;
+        }
+
+        #endregion
     }
+
 }

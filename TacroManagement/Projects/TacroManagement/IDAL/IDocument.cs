@@ -19,6 +19,7 @@ namespace IDAL
 
         int DeleteDocumentByName(string docName);                            //通过文档名称删除文档
         IList<DocumentInfo> GetDocumentBySearchCondition(string searchCondition);//通过查询条件查找文档
+        IList<DocumentInfo> GetDocumentByLatelyTime(string latelyTime);                   //通过最近之间查找
 
        
      

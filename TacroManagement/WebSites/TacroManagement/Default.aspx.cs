@@ -4,16 +4,18 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net.Mail;
+using System.Timers;
 
 using BLL;
 using Model;
 using System.Data;
 
-public partial class _Default : System.Web.UI.Page 
+public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(!IsPostBack)
+        if (!IsPostBack)
         {
 
         }
@@ -27,7 +29,7 @@ public partial class _Default : System.Web.UI.Page
         string adminName = this.txtUserName.Text.Trim();
         string adminPassword = this.txtPassword.Text.Trim();
 
-        bool loginResult = admin.Login(adminName,adminPassword);
+        bool loginResult = admin.Login(adminName, adminPassword);
 
         if (loginResult)
         {
@@ -48,7 +50,7 @@ public partial class _Default : System.Web.UI.Page
         string userType = this.type.Text.Trim();
         string userEmail = this.email.Text.Trim();
         string userPhone = this.phone.Text.Trim();
-        int departID =Convert.ToInt32(this.departID.Text.Trim());
+        int departID = Convert.ToInt32(this.departID.Text.Trim());
 
         if (user.IsUserNameExists(userName))
         {
@@ -57,7 +59,7 @@ public partial class _Default : System.Web.UI.Page
         else
         {
             bool addResult = user.AddUser(userName, password, userType, userEmail, userPhone, departID);
-            if(addResult)
+            if (addResult)
                 Response.Write("<script   language=javascript> window.alert( '  添加成功 '); </script>");
             else
                 Response.Write("<script   language=javascript> window.alert( '  添加失败 '); </script>");
@@ -67,6 +69,30 @@ public partial class _Default : System.Web.UI.Page
 
     protected void btnEdit_Click(object sender, EventArgs e)
     {
+        int userID = 1;//测试ID
+
+        User user = new User();
+
+        string userName = this.txtName.Text.Trim();
+        string password = this.password.Text.Trim();
+        string userType = this.type.Text.Trim();
+        string userEmail = this.email.Text.Trim();
+        string userPhone = this.phone.Text.Trim();
+        int departID = Convert.ToInt32(this.departID.Text.Trim());
+
+        if (user.IsUserNameExists(userName))
+        {
+            Response.Write("<script   language=javascript> window.alert( '  用户名存在 '); </script>");
+        }
+        else
+        {
+            bool editResult = user.ModifyUser(userID, userName, password, userType, userEmail, userPhone, departID);
+            if (editResult)
+                Response.Write("<script   language=javascript> window.alert( '  编辑成功 '); </script>");
+            else
+                Response.Write("<script   language=javascript> window.alert( '  编辑失败 '); </script>");
+        }
+
 
     }
 
@@ -76,7 +102,7 @@ public partial class _Default : System.Web.UI.Page
         string userName = this.txtName.Text.Trim();
         string password = this.password.Text.Trim();
 
-        bool loginResult = user.UserLogin(userName,password); 
+        bool loginResult = user.UserLogin(userName, password);
 
         if (loginResult)
         {
@@ -87,8 +113,30 @@ public partial class _Default : System.Web.UI.Page
             Response.Write(" <script   language=javascript> window.alert( '登录失败 '); </script> ");
         }
     }
-    #endregion
 
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        int userID = 5;
+
+        User user = new User();
+
+        UserInfo userInfo = user.GetUserById(userID);
+
+        if (userInfo == null || string.IsNullOrEmpty(userInfo.UserName))
+        {
+            Response.Write(" <script   language=javascript> window.alert( '用户不存在 '); </script> ");
+            return;
+        }
+        int delResult = user.DeleteUser(userID);
+
+        if (delResult == 1)
+            Response.Write(" <script   language=javascript> window.alert( '删除成功 '); </script> ");
+        else
+            Response.Write(" <script   language=javascript> window.alert( '删除失败 '); </script> ");
+
+    }
+
+    #endregion
 
     #region test by wangjie
     protected void testButton_Click(object sender, EventArgs e)
@@ -114,7 +162,7 @@ public partial class _Default : System.Web.UI.Page
                         FileUpload1.PostedFile.SaveAs(serverfilename);
                       //  this.Page.RegisterStartupScript("", "<script>alert('文件上传成功！');</script>");
                     }
-                    catch (Exception exc)
+                    catch
                     {
                     //    this.Page.RegisterStartupScript("", "<script>alert('文件上传失败！');</script>");
                     }
@@ -200,14 +248,99 @@ public partial class _Default : System.Web.UI.Page
     #endregion
     protected void Button1_Click(object sender, EventArgs e)
     {
-        Response.Clear();
-        Response.Buffer = true;
-        Response.ContentType = "text/xml/rmvb";
-        Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
-        Response.AppendHeader("Content-Disposition", "attachment;filename=exam.rmvb");
-        string path = Server.MapPath("./");
-        Response.WriteFile(path + "upload/b.rmvb");
-        Response.End();
-     
+
+
+        Document document = new Document();
+        document.GetDocumentLately();
+        //SendMail("fwangjie@gmail.com", "smtp.gmail.com", "fwangjie@gmail.com", "nbyx884483", "240791524@qq.com", "auto send message", "hello", Server.MapPath("~/")+"Documents/decision.docx");
+        //StartReminder();
+        //txtUserName.Text = "sdfeodicxe";
+        //GoverResourceInfo gof = new GoverResourceInfo();
+        //gof.GoverCity = "ningb";
+        //gof.OrganIntro = "good";
+        //gof.OrganName = "IT";
+   
+        //GoverResource gov = new GoverResource();
+        //gov.InsertGoverResource(gof);
+
+        //Response.Clear();
+        //Response.Buffer = true;
+        //Response.ContentType = "text/xml/rmvb";
+        //Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+        //Response.AppendHeader("Content-Disposition", "attachment;filename=exam.rmvb");
+        //string path = Server.MapPath("./");
+        //Response.WriteFile(path + "upload/b.rmvb");
+        //Response.End();
     }
+
+
+    /// 发送邮件
+    /// </summary>
+    /// <param name="arrFrom">发送邮件的邮箱地址</param>
+    /// <param name="mailHost">发送邮件的邮箱host</param>
+    /// <param name="mailUserName">发送邮件的邮箱用户名</param>
+    /// <param name="mailPassWord">发送邮件的邮箱密码</param>
+    /// <param name="mailTo">接收邮件的邮箱地址</param>
+    /// <param name="mailCC">抄送邮件的邮箱地址</param>
+    /// <param name="mailSubject">邮件的主题</param>
+    /// <param name="mailMessage">邮件的内容</param>
+    /// <param name="mailAttachmentURL">邮件的附件</param>
+    /// <returns></returns>
+    public bool SendMail(string mailFrom, string mailHost, string mailUserName, string mailPassWord, string mailTo, string mailSubject, string mailMessage, string mailAttachmentURL)
+
+    {
+
+        MailMessage emailMessage = new MailMessage();//邮件对象
+
+        string sToEmail = mailTo.Trim();
+        emailMessage = new MailMessage(mailFrom, sToEmail, mailSubject, mailMessage);
+        emailMessage.IsBodyHtml = true;
+        emailMessage.SubjectEncoding = System.Text.Encoding.Default;
+
+        emailMessage.BodyEncoding = System.Text.Encoding.Default;
+
+        if (mailAttachmentURL != null && mailAttachmentURL != "")
+
+            emailMessage.Attachments.Add(new Attachment(mailAttachmentURL));//附件
+        
+        //加入
+        //emailMessage.Headers.Add("X-Priority", "3");
+        //emailMessage.Headers.Add("X-MSMail-Priority", "Normal");
+        //emailMessage.Headers.Add("X-Mailer", "Microsoft Outlook Express 6.00.2900.2869");
+        //emailMessage.Headers.Add("X-MimeOLE", "Produced By Microsoft MimeOLE V6.00.2900.2869");
+
+        SmtpClient client = new SmtpClient();//邮件发送客户端smtp客户端对象
+        client.Host = mailHost;//邮件服务器
+        client.Port = 587;
+        System.Net.NetworkCredential Credential = new System.Net.NetworkCredential();
+        Credential.UserName = mailUserName;   //邮箱帐号,可以在资源文件中配置
+        Credential.Password = mailPassWord;//邮箱密码
+        client.Credentials = Credential;
+        client.EnableSsl = true;
+        try
+        {
+            client.Send(emailMessage);
+        }
+        catch (Exception e)
+        {
+            email.Text = e.Message;
+            return false;
+        }
+        return true;
+    }
+
+    public void StartReminder()
+    {
+
+        System.Timers.Timer aTimer = new System.Timers.Timer();
+        aTimer.Elapsed += new ElapsedEventHandler(TimedEvent);
+        aTimer.Interval = 10 * 1000;    //配置文件中配置的秒数
+        aTimer.Enabled = true;
+    }
+     private  void TimedEvent(object source,ElapsedEventArgs e)
+    {
+        //SendMail("fwangjie@gmail.com", "smtp.gmail.com", "fwangjie@gmail.com", "nbyx884483", "240791524@qq.com", "auto send message", "hello", Server.MapPath("~/") + "Documents/decision.docx");
+
+    }
+   
 }

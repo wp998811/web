@@ -50,7 +50,7 @@
                                                         <tr>
                                                             <td width="50" height="19">
                                                                 <div align="center">
-                                                                    <img src="../images/main_12.gif" width="49" height="19"></div>
+                                                                    <img src="../images/main_12.gif" width="49" height="19" ></div>
                                                             </td>
                                                             <td width="50">
                                                                 <div align="center">
@@ -74,7 +74,9 @@
                                                             </td>
                                                             <td width="100">
                                                                 <div align="center">
-                                                                    <img src="../images/main_22.gif" width="98" height="19"></div>
+                                                                  <asp:ImageButton runat="server" ImageUrl="~/images/main_22.gif" Width="98" 
+                                                                        Height="19" ID="imgBtnModifyInfo" onclick="imgBtnModifyInfo_Click"/> 
+                                                                   </div>
                                                             </td>
                                                             <td>
                                                                 &nbsp;
@@ -131,7 +133,7 @@
                                     </td>
                                     <td width="59%" valign="bottom">
                                         <div align="center" class="STYLE1">
-                                            当前用户：Admin</div>
+                                            当前用户：<asp:Label runat="server" ID="lblUser"></asp:Label></div>
                                     </td>
                                     <td width="21%">
                                         &nbsp;

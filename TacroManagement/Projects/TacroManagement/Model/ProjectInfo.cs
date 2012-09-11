@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -88,8 +88,14 @@ namespace Model
 
         public string EndTime
         {
-            get { return this.endTime; }
-            set { this.endTime = EndTime; }
+            get { return endTime; }
+            set { this.endTime = value; }
         }
+
+        //public string EndTime
+        //{
+        //    get { return this.endTime; }
+        //    set { this.endTime = EndTime; }
+        //}
     }
 }

@@ -39,7 +39,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_SCHEDULE_CONTENT, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_SCHEDULE_TIME, MySqlDbType.VarChar, 50)
                 };
-                parms[0].Value = scheduleInfo.UserId;
+                if (scheduleInfo.UserId == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = scheduleInfo.UserId;   
                 parms[1].Value = scheduleInfo.ScheduleContent;
                 parms[2].Value = scheduleInfo.Time;
 
@@ -80,7 +83,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_SCHEDULE_TIME, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_ID, MySqlDbType.Int32)
                 };
-                parms[0].Value = scheduleInfo.UserId;
+                if (scheduleInfo.UserId == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = scheduleInfo.UserId;  
                 parms[1].Value = scheduleInfo.ScheduleContent;
                 parms[2].Value = scheduleInfo.Time;
                 parms[3].Value = scheduleInfo.Id;
@@ -103,7 +109,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ScheduleInfo schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
+                        ScheduleInfo schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
                         schedules.Add(schedule);
                     }
                 }
@@ -126,7 +132,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ScheduleInfo schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
+                        ScheduleInfo schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
                         schedules.Add(schedule);
                     }
                 }
@@ -149,7 +155,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ScheduleInfo schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
+                        ScheduleInfo schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
                         schedules.Add(schedule);
                     }
                 }
@@ -172,7 +178,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
+                        schedule = new ScheduleInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3));
                     }
                     else
                         schedule = new ScheduleInfo();

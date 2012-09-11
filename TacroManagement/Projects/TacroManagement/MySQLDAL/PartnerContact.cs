@@ -50,8 +50,14 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_PARTNERID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,11) 
                 };
-                parms[0].Value = partnerContactInfo.PartnerID;
-                parms[1].Value = partnerContactInfo.ContactID;
+                if (partnerContactInfo.PartnerID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = partnerContactInfo.PartnerID;
+                if (partnerContactInfo.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = partnerContactInfo.ContactID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_PARTNERCONTACT, parms);
 
@@ -141,8 +147,14 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,11) ,
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = partnerContactInfo.PartnerID;
-                parms[1].Value = partnerContactInfo.ContactID;
+                if (partnerContactInfo.PartnerID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = partnerContactInfo.PartnerID;
+                if (partnerContactInfo.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = partnerContactInfo.ContactID;
                 parms[2].Value = partnerContactInfo.Id;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_PARTNERCONTACT, parms);
@@ -168,7 +180,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        PartnerContactInfo partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        PartnerContactInfo partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         partnerContactInfos.Add(partnerContactInfo);
                     }
                 }
@@ -196,7 +208,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERCONTACT_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     else
                         partnerContactInfo = new PartnerContactInfo();
                 }
@@ -226,7 +238,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        PartnerContactInfo partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        PartnerContactInfo partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         partnerContactInfos.Add(partnerContactInfo);
                     }
                 }
@@ -254,7 +266,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERCONTACT_BY_CONTACTID, parm))
                 {
                     if (rdr.Read())
-                        partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        partnerContactInfo = new PartnerContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     else
                         partnerContactInfo = new PartnerContactInfo();
                 }

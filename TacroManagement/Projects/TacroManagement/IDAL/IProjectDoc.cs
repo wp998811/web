@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +14,12 @@ namespace IDAL
 
         IList<ProjectDocInfo> GetProjectDocs();
         ProjectDocInfo GetProjectDocById(int projectDocId);
+        ProjectDocInfo GetProjectDocByName(string docName);
         IList<ProjectDocInfo> GetProjectDocsByTaskId(int taskId);
         IList<ProjectDocInfo> GetProjectDocsByUpLoadUserId(int userId);
-        IList<ProjectDocInfo> GetProjectDocs(int projectDocCate, string projectDocName, string projectDocKey
+        IList<ProjectDocInfo> GetProjectDocs(string projectDocCate, string projectDocName, string projectDocKey
             , int projectDocTaskId, int uploadUserId, string uploadTime);
+        IList<ProjectDocInfo> GetProjectDocBySearchCondition(string selectCondition);
 
     }
 }

@@ -24,11 +24,13 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_DOCUSER = "INSERT INTO docuser(DocID, UserID) VALUES (@DocID, @UserID) ";
         private const string SQL_DELETE_DOCUSER = "DELETE FROM docuser WHERE ID=@ID";
+        private const string SQL_DELETE_DOCUSER_BY_DOC = "DELETE FROM docuser WHERE DocID=@DocID";
         private const string SQL_UPDATE_DOCUSER = "UPDATE docuser SET DocID = @DocID, UserID = @UserID WHERE ID = @ID";
         private const string SQL_SELECT_DOCUSER = "SELECT * FROM docuser";
         private const string SQL_SELECT_DOCUSER_BY_ID = "SELECT * FROM docuser WHERE ID = @ID";
         private const string SQL_SELECT_DOCUSER_BY_DOC_USER = "SELECT * FROM docuser WHERE DocID = @DocID AND UserID = @UserID";
-
+        private const string SQL_SELECT_DOCUSER_BY_DOCID = "SELECT * FROM docuser WHERE DocID = @DocID";
+       
         #endregion
 
 
@@ -49,8 +51,15 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_DOCID,MySqlDbType.Int32,11),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11) 
                 };
-                parms[0].Value = docUserInfo.DocID;
-                parms[1].Value = docUserInfo.UserID;
+                if (docUserInfo.DocID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = docUserInfo.DocID;
+
+                if (docUserInfo.UserID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = docUserInfo.UserID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_DOCUSER, parms);
 
@@ -84,6 +93,27 @@ namespace MySQLDAL
         }
 
         /// <summary>
+        /// 通过文档ID删除文档用户
+        /// </summary>
+        /// <param name="docUserId"></param>
+        /// <returns></returns>
+        int IDocUser.DeleteDocUserByDocId(int docId)
+        {
+            int result = -1;
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_DOCID, MySqlDbType.Int32);
+                parm.Value = docId;
+                result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_DELETE_DOCUSER_BY_DOC, parm);
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// 更新文档用户
         /// </summary>
         /// <param name="docUserInfo"></param>
@@ -98,8 +128,15 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11) ,
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = docUserInfo.DocID;
-                parms[1].Value = docUserInfo.UserID;
+                if(docUserInfo.DocID == 0)
+                    parms[0].Value= DBNull.Value;
+                else
+                    parms[0].Value =docUserInfo.DocID;
+
+                if(docUserInfo.UserID == 0)
+                    parms[1].Value=DBNull.Value;
+                else
+                    parms[1].Value  =docUserInfo.UserID;
                 parms[2].Value = docUserInfo.Id;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_DOCUSER, parms);
@@ -125,7 +162,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        DocUserInfo docUserInfo = new DocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        DocUserInfo docUserInfo = new DocUserInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         docUserInfos.Add(docUserInfo);
                     }
                 }
@@ -153,7 +190,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DOCUSER_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        docUserInfo = new DocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        docUserInfo = new DocUserInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     else
                         docUserInfo = new DocUserInfo();
                 }
@@ -165,6 +202,35 @@ namespace MySQLDAL
             return docUserInfo;
         }
 
+
+        /// <summary>
+        /// 根据文档编号查找文档用户
+        /// </summary>
+        /// <param name="docId"></param>
+        /// <returns></returns>
+        IList<DocUserInfo>  IDocUser.GetDocUserByDocId(int docId)
+        {
+            IList<DocUserInfo> docUserInfos = new List<DocUserInfo>();
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_DOCID, MySqlDbType.Int32, 11);
+                parm.Value = docId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DOCUSER_BY_DOCID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        DocUserInfo docUserInfo = new DocUserInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
+                        docUserInfos.Add(docUserInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return docUserInfos;
+        }
         /// <summary>
         /// 根据文档和用户查找文档用户
         /// </summary>
@@ -177,8 +243,8 @@ namespace MySQLDAL
             try
             {
                 MySqlParameter[] parms = new MySqlParameter[] { 
-                    new MySqlParameter(PARM_DOCID,MySqlDbType.Int32,11),
-                    new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11)
+                    new MySqlParameter(PARM_USERID,MySqlDbType.Int32,11),
+                    new MySqlParameter(PARM_DOCID,MySqlDbType.Int32,11)
                 };
                 parms[0].Value = userID;
                 parms[1].Value = DocumentID;
@@ -186,7 +252,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DOCUSER_BY_DOC_USER, parms))
                 {
                     if (rdr.Read())
-                        docUserInfo = new DocUserInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        docUserInfo = new DocUserInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     else
                         docUserInfo = new DocUserInfo();
                 }

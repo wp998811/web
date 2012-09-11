@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -18,3 +18,4 @@ public partial class AdvancedSearch : System.Web.UI.Page
 
     }
 }
+

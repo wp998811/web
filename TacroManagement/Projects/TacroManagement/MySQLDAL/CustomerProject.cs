@@ -54,6 +54,7 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_PAYSTATE,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_PROJTYPE,MySqlDbType.VarChar,50)
                 };
+
                 parms[0].Value = customerProject.CustomerID;
                 parms[1].Value = customerProject.ProductName;
                 parms[2].Value = customerProject.Service;
@@ -163,7 +164,6 @@ namespace MySQLDAL
                 parms[6].Value = customerProject.PayState;
                 parms[7].Value = customerProject.ProjectType;
                 parms[8].Value = customerProject.ProjID;
-
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_CUSTOMERPROJ, parms);
             }

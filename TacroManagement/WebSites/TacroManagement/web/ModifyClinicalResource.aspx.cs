@@ -21,12 +21,13 @@ public partial class web_ModifyClinicalResource : System.Web.UI.Page
     {
         if (!this.IsPostBack)
         {
+            if (Session["userID"].ToString() == "")
+            {
+                Response.Redirect("login.aspx");
+            }
+
             ClinicalResourceDataBind();
 
-            //if (Session["userID"].ToString() == "")
-            //{
-            //    Response.Redirect("login.aspx");
-            //}
             ContactGridView.Visible = false;
             UserGridView.Visible = false;
         }

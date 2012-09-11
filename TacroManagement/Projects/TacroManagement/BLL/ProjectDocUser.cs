@@ -24,6 +24,11 @@ namespace BLL
             return dal.DeleteProjectDocUser(id);
         }
 
+        public int DeleteProjectDocUserByDocId(int ProjDocId)
+        {
+            return dal.DeleteProjectDocUserByDocId(ProjDocId);
+
+        }
         public int UpdateProjDocUser(ProjDocUserInfo projDocUserInfo)
         {
             return dal.UpdateProjectDocUser(projDocUserInfo);
@@ -47,6 +52,11 @@ namespace BLL
         public ProjDocUserInfo GetProjDocUserById(int id)
         {
             return dal.GetProjectDocUserById(id);
+        }
+
+         public ProjDocUserInfo GetProjectDocUserByProjectDocUser(int docID,int userID)
+        {
+            return dal.GetProjectDocUserByProjectDocUser(docID, userID);
         }
         #endregion
     }

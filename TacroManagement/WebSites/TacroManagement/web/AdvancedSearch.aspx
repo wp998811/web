@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Async="true" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="AdvancedSearch.aspx.cs" Inherits="web_AdvancedSearch" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" Async="true"   EnableEventValidation="false" MasterPageFile="~/web/index.master" AutoEventWireup="true" CodeFile="AdvancedSearch.aspx.cs" Inherits="web_AdvancedSearch" Title="高级查询" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 <script type="text/javascript">
@@ -191,20 +191,27 @@
         
         function setDocCate()
         {
-            var oTab=document.getElementById("<%=DocRadioButtonList.ClientID%>");
+           var oTab=document.getElementById("<%=DocRadioButtonList.ClientID%>");
             var arrRadio=oTab.getElementsByTagName('INPUT');
             if (arrRadio[0].checked==true )
-            {
+            {   
                 setDocumentDoc();
             }
-            else
+            else 
             {
-                setPojectDoc();
+                if (arrRadio[1].checked==true )
+                {
+                    setPojectDoc();
+                }
+                else
+                {
+                    arrRadio[0].checked ="true";
+                    setDocumentDoc();
+                }
             }
         }
         function setPojectDoc()
-        {
-        
+        {       
             document.getElementById("<%=Label9.ClientID%>").style.display ="";
             document.getElementById("<%=ProjectName.ClientID%>").style.display ="";
             document.getElementById("<%=Label10.ClientID%>").style.display ="";
@@ -235,6 +242,15 @@
             
         }
 
+function setDocCateID(val)
+{
+    document.getElementById("<%=DocCateIDText.ClientID%>").value = val;
+}
+function setSubTaskID(val)
+{
+    document.getElementById("<%=SubTaskIDText.ClientID%>").value = val;
+
+}
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -242,8 +258,7 @@
 <div align="center">
     <asp:RadioButtonList ID="DocRadioButtonList" runat="server" 
         RepeatDirection="Horizontal" 
-        onclick="setDocCate()"
-        onselectedindexchanged="DocRadioButtonList_SelectedIndexChanged">
+        onclick="setDocCate()">
         <asp:ListItem Value="Document">资料文档</asp:ListItem>
         <asp:ListItem Value="ProjectDoc">项目文档</asp:ListItem>
     </asp:RadioButtonList>
@@ -262,30 +277,31 @@
     </div>
     <div>  
         <asp:Label ID="Label4" runat="server" Text="文档所属部门"></asp:Label>   
-        <asp:DropDownList ID="DepartName" runat="server" 
-            onselectedindexchanged="DepartName_SelectedIndexChanged">
+        <asp:DropDownList ID="DepartName" onchange="getDocCate(this.value)" runat="server">
         </asp:DropDownList>
     </div>
         <div>  
         <asp:Label ID="Label9" runat="server" Text="项目名称"></asp:Label>   
-        <asp:DropDownList ID="ProjectName" onchange="getSubTask(this.value)" runat="server" 
-                onselectedindexchanged="ProjectName_SelectedIndexChanged">
+        <asp:DropDownList ID="ProjectName" onchange="getSubTask(this.value)" runat="server">
         </asp:DropDownList>
     </div>
-     <div>  
+     <div>    
         <asp:Label ID="Label10" runat="server" Text="子任务名"></asp:Label>   
-        <asp:DropDownList ID="SubTaskName" runat="server" >
+        <asp:DropDownList ID="SubTaskName" runat="server"  onchange="setSubTaskID(this.value)">
         </asp:DropDownList>
+          <asp:HiddenField ID="SubTaskIDText" runat="server" />
     </div>
         <div>  
         <asp:Label ID="Label8" runat="server" Text="文档类别"></asp:Label>   
-        <asp:DropDownList ID="DocCate" runat="server">
-        </asp:DropDownList>  
+         <asp:DropDownList ID="DocCate" runat="server" onchange="setDocCateID(this.value)">
+        </asp:DropDownList>        
+         <asp:HiddenField ID="DocCateIDText" runat="server" />
         <asp:DropDownList ID="ProjectDocCate" runat="server">
-            <asp:ListItem>临床试验</asp:ListItem>
-            <asp:ListItem>注册</asp:ListItem>
-            <asp:ListItem>咨询</asp:ListItem>
-            <asp:ListItem>其他</asp:ListItem>
+            <asp:ListItem Value="0">选择类别</asp:ListItem>
+            <asp:ListItem Value="1">临床试验</asp:ListItem>
+            <asp:ListItem Value="2">注册</asp:ListItem>
+            <asp:ListItem Value="3">咨询</asp:ListItem>
+            <asp:ListItem Value="4">其他</asp:ListItem>
         </asp:DropDownList>
     </div>
         <div>  
@@ -301,7 +317,7 @@
         <asp:TextBox ID="UploadTimeEndText" runat="server"></asp:TextBox> 
     </div>
         <asp:GridView ID="DocGridView" runat="server" CellPadding="4" AutoGenerateColumns="false"
-        ForeColor="#333333" GridLines="None" onrowcommand="DocGridView_RowCommand" >
+        ForeColor="#333333" GridLines="None" onrowcommand="DocGridView_RowCommand" datakeynames="docID">
         <RowStyle BackColor="#EFF3FB" />
         <Columns>
             <asp:BoundField DataField="名称" HeaderText="名称" />
@@ -336,6 +352,14 @@
                   Text="下载" /> 
               </ItemTemplate>
              </asp:TemplateField>  
+        <asp:TemplateField>
+            <ItemTemplate>
+            <asp:LinkButton ID="DeleteButton" runat="server" 
+                  CommandName="DeleteDocument" 
+                  CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
+                  Text="删除" /> 
+              </ItemTemplate>
+             </asp:TemplateField> 
         </Columns>
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
         <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
@@ -346,6 +370,7 @@
     </asp:GridView>
     <asp:Button ID="AdvancedSearchButton" runat="server" Text="高级查询" 
         onclick="AdvancedSearchButton_Click" />
-        <script type="text/javascript">setDocumentDoc();</script>
+        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/web/Search.aspx" >一般查询</asp:HyperLink>
+        <script type="text/javascript">setDocCate();</script>
 </asp:Content>
 

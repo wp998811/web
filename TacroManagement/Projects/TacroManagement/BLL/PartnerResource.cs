@@ -9,7 +9,7 @@ using System.Data;
 
 namespace BLL
 {
-    public class PartnerResource:IPartnerResource
+    public class PartnerResource : IPartnerResource
     {
 
         private static readonly IPartnerResource dal = DALFactory.DataAccess.CreatePartnerResource();
@@ -70,7 +70,7 @@ namespace BLL
         /// </summary>
         /// <param name="selectCondition"></param>
         /// <returns></returns>
-        public IList<PartnerResourceInfo> GetPartnerResourceByCondition(string selectCondition )
+        public IList<PartnerResourceInfo> GetPartnerResourceByCondition(string selectCondition)
         {
             return dal.GetPartnerResourceByCondition(selectCondition);
         }
@@ -228,7 +228,7 @@ namespace BLL
             dataTable.Columns.Add(organName);
             dataTable.Columns.Add(organIntro);
 
-            IList<PartnerResourceInfo>partnerResourceInfos = GetPartnerResource(); //查询语句
+            IList<PartnerResourceInfo> partnerResourceInfos = GetPartnerResource(); //查询语句
             PartnerResource partnerResource = new PartnerResource();
             User user = new User();
 

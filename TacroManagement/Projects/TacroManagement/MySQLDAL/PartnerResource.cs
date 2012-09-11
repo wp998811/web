@@ -52,7 +52,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANNAME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200)
                 };
-                parms[0].Value = partnerResourceInfo.UserID;
+                if (partnerResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = partnerResourceInfo.UserID;
                 parms[1].Value = partnerResourceInfo.PartnerCity;
                 parms[2].Value = partnerResourceInfo.OrganName;
                 parms[3].Value = partnerResourceInfo.OrganIntro;
@@ -105,7 +108,10 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_ORGANINTRO,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_PARTNERID,MySqlDbType.Int32,11)
                 };
-                parms[0].Value = partnerResourceInfo.UserID;
+                if (partnerResourceInfo.UserID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = partnerResourceInfo.UserID;
                 parms[1].Value = partnerResourceInfo.PartnerCity;
                 parms[2].Value = partnerResourceInfo.OrganName;
                 parms[3].Value = partnerResourceInfo.OrganIntro;
@@ -135,7 +141,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        PartnerResourceInfo partnerResource = new PartnerResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        PartnerResourceInfo partnerResource = new PartnerResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         partnerResources.Add(partnerResource);
                     }
                 }
@@ -163,7 +169,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERRESOURCE_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                     else
                         partnerResourceInfo = new PartnerResourceInfo();
                 }
@@ -199,7 +205,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        PartnerResourceInfo partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        PartnerResourceInfo partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
                         partnerResources.Add(partnerResourceInfo);
                     }
                 }

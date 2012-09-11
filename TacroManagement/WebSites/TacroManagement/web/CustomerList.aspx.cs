@@ -22,6 +22,8 @@ public partial class web_CustomerList : System.Web.UI.Page
         if (!IsPostBack)
         {
             CustomerDataBind();
+
+
         }
     }
 

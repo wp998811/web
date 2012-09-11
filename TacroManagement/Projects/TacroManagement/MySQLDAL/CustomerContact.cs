@@ -47,8 +47,15 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CUSTOMERID,MySqlDbType.Int32,50),
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = customerContact.CustomerID;
-                parms[1].Value = customerContact.ContactID;
+                if (customerContact.CustomerID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = customerContact.CustomerID;
+
+                if (customerContact.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = customerContact.ContactID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_CUSTOMERCONTACT, parms);
 
@@ -138,8 +145,16 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,50),
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = customerContactInfo.CustomerID;
-                parms[1].Value = customerContactInfo.ContactID;
+                if (customerContactInfo.CustomerID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = customerContactInfo.CustomerID;
+
+                if (customerContactInfo.ContactID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = customerContactInfo.ContactID;
+
                 parms[2].Value = customerContactInfo.ID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_CUSTOMERCONTACT, parms);
@@ -165,7 +180,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        CustomerContactInfo customerContactInfo = new CustomerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        CustomerContactInfo customerContactInfo = new CustomerContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                         customerContactInfos.Add(customerContactInfo);
                     }
                 }
@@ -257,7 +272,7 @@ namespace MySQLDAL
                 {
                     if (rdr.Read())
                     {
-                        customerContactInfo = new CustomerContactInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2));
+                        customerContactInfo = new CustomerContactInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2));
                     }
                     else
                         customerContactInfo = new CustomerContactInfo();

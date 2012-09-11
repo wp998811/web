@@ -46,10 +46,17 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_RECORDTIME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = contactRecordInfo.ContactID;
+                if (contactRecordInfo.ContactID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = contactRecordInfo.ContactID;
+
                 parms[1].Value = contactRecordInfo.RecordDetail;
                 parms[2].Value = contactRecordInfo.RecordTime;
-                parms[3].Value = contactRecordInfo.UserID;
+                if (contactRecordInfo.UserID == 0)
+                    parms[3].Value = DBNull.Value;
+                else
+                    parms[3].Value = contactRecordInfo.UserID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_CONTACTRECORD, parms);
 
@@ -99,10 +106,17 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,50),
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,50)
                 };
-                parms[0].Value = contactRecordInfo.ContactID;
+                if (contactRecordInfo.ContactID == 0)
+                    parms[0].Value = DBNull.Value;
+                else
+                    parms[0].Value = contactRecordInfo.ContactID;
+
                 parms[1].Value = contactRecordInfo.RecordDetail;
                 parms[2].Value = contactRecordInfo.RecordTime;
-                parms[3].Value = contactRecordInfo.UserID;
+                if (contactRecordInfo.UserID == 0)
+                    parms[3].Value = DBNull.Value;
+                else
+                    parms[3].Value = contactRecordInfo.UserID;
                 parms[4].Value = contactRecordInfo.ID;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_UPDATE_CONTACTRECORD, parms);
@@ -128,7 +142,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ContactRecordInfo contactRecord = new ContactRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        ContactRecordInfo contactRecord = new ContactRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                         contactRecords.Add(contactRecord);
                     }
                 }
@@ -157,7 +171,7 @@ namespace MySQLDAL
                 using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_CONTACTRECORD_BY_ID, parm))
                 {
                     if (rdr.Read())
-                        contactRecordInfo = new ContactRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        contactRecordInfo = new ContactRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                     else
                         contactRecordInfo = new ContactRecordInfo();
                 }
@@ -187,7 +201,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ContactRecordInfo contactRecordInfo = new ContactRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        ContactRecordInfo contactRecordInfo = new ContactRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                         contactRecordInfos.Add(contactRecordInfo);
                     }
                 }
@@ -217,7 +231,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ContactRecordInfo contactRecordInfo = new ContactRecordInfo(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4));
+                        ContactRecordInfo contactRecordInfo = new ContactRecordInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.IsDBNull(4) ? 0 : rdr.GetInt32(4));
                         contactRecordInfos.Add(contactRecordInfo);
                     }
                 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +26,7 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_PROJECT = "insert into project(ProjectName, ProjectAdminID, ProjectDescription, ProjectType, ProjectClientName, BeginTime, EndTime) values(@ProjectName, @ProjectAdminID, @ProjectDescription, @ProjectType, @ProjectClientName, @BeginTime, @EndTime)";
         private const string SQL_DELETE_PROJECT = "delete from project where ProjectNum=@ProjectNum";
-        private const string SQL_UPDATE_PROJECT = "update project set ProjectName=@ProjectName, ProjectAdminID=@ProejctAdminID, ProjectDescription=@ProjectDescription, ProjectType=@ProjectType, ProjectClientName=@ProjectClientName, BeginTime=@BeginTime, EndTime=@EndTime where ProjectNum=@ProjectNum";
+        private const string SQL_UPDATE_PROJECT = "update project set ProjectName=@ProjectName, ProjectAdminID=@ProjectAdminID, ProjectDescription=@ProjectDescription, ProjectType=@ProjectType, ProjectClientName=@ProjectClientName, BeginTime=@BeginTime, EndTime=@EndTime where ProjectNum=@ProjectNum";
         private const string SQL_SELECT_PROJECTS = "select * from project";
         private const string SQL_SELECT_PROJECT_BY_NUM = "select * from project where ProjectNum=@ProjectNum";
         private const string SQL_SELECT_PROJECT_BY_ADMIN_ID = "select * from project where ProjectAdminID=@ProjectAdminID";
@@ -100,7 +100,10 @@ namespace MySQLDAL
                 };
 
                 parms[0].Value = projectInfo.ProjectName;
-                parms[1].Value = projectInfo.ProjectAdminID;
+                if (projectInfo.ProjectAdminID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = projectInfo.ProjectAdminID;
                 parms[2].Value = projectInfo.ProjectDescription;
                 parms[3].Value = projectInfo.ProjectType;
                 parms[4].Value = projectInfo.ProjectClientName;
@@ -149,7 +152,10 @@ namespace MySQLDAL
                 };
 
                 parms[0].Value = projectInfo.ProjectName;
-                parms[1].Value = projectInfo.ProjectAdminID;
+                if (projectInfo.ProjectAdminID == 0)
+                    parms[1].Value = DBNull.Value;
+                else
+                    parms[1].Value = projectInfo.ProjectAdminID;
                 parms[2].Value = projectInfo.ProjectDescription;
                 parms[3].Value = projectInfo.ProjectType;
                 parms[4].Value = projectInfo.ProjectClientName;
@@ -176,7 +182,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
+                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
                         projects.Add(project);
                     }
                 }
@@ -200,7 +206,7 @@ namespace MySQLDAL
                 {
                     if(rdr.Read())
                     {
-                        projectInfo = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
+                        projectInfo = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
                     }
                     else
                         projectInfo = new ProjectInfo();
@@ -225,7 +231,7 @@ namespace MySQLDAL
                 {
                     while (rdr.Read())
                     {
-                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
+                        ProjectInfo project = new ProjectInfo(rdr.GetString(0), rdr.GetString(1), rdr.IsDBNull(2) ? 0 : rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7));
                         projects.Add(project);
                     }
                 }
