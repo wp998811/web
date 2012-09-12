@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ProjectLists.aspx.cs" Inherits="web_Admin_ProjectLists" %>
-
 <%@ Register Assembly="AspNetPager" Namespace="Wuqi.Webdiyer" TagPrefix="webdiyer" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -76,7 +75,7 @@
         </div>
         <div style="height: 20px; text-align: center;">
             <webdiyer:AspNetPager ID="AspNetPager1" runat="server" AlwaysShow="True" ButtonImageAlign="Middle"
-                CssClass="p_num" CurrentPageButtonClass="p_num_currentPage" CustomInfoClass=""
+                CurrentPageButtonClass="p_num_currentPage" CustomInfoClass=""
                 CustomInfoStyle="" FirstPageText="[首页]" Font-Size="9pt" Font-Underline="False"
                 InputBoxStyle="p_input" LastPageText="[尾页]" NextPageText="[后一页]" NumericButtonCount="8"
                 NumericButtonTextFormatString="[{0}]" OnPageChanged="AspNetPager1_PageChanged"

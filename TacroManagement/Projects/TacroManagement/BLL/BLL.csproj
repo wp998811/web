@@ -92,6 +92,7 @@
     <Compile Include="ProjectDoc.cs" />
     <Compile Include="ProjectDocUser.cs" />
     <Compile Include="ProjectUser.cs" />
+    <Compile Include="ResourceAdmin.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="SubTask.cs" />
     <Compile Include="User.cs" />

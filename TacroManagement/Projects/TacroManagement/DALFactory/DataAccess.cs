@@ -185,5 +185,11 @@ namespace DALFactory
             string className = path + ".Schedule";
             return (IDAL.ISchedule)Assembly.Load(path).CreateInstance(className);
         }
+
+        public static IDAL.IResourceAdmin CreateResourceAdmin()
+        {
+            string className = path + ".ResourceAdmin";
+            return (IDAL.IResourceAdmin)Assembly.Load(path).CreateInstance(className);
+        }
     }
 }

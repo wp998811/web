@@ -178,7 +178,7 @@ namespace BLL
             UserInfo user = dal.GetUserByName(userName);
             if (user.UserType.Equals("系统管理员"))
                 return true;
-            return true;
+            return false;
         }
 
 
