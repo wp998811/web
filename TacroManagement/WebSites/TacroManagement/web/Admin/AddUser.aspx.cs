@@ -31,8 +31,6 @@ public partial class web_Admin_AddUser : System.Web.UI.Page
 
     protected void btAdd_Click(object sender, EventArgs e)
     {
-        this.lblUserName.Visible = false;
-
         string userName = this.txtUserName.Text.Trim();
         string password = this.txtPassword.Text.Trim();
         string userType = this.ddlUserType.SelectedValue;
@@ -46,6 +44,7 @@ public partial class web_Admin_AddUser : System.Web.UI.Page
         }
         else
         {
+            this.lblUserName.Visible = false;
             if (userBLL.AddUser(userName, password, userType, email, phone, departID))
             {
                 if (userType.Equals("客户"))
@@ -72,6 +71,8 @@ public partial class web_Admin_AddUser : System.Web.UI.Page
 
     protected void btnCancle_Click(object sender, EventArgs e)
     {
+        this.lblUserName.Visible = false;
+        SetPrompt("", false);
         if (ViewState["retu"] != null)
         {
             Response.Redirect(ViewState["retu"].ToString());

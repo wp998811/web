@@ -89,7 +89,7 @@ namespace Model
         public string EndTime
         {
             get { return this.endTime; }
-            set { this.endTime = EndTime; }
+            set { this.endTime = value; }
         }
     }
 }

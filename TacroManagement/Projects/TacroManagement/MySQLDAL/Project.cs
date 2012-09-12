@@ -24,9 +24,9 @@ namespace MySQLDAL
         private const string PARM_BEGIN_TIME = "@BeginTime";
         private const string PARM_END_TIME = "@EndTime";
 
-        private const string SQL_INSERT_PROJECT = "insert into project(ProjectName, ProjectAdminID, ProjectDescription, ProjectType, ProjectClientName, BeginTime, EndTime) values(@ProjectName, @ProjectAdminID, @ProjectDescription, @ProjectType, @ProjectClientName, @BeginTime, @EndTime)";
+        private const string SQL_INSERT_PROJECT = "insert into project(ProjectNum,ProjectName, ProjectAdminID, ProjectDescription, ProjectType, ProjectClientName, BeginTime, EndTime) values(@ProjectNum,@ProjectName, @ProjectAdminID, @ProjectDescription, @ProjectType, @ProjectClientName, @BeginTime, @EndTime)";
         private const string SQL_DELETE_PROJECT = "delete from project where ProjectNum=@ProjectNum";
-        private const string SQL_UPDATE_PROJECT = "update project set ProjectName=@ProjectName, ProjectAdminID=@ProejctAdminID, ProjectDescription=@ProjectDescription, ProjectType=@ProjectType, ProjectClientName=@ProjectClientName, BeginTime=@BeginTime, EndTime=@EndTime where ProjectNum=@ProjectNum";
+        private const string SQL_UPDATE_PROJECT = "update project set ProjectName=@ProjectName, ProjectAdminID=@ProjectAdminID, ProjectDescription=@ProjectDescription, ProjectType=@ProjectType, ProjectClientName=@ProjectClientName, BeginTime=@BeginTime, EndTime=@EndTime where ProjectNum=@ProjectNum";
         private const string SQL_SELECT_PROJECTS = "select * from project";
         private const string SQL_SELECT_PROJECT_BY_NUM = "select * from project where ProjectNum=@ProjectNum";
         private const string SQL_SELECT_PROJECT_BY_ADMIN_ID = "select * from project where ProjectAdminID=@ProjectAdminID";
@@ -90,6 +90,7 @@ namespace MySQLDAL
             try
             {
                 MySqlParameter[] parms = new MySqlParameter[]{
+                    new MySqlParameter(PARM_PROJECT_NUM,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_PROJECT_NAME, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_PROEJCT_ADMIN_ID, MySqlDbType.Int32),
                     new MySqlParameter(PARM_PROJECT_DESCRIPTION, MySqlDbType.VarChar, 200),
@@ -98,14 +99,14 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_BEGIN_TIME, MySqlDbType.VarChar, 50),
                     new MySqlParameter(PARM_END_TIME, MySqlDbType.VarChar, 50)
                 };
-
-                parms[0].Value = projectInfo.ProjectName;
-                parms[1].Value = projectInfo.ProjectAdminID;
-                parms[2].Value = projectInfo.ProjectDescription;
-                parms[3].Value = projectInfo.ProjectType;
-                parms[4].Value = projectInfo.ProjectClientName;
-                parms[5].Value = projectInfo.BeginTime;
-                parms[6].Value = projectInfo.EndTime;
+                parms[0].Value = projectInfo.ProjectNum;
+                parms[1].Value = projectInfo.ProjectName;
+                parms[2].Value = projectInfo.ProjectAdminID;
+                parms[3].Value = projectInfo.ProjectDescription;
+                parms[4].Value = projectInfo.ProjectType;
+                parms[5].Value = projectInfo.ProjectClientName;
+                parms[6].Value = projectInfo.BeginTime;
+                parms[7].Value = projectInfo.EndTime;
 
                 result = DBUtility.MySqlHelper.ExecuteNonQuery(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_INSERT_PROJECT, parms);
             }

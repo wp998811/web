@@ -116,5 +116,87 @@ namespace BLL
             }
             return dataTable;
         }
+
+        #region ZeroV
+        /// <summary>
+        /// 判断项目代号是否存在
+        /// </summary>
+        /// <param name="projectNum"></param>
+        /// <returns></returns>
+        public bool IsProjectExists(string projectNum)
+        {
+            ProjectInfo projectInfo = GetProjectByNum(projectNum);
+            if (!string.IsNullOrEmpty(projectInfo.ProjectNum))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 新建项目
+        /// </summary>
+        /// <param name="projectNum"></param>
+        /// <param name="projectName"></param>
+        /// <param name="projectAdminID"></param>
+        /// <param name="projectDes"></param>
+        /// <param name="projectType"></param>
+        /// <param name="projectClient"></param>
+        /// <param name="beginTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public bool AddProject(string projectNum,string projectName,int projectAdminID,string projectDes,string projectType,string projectClient,string beginTime,string endTime)
+        {
+            if (string.IsNullOrEmpty(projectNum)||string.IsNullOrEmpty(projectName))
+            {
+                return false;
+            }
+            if (projectAdminID < 1)
+            {
+                return false;
+            }
+            if (dal.InsertProject(new ProjectInfo(projectNum, projectName, projectAdminID, projectDes, projectType, projectClient, beginTime, endTime)) == 1)
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// 修改项目信息
+        /// </summary>
+        /// <param name="projectNum"></param>
+        /// <param name="projectName"></param>
+        /// <param name="projectAdminID"></param>
+        /// <param name="projectDes"></param>
+        /// <param name="projectType"></param>
+        /// <param name="projectClient"></param>
+        /// <param name="beginTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public bool ModifyProject(string projectNum, int projectAdminID, string projectDes, string projectType, string projectClient, string beginTime, string endTime)
+        {
+            if (string.IsNullOrEmpty(projectNum))
+            {
+                return false;
+            }
+            if (projectAdminID < 1)
+            {
+                return false;
+            }
+            ProjectInfo projectInfo = dal.GetProjectByProjectNum(projectNum);
+            projectInfo.ProjectAdminID = projectAdminID;
+            projectInfo.ProjectDescription = projectDes;
+            projectInfo.ProjectType = projectType;
+            projectInfo.ProjectClientName = projectClient;
+            projectInfo.BeginTime = beginTime;
+            projectInfo.EndTime = endTime;
+
+            if (1==dal.UpdateProject(projectInfo))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
     }
 }

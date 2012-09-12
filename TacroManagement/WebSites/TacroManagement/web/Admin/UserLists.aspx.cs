@@ -59,4 +59,5 @@ public partial class web_Admin_UserLists : System.Web.UI.Page
         DepartmentInfo departmentInfo=departmentBLL.GetDepartmentByID(Int32.Parse(departID));
         return departmentInfo.DepartName;
     }
+
 }
