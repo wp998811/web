@@ -72,7 +72,9 @@ namespace BLL
                 }
             }
             var orderedList = affairInfoList.OrderBy(x => x.AffairTime).ToList();
-            return orderedList.ToList();
+            orderedList.Reverse();
+
+            return (orderedList.ToList());
         }
 
         private static int SortA(AffairInfo a1, AffairInfo a2)

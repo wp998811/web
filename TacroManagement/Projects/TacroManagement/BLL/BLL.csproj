@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Admin.cs" />
     <Compile Include="Affair.cs" />
+    <Compile Include="FormatString.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectClient.cs" />
     <Compile Include="ProjectDoc.cs" />

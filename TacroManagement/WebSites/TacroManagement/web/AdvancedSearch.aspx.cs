@@ -73,6 +73,11 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
 
     private void InitDocCate()
     {
+        //绑定文档类型 veil
+        ddlDocumentType.Items.Insert(0, new ListItem("文档类型"));
+        ddlDocumentType.Items.Insert(1, new ListItem("资料文档"));
+        ddlDocumentType.Items.Insert(2, new ListItem("项目文档"));
+        /////////////
         Department department = new Department();
         IList<DepartmentInfo> departmentInfos = department.GetDepartments();
         DepartName.Items.Clear();
@@ -112,7 +117,8 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
         string uploadTimeBegin = UploadTimeBeginText.Text.Trim();
         string uploadTimeEnd = UploadTimeEndText.Text.Trim();
 
-        if (DocRadioButtonList.SelectedValue == "Document")
+        //if (DocRadioButtonList.SelectedValue == "Document")
+        if(ddlDocumentType.SelectedItem.Text == "资料文档")
         {//资料文档查询
             string docVersion = DocVersionText.Text.Trim();       
             string departID = DepartName.SelectedValue;
@@ -129,7 +135,7 @@ public partial class web_AdvancedSearch : System.Web.UI.Page
             DocGridView.DataBind();
             DocGridView.Columns[4].Visible = false;
         }
-        else
+        else if(ddlDocumentType.SelectedItem.Text == "项目文档")
         {// 项目文档
             string projectDocCateName = null;
             if (ProjectDocCate.SelectedIndex != 0)

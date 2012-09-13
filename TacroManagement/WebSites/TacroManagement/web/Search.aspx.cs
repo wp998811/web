@@ -22,7 +22,9 @@ public partial class web_Search : System.Web.UI.Page
     {
         if (!IsPostBack)
         { 
-            DocRadioButtonList.SelectedValue = "Document";
+            ddlType.Items.Insert(0, new ListItem("资料文档"));
+            ddlType.Items.Insert(1, new ListItem("项目文档"));
+            ddlType.SelectedIndex = 0;
         }
        
     }
@@ -37,7 +39,7 @@ public partial class web_Search : System.Web.UI.Page
             return;
         }
 
-        if (DocRadioButtonList.SelectedValue == "Document")
+        if(ddlType.SelectedIndex == 0)
         {
             string condition = "docName LIKE '%" + searchText + "%' OR DocKey LIKE '%" + searchText + "%'";
             Document document = new Document();
@@ -76,7 +78,7 @@ public partial class web_Search : System.Web.UI.Page
         string docID = DocGridView.DataKeys[index][0].ToString();
 
         bool isDocument = false;
-        if ( DocRadioButtonList.SelectedValue == "Document")
+        if ( ddlType.SelectedIndex == 0)
         {
             isDocument= true;
         }
@@ -163,7 +165,7 @@ public partial class web_Search : System.Web.UI.Page
         else if (e.CommandName == "ModifyDocument")
         {
             string address=null;
-            if (DocRadioButtonList.SelectedValue == "Document")
+            if(ddlType.SelectedIndex == 0)
             {
                  address = "ModifyDocument.aspx?DocID=" + docID;
                 

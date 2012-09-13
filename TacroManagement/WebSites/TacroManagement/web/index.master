@@ -9,7 +9,7 @@
 <head runat="server">
     <title>无标题页</title>
     <link rel="stylesheet" href="../css/index.css" type="text/css" />
-    <script type="text/javascript" src="../script/script.js"></script>
+    <script type="text/javascript" src="../../script/script.js"></script>
     <asp:ContentPlaceHolder id="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -19,23 +19,23 @@
     <div style="height:100%">
         <table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td height="70" background="../images/main_05.gif">
+            <td height="70" background="../../images/main_05.gif">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td height="24">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td width="270" height="24" background="../images/main_03.gif">
+                                    <td width="270" height="24" background="../../images/main_03.gif">
                                         &nbsp;
                                     </td>
-                                    <td width="505" background="../images/main_04.gif">
+                                    <td width="505" background="../../images/main_04.gif">
                                         &nbsp;
                                     </td>
                                     <td>
                                         &nbsp;
                                     </td>
                                     <td width="21">
-                                        <img src="../images/main_07.gif" width="21" height="24">
+                                        <img src="../../images/main_07.gif" width="21" height="24">
                                     </td>
                                 </tr>
                             </table>
@@ -45,7 +45,7 @@
                         <td height="38">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td width="270" height="38" background="../images/main_09.gif">
+                                    <td width="270" height="38" background="../../images/main_09.gif">
                                         &nbsp;
                                     </td>
                                     <td>
@@ -56,31 +56,31 @@
                                                         <tr>
                                                             <td width="50" height="19">
                                                                 <div align="center">
-                                                                    <img src="../images/main_12.gif" width="49" height="19"></div>
+                                                                    <img src="../../images/main_12.gif" width="49" height="19"></div>
                                                             </td>
                                                             <td width="50">
                                                                 <div align="center">
-                                                                    <img src="../images/main_14.gif" width="48" height="19"></div>
+                                                                    <img src="../../images/main_14.gif" width="48" height="19"></div>
                                                             </td>
                                                             <td width="50">
                                                                 <div align="center">
-                                                                    <img src="../images/main_16.gif" width="48" height="19"></div>
+                                                                    <img src="../../images/main_16.gif" width="48" height="19"></div>
                                                             </td>
                                                             <td width="50">
                                                                 <div align="center">
-                                                                    <img src="../images/main_18.gif" width="48" height="19"></div>
+                                                                    <img src="../../images/main_18.gif" width="48" height="19"></div>
                                                             </td>
                                                             <td width="50">
                                                                 <div align="center">
-                                                                    <img src="../images/main_20.gif" width="48" height="19"></div>
+                                                                    <img src="../../images/main_20.gif" width="48" height="19"></div>
                                                             </td>
                                                             <td width="26">
                                                                 <div align="center">
-                                                                    <img src="../images/main_21.gif" width="26" height="19"></div>
+                                                                    <img src="../../images/main_21.gif" width="26" height="19"></div>
                                                             </td>
                                                             <td width="100">
                                                                 <div align="center">
-                                                                    <img src="../images/main_22.gif" width="98" height="19"></div>
+                                                                    <img src="../../images/main_22.gif" width="98" height="19"></div>
                                                             </td>
                                                             <td>
                                                                 &nbsp;
@@ -90,13 +90,13 @@
                                                 </td>
                                                 <td width="220" valign="bottom" nowrap="nowrap">
                                                     <div align="right">
-                                                        <span class="STYLE1"><span class="STYLE2">■</span> 今天是：2012年5月12日 星期一</span></div>
+                                                        <span class="STYLE1"><span class="STYLE2"></span></span></div>
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>
                                     <td width="21">
-                                        <img src="../images/main_11.gif" width="21" height="38">
+                                        <img src="../../images/main_11.gif" width="21" height="38">
                                     </td>
                                 </tr>
                             </table>
@@ -106,17 +106,17 @@
                         <td height="8" style="line-height: 8px;">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td width="270" background="../images/main_29.gif" style="line-height: 8px;">
+                                    <td width="270" background="../../images/main_29.gif" style="line-height: 8px;">
                                         &nbsp;
                                     </td>
-                                    <td width="505" background="../images/main_30.gif" style="line-height: 8px;">
+                                    <td width="505" background="../../images/main_30.gif" style="line-height: 8px;">
                                         &nbsp;
                                     </td>
                                     <td style="line-height: 8px;">
                                         &nbsp;
                                     </td>
                                     <td width="21" style="line-height: 8px;">
-                                        <img src="../images/main_31.gif" width="21" height="8">
+                                        <img src="../../images/main_31.gif" width="21" height="8">
                                     </td>
                                 </tr>
                             </table>
@@ -126,10 +126,10 @@
             </td>
         </tr>
         <tr>
-            <td height="28" background="../images/main_36.gif">
+            <td height="28" background="../../images/main_36.gif">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="177" height="28" background="../images/main_32.gif">
+                        <td width="177" height="28" background="../../images/main_32.gif">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td width="20%" height="22">
@@ -137,7 +137,7 @@
                                     </td>
                                     <td width="59%" valign="bottom">
                                         <div align="center" class="STYLE1">
-                                            当前用户：Admin</div>
+                                            当前用户：<asp:Label runat="Server" ID="lblUserName" Text=""></asp:Label></div>
                                     </td>
                                     <td width="21%">
                                         &nbsp;
@@ -166,12 +166,12 @@
                                         </table>
                                     </td>
                                     <td width="3">
-                                        <img src="../images/main_34.gif" width="3" height="28">
+                                        <img src="../../images/main_34.gif" width="3" height="28">
                                     </td>
                                     <td width="63">
                                         <table width="58" border="0" align="center" cellpadding="0" cellspacing="0">
                                             <tr>
-                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
+                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
                                                     onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
                                                     <div align="center" class="STYLE4">
                                                         项目管理</div>
@@ -180,12 +180,12 @@
                                         </table>
                                     </td>
                                     <td width="3">
-                                        <img src="../images/main_34.gif" width="3" height="28">
+                                        <img src="../../images/main_34.gif" width="3" height="28">
                                     </td>
                                     <td width="63">
                                         <table width="58" border="0" align="center" cellpadding="0" cellspacing="0">
                                             <tr>
-                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
+                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
                                                     onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
                                                     <div align="center" class="STYLE4">
                                                         项目文档</div>
@@ -194,12 +194,12 @@
                                         </table>
                                     </td>
                                     <td width="3">
-                                        <img src="../images/main_34.gif" width="3" height="28">
+                                        <img src="../../images/main_34.gif" width="3" height="28">
                                     </td>
                                     <td width="63">
                                         <table width="58" border="0" align="center" cellpadding="0" cellspacing="0">
                                             <tr>
-                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
+                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
                                                     onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
                                                     <div align="center" class="STYLE4">
                                                         知识库</div>
@@ -208,12 +208,12 @@
                                         </table>
                                     </td>
                                     <td width="3">
-                                        <img src="../images/main_34.gif" width="3" height="28">
+                                        <img src="../../images/main_34.gif" width="3" height="28">
                                     </td>
                                     <td width="63">
                                         <table width="58" border="0" align="center" cellpadding="0" cellspacing="0">
                                             <tr>
-                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
+                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
                                                     onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
                                                     <div align="center" class="STYLE4">
                                                         资源管理</div>
@@ -222,12 +222,12 @@
                                         </table>
                                     </td>
                                     <td width="3">
-                                        <img src="../images/main_34.gif" width="3" height="28">
+                                        <img src="../../images/main_34.gif" width="3" height="28">
                                     </td>
                                     <td width="63">
                                         <table width="58" border="0" align="center" cellpadding="0" cellspacing="0">
                                             <tr>
-                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
+                                                <td height="20" style="cursor: hand" onmouseover="this.style.backgroundImage='url(../../images/bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#a6d0e7'; "
                                                     onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
                                                     <div align="center" class="STYLE4">
                                                         个人设置</div>
@@ -243,7 +243,7 @@
                             </table>
                         </td>
                         <td width="21">
-                            <img src="../images/main_37.gif" width="21" height="28">
+                            <img src="../../images/main_37.gif" width="21" height="28">
                         </td>
                     </tr>
                 </table>
@@ -264,7 +264,7 @@
                                     <td width="165">
                                         <table width="165" style="height:100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
-                                                <td height="28" background="../images/main_40.gif">
+                                                <td height="28" background="../../images/main_40.gif">
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                         <tr>
                                                             <td width="19%">
@@ -284,7 +284,7 @@
                                                             <td>
                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
-                                                                        <td height="23" background="../images/main_47.gif" id="imgmenu1" class="menu_title">
+                                                                        <td height="23" background="../../images/main_47.gif" id="imgmenu1" class="menu_title">
                                                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                 <tr>
                                                                                     <td width="18%">
@@ -298,7 +298,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td background="../images/main_51.gif" id="submenu1">
+                                                                        <td background="../../images/main_51.gif" id="submenu1">
                                                                             <div class="sec_menu">
                                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                     <tr>
@@ -307,14 +307,16 @@
                                                                                                 <tr>
                                                                                                     <td width="16%" height="25">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td width="84%" height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">个人提醒</span>
+                                                                                                                    <span class="STYLE3">
+                                                                                                                       <a href="../home/Home.aspx">首页</a>
+                                                                                                                    </span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -325,7 +327,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td height="5">
-                                                                                            <img src="../images/main_52.gif" width="151" height="5" />
+                                                                                            <img src="../../images/main_52.gif" width="151" height="5" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
@@ -339,7 +341,7 @@
                                                             <td>
                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
-                                                                        <td height="23" background="../images/main_47.gif" id="imgmenu2" class="menu_title">
+                                                                        <td height="23" background="../../images/main_47.gif" id="imgmenu2" class="menu_title">
                                                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                 <tr>
                                                                                     <td width="18%">
@@ -353,7 +355,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td background="../images/main_51.gif" id="submenu2">
+                                                                        <td background="../../images/main_51.gif" id="submenu2">
                                                                             <div class="sec_menu">
                                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                     <tr>
@@ -362,46 +364,16 @@
                                                                                                 <tr>
                                                                                                     <td width="16%" height="25">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td width="84%" height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
                                                                                                             <tr>
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">子任务管理</span>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                        </table>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td height="23">
-                                                                                                        <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
-                                                                                                    </td>
-                                                                                                    <td height="23">
-                                                                                                        <table width="95%" border="0" cellspacing="0" cellpadding="0">
-                                                                                                            <tr>
-                                                                                                                <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
-                                                                                                                    onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">成员管理</span>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                        </table>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td height="23">
-                                                                                                        <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
-                                                                                                    </td>
-                                                                                                    <td height="23">
-                                                                                                        <table width="95%" border="0" cellspacing="0" cellpadding="0">
-                                                                                                            <tr>
-                                                                                                                <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
-                                                                                                                    onmouseout="this.style.borderStyle='none'">
-                                                                                                                    <span class="STYLE3">项目一览</span>
+                                                                                                                    <span class="STYLE3">
+                                                                                                                        <a href="../project/projectInfo.aspx">项目列表</a>
+                                                                                                                    </span>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
@@ -413,7 +385,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td height="5">
-                                                                                            <img src="../images/main_52.gif" width="151" height="5" />
+                                                                                            <img src="../../images/main_52.gif" width="151" height="5" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
@@ -427,7 +399,7 @@
                                                             <td>
                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
-                                                                        <td height="23" background="../images/main_47.gif" id="imgmenu1" class="menu_title"
+                                                                        <td height="23" background="../../images/main_47.gif" id="imgmenu1" class="menu_title"
                                                                             style="cursor: hand">
                                                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                 <tr>
@@ -442,7 +414,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td background="../images/main_51.gif" id="submenu2">
+                                                                        <td background="../../images/main_51.gif" id="submenu2">
                                                                             <div class="sec_menu">
                                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                     <tr>
@@ -451,7 +423,7 @@
                                                                                                 <tr>
                                                                                                     <td width="16%" height="25">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td width="84%" height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -467,7 +439,7 @@
                                                                                                 <tr>
                                                                                                     <td height="23">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -485,7 +457,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td height="5">
-                                                                                            <img src="../images/main_52.gif" width="151" height="5" />
+                                                                                            <img src="../../images/main_52.gif" width="151" height="5" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
@@ -500,7 +472,7 @@
                                                             <td>
                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
-                                                                        <td height="23" background="../images/main_47.gif" id="imgmenu1" class="menu_title"
+                                                                        <td height="23" background="../../images/main_47.gif" id="imgmenu1" class="menu_title"
                                                                             style="cursor: hand">
                                                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                 <tr>
@@ -515,7 +487,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td background="../images/main_51.gif" id="Td2">
+                                                                        <td background="../../images/main_51.gif" id="Td2">
                                                                             <div class="sec_menu">
                                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                     <tr>
@@ -524,7 +496,7 @@
                                                                                                 <tr>
                                                                                                     <td width="16%" height="25">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td width="84%" height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -540,7 +512,7 @@
                                                                                                 <tr>
                                                                                                     <td height="23">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -559,7 +531,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td height="5">
-                                                                                            <img src="../images/main_52.gif" width="151" height="5" />
+                                                                                            <img src="../../images/main_52.gif" width="151" height="5" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
@@ -574,7 +546,7 @@
                                                             <td>
                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
-                                                                        <td height="23" background="../images/main_47.gif" id="imgmenu1" class="menu_title"
+                                                                        <td height="23" background="../../images/main_47.gif" id="imgmenu1" class="menu_title"
                                                                             style="cursor: hand">
                                                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                 <tr>
@@ -589,7 +561,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td background="../images/main_51.gif" id="Td4">
+                                                                        <td background="../../images/main_51.gif" id="Td4">
                                                                             <div class="sec_menu">
                                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                                     <tr>
@@ -598,7 +570,7 @@
                                                                                                 <tr>
                                                                                                     <td width="16%" height="25">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td width="84%" height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -614,7 +586,7 @@
                                                                                                 <tr>
                                                                                                     <td height="23">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -630,7 +602,7 @@
                                                                                                 <tr>
                                                                                                     <td height="23">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -646,7 +618,7 @@
                                                                                                 <tr>
                                                                                                     <td height="23">
                                                                                                         <div align="center">
-                                                                                                            <img src="../images/left.gif" width="10" height="10" /></div>
+                                                                                                            <img src="../../images/left.gif" width="10" height="10" /></div>
                                                                                                     </td>
                                                                                                     <td height="23">
                                                                                                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -665,7 +637,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td height="5">
-                                                                                            <img src="../images/main_52.gif" width="151" height="5" />
+                                                                                            <img src="../../images/main_52.gif" width="151" height="5" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
@@ -684,7 +656,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td height="18" background="../images/main_58.gif">
+                                                <td height="18" background="../../images/main_58.gif">
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                         <tr>
                                                             <td height="18" valign="bottom">
@@ -700,7 +672,7 @@
                         </td>
                         <td width="6" style="width: 6px;" valign="middle" bgcolor="7fbe26">
                             <span class="navPoint" id="switchPoint" title="">
-                                <img src="../images/main_55.gif" name="img1" width="6" height="40" id="img1"></span>
+                                <img src="../../images/main_55.gif" name="img1" width="6" height="40" id="img1"></span>
                         </td>
                         <td width="100%" align="left" valign="top">                  
                             <div>
@@ -719,14 +691,14 @@
     </table>
         <table width="100%" style="height:100%;table-layout:fixed;" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td width="6" background="../images/main_59.gif" style="line-height: 6px;">
-                <img src="../images/main_59.gif" width="6" height="6">
+            <td width="6" background="../../images/main_59.gif" style="line-height: 6px;">
+                <img src="../../images/main_59.gif" width="6" height="6">
             </td>
-            <td background="../images/main_61.gif" style="line-height: 6px;">
+            <td background="../../images/main_61.gif" style="line-height: 6px;">
                 &nbsp;
             </td>
-            <td width="6" background="../images/main_61.gif" style="line-height: 6px;">
-                <img src="../images/main_62.gif" width="6" height="6">
+            <td width="6" background="../../images/main_61.gif" style="line-height: 6px;">
+                <img src="../../images/main_62.gif" width="6" height="6">
             </td>
         </tr>
     </table>  

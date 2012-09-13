@@ -259,6 +259,7 @@ function setSubTaskID(val)
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <div style="padding-top:10px"></div>
     <div class="container">
         <div class="row">
             <form class="form-horizontal">
@@ -266,11 +267,14 @@ function setSubTaskID(val)
             <div class="control-group form-horizontal">
                 <label class="control-label">
                     文档类型</label>
-                <div class="controls">
+                <div class="controls form-horizontal">
+                    <asp:DropDownList ID="ddlDocumentType" runat="Server"></asp:DropDownList>
+                </div>
+                <div class="controls form-horizontal">
                     <asp:RadioButtonList ID="DocRadioButtonList" runat="server" RepeatDirection="Horizontal"
                         onclick="setDocCate()">
-                        <asp:ListItem Value="Document">资料文档</asp:ListItem>
-                        <asp:ListItem Value="ProjectDoc">项目文档</asp:ListItem>
+                        <asp:ListItem Value="Document">资料</asp:ListItem>
+                        <asp:ListItem Value="ProjectDoc">项目</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
                 <div class="form-horizontal control-group">

@@ -29,7 +29,7 @@
             <td>
                 <table width="962" border="0" align="center" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td height="235" style="background-image:url(../images/login_03.gif)">
+                        <td height="235" style="background-image:url(../../images/login_03.gif)">
                             &nbsp;
                         </td>
                     </tr>
@@ -37,10 +37,10 @@
                         <td height="53">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td width="394" height="53" style="background-image:url(../images/login_05.gif)">
+                                    <td width="394" height="53" style="background-image:url(../../images/login_05.gif)">
                                         &nbsp;
                                     </td>
-                                    <td width="206" style="background-image:url(../images/login_06.gif)">
+                                    <td width="206" style="background-image:url(../../images/login_06.gif)">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td width="16%" height="25">
@@ -79,7 +79,7 @@
                                             </tr>
                                         </table>
                                     </td>
-                                    <td width="362"  style="background-image:url(../images/login_07.gif)">
+                                    <td width="362"  style="background-image:url(../../images/login_07.gif)">
                                         &nbsp;
                                     </td>
                                 </tr>
@@ -87,7 +87,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td height="213" style="background-image:url(../images/login_08.gif)" >
+                        <td height="213" style="background-image:url(../../images/login_08.gif)" >
                             &nbsp;
                         </td>
                     </tr>

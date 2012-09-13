@@ -23,8 +23,10 @@ public partial class web_projectInfo : System.Web.UI.Page
     SubTask subTaskManage = new SubTask();
     Department departmentManage = new Department();
     Affair affairManage = new Affair();
+    FormatString formatString = new FormatString();
     public static string projectNum = "";
     public string strProgress = "";
+    public static int userID;
 
 
     protected void Page_Load(object sender, EventArgs e)
@@ -33,12 +35,40 @@ public partial class web_projectInfo : System.Web.UI.Page
         {
             if(Request.Params["projectNum"] != null && Request.Params["projectNum"].Trim() != "")
             {
+                string userName = Session["UserName"].ToString();
+                userID = (userManage.GetUserByName(userName)).UserID;
                 projectNum = Request.Params["projectNum"];
+                //////////////////////////////////////////////////              
                 BindProjectInfo(projectNum);
                 BindSubTasks(projectNum);
                 BindProjectUser(projectNum);
                 SetProgress(projectNum);
+                //////////////////////////////////////////////////
+                //进行权限控制
+                ProjectInfo projectInfo = projectManage.GetProjectByNum(projectNum);
+                if(projectInfo.ProjectAdminID != userID)
+                {
+                    a1.Visible = false;
+                    a2.Visible = false;
+                    a3.Visible = false;
 
+                    icon1.Visible = false;
+                    icon2.Visible = false;
+                    icon3.Visible = false;
+
+                    for(int i = 0; i < rpUserList.Items.Count; i++)
+                    {
+                        LinkButton linkButton = rpUserList.Items[i].FindControl("lbtnRpDelete") as LinkButton;
+                        linkButton.Visible = false;
+                    }
+                    for(int i = 0; i < rpSubTask.Items.Count; i++)
+                    {
+                        LinkButton LinkButtonModify = rpSubTask.Items[i].FindControl("rpLbtnModify") as LinkButton;
+                        LinkButton LinkButtonDel = rpSubTask.Items[i].FindControl("rpLbtnDel") as LinkButton;
+                        LinkButtonModify.Visible = false;
+                        LinkButtonDel.Visible = false;
+                    }
+                }
             }
         }
     }
@@ -56,8 +86,10 @@ public partial class web_projectInfo : System.Web.UI.Page
             if (userInfo != null && userInfo.UserID != 0)
                 lblProjectAdmin.Text = userInfo.UserName;
             lblProjectType.Text = projectInfo.ProjectType;
-            lblBeginDate.Text = projectInfo.BeginTime;
-            lblEndDate.Text = projectInfo.EndTime;
+            //lblBeginDate.Text = projectInfo.BeginTime;
+            //lblEndDate.Text = projectInfo.EndTime;
+            lblBeginDate.Text = formatString.FormatDate(projectInfo.BeginTime);
+            lblEndDate.Text = formatString.FormatDate(projectInfo.EndTime);
             lblProjectDescription.Text = projectInfo.ProjectDescription;
         }
     }
@@ -70,19 +102,32 @@ public partial class web_projectInfo : System.Web.UI.Page
         {
             UserInfo userInfo = userManage.GetUserById(subTaskInfo.UserId);
             if(userInfo != null && userInfo.UserID != 0)
-                tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, subTaskInfo.StartTime, subTaskInfo.EndTime,
+                tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, formatString.FormatDate(subTaskInfo.StartTime), formatString.FormatDate(subTaskInfo.EndTime),
                      subTaskInfo.Product, subTaskInfo.ForeTask, subTaskInfo.Resource, subTaskInfo.IsRemind, subTaskInfo.TaskState, 
                      userInfo.UserName, userInfo.UserEmail, userInfo.UserPhone));
             else
             {
-                tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, subTaskInfo.StartTime, subTaskInfo.EndTime,
+                tasks.Add(new RichSubTaskInfo(projectNum, subTaskInfo.TaskId, subTaskInfo.TaskName, subTaskInfo.Period, formatString.FormatDate(subTaskInfo.StartTime), formatString.FormatDate(subTaskInfo.EndTime),
                      subTaskInfo.Product, subTaskInfo.ForeTask, subTaskInfo.Resource, subTaskInfo.IsRemind, subTaskInfo.TaskState));
             }
         }
         //dlSubTask.DataSource = tasks;
         //dlSubTask.DataBind();
-        gvSubTask.DataSource = tasks;
-        gvSubTask.DataBind();
+        //gvSubTask.DataSource = tasks;
+        //gvSubTask.DataBind();
+        this.AspNetPager1.RecordCount = tasks.Count;
+        PagedDataSource pg = new PagedDataSource();
+        pg.DataSource = tasks;
+        pg.AllowPaging = true;
+        pg.CurrentPageIndex = AspNetPager1.CurrentPageIndex - 1;
+        pg.PageSize = AspNetPager1.PageSize;
+        rpSubTask.DataSource = pg;
+        rpSubTask.DataBind();
+    }
+
+    protected void AspNetPager1_PageChanged(object sender, EventArgs e)
+    {
+        BindSubTasks(projectNum);
     }
 
     private void BindProjectUser(string projectNum)
@@ -90,8 +135,8 @@ public partial class web_projectInfo : System.Web.UI.Page
         IList<UserInfo> userInfoList = projectUserManage.GetProjectUserInfosByProjectNum(projectNum);
         
 
-        gvUser.DataSource = userInfoList;
-        gvUser.DataBind();
+        //gvUser.DataSource = userInfoList;
+        //gvUser.DataBind();
 
         rpUserList.DataSource = userInfoList;
         rpUserList.DataBind();
@@ -112,6 +157,7 @@ public partial class web_projectInfo : System.Web.UI.Page
         float rateF = (float)timeSpare / (float)timeLength;
         rateF *= 100;
         int rateI = (int)rateF;
+        rateI = rateI > 100 ? 100 : rateI;
         StringBuilder sbList = new StringBuilder();
         string str = "<div class=\"bar\" style=\"width: {0}%;\"></div>";
         sbList.Append(string.Format(str, rateI.ToString()));
@@ -131,7 +177,9 @@ public partial class web_projectInfo : System.Web.UI.Page
                 if(subTaskInfo != null && subTaskInfo.TaskId != 0)
                 {
                     string des = "删除子任务：" + subTaskInfo.TaskName;
-                    AffairInfo affair = new AffairInfo(des, subTaskInfo.UserId, DateTime.Now.ToString(), projectNum);
+                    string name = Session["UserName"].ToString();
+                    int id = (userManage.GetUserByName("name")).UserID;
+                    AffairInfo affair = new AffairInfo(des, id, DateTime.Now.ToString(), projectNum);
                     affairManage.InsertAffair(affair);
                 }
                 
@@ -186,6 +234,75 @@ public partial class web_projectInfo : System.Web.UI.Page
             }
         }
     }
+
+    protected void rpLbtnModify_Command(object sender, CommandEventArgs e)
+    {
+        if (e.CommandName == "modify")
+        {
+            int taskId = Convert.ToInt32(e.CommandArgument.ToString());
+            string url = "subTaskModify.aspx?projectNum=" + projectNum + "&taskID=" + taskId + "&type=1";
+            Response.Redirect(url);
+        }
+    }
+
+    protected void lbtnRpDelete_Command(object sender, CommandEventArgs e)
+    {
+        if (e.CommandName == "del")
+        {
+            int id = Convert.ToInt32(e.CommandArgument.ToString());
+            ProjectInfo projectInfo = projectManage.GetProjectByNum(projectNum);
+            if (id == projectInfo.ProjectAdminID)
+            {
+                Response.Write("<script language='javascript'>alert('不能删除项目负责人！')</script>");
+                return;
+            }
+            IList<SubTaskInfo> subTaskInfos = subTaskManage.GetSubTasksByProjectNum(projectNum);
+            foreach (SubTaskInfo subTaskInfo in subTaskInfos)
+            {
+                if (subTaskInfo.UserId == id)
+                {
+                    subTaskInfo.UserId = -1;
+                    subTaskManage.UpdateSubTask(subTaskInfo);
+                }
+            }
+            if (projectUserManage.DeleteProjectUserByProjectNumAndUserID(projectNum, id) > 0)
+            {
+                Response.Write("<script language='javascript'>alert('删除成功')</script>");
+                string url = "projectInfo.aspx?projectNum=" + projectNum;
+                Response.Redirect(url);
+            }
+        }
+    }
+
+
+    
+
+    protected void rpLbtnDel_Command(object sender, CommandEventArgs e)
+    {
+        if(e.CommandName == "del")
+        {
+            int taskId = Convert.ToInt32(e.CommandArgument.ToString());
+            SubTaskInfo subTaskInfo = subTaskManage.GetSubTaskById(taskId);
+            if(subTaskManage.DeleteSubTask(taskId) > 0)
+            {
+                //添加项目动态
+                string uName = Session["UserName"].ToString();
+                int uId = (userManage.GetUserByName(uName)).UserID;
+                if(subTaskInfo != null && subTaskInfo.TaskId != 0)
+                {
+                    string des = "删除子任务：" + subTaskInfo.TaskName;
+                    AffairInfo affair = new AffairInfo(des, uId, DateTime.Now.ToString(), projectNum);
+                    affairManage.InsertAffair(affair);
+                }
+                
+
+                Response.Write("<script language='javascript'>alert('删除成功')</script>");
+                string url = "projectInfo.aspx?projectNum=" + projectNum;
+                Response.Redirect(url);
+            }
+        }
+    }
+    
     protected void lbtnAddUser_Command(object sender, CommandEventArgs e)
     {
         if(e.CommandName == "add")

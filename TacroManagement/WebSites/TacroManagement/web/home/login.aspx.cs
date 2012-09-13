@@ -45,7 +45,7 @@ public partial class web_login : System.Web.UI.Page
             }
             else
             {
-                Response.Redirect("userIndex.aspx");
+                Response.Redirect("Home.aspx");
             }
         }
         else
