@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using BLL;
 using Model;
 
-public partial class web_Admin_AddProject : System.Web.UI.Page
+public partial class web_Admin_NewProject : System.Web.UI.Page
 {
     User userBLL = new User();
     Client clientBLL = new Client();
@@ -67,8 +67,8 @@ public partial class web_Admin_AddProject : System.Web.UI.Page
         string projectName = this.txtProjectName.Text.Trim();
 
         string projectAdminName = this.ddlAdmin.SelectedValue;
-        UserInfo userInfo=userBLL.GetUserByName(projectAdminName);
-        int projectAdminID=userInfo.UserID;
+        UserInfo userInfo = userBLL.GetUserByName(projectAdminName);
+        int projectAdminID = userInfo.UserID;
 
         string projectClientName = this.ddlClient.SelectedValue;
         string projectType = this.ddlProjectType.SelectedValue;
@@ -78,7 +78,7 @@ public partial class web_Admin_AddProject : System.Web.UI.Page
 
         if (iBeginDate.Value.CompareTo(iEndDate.Value) > 0)
         {
-            SetPrompt("项目开始日期不能晚于结束日期！",true);
+            SetPrompt("项目开始日期不能晚于结束日期！", true);
             return;
         }
 
@@ -104,7 +104,7 @@ public partial class web_Admin_AddProject : System.Web.UI.Page
     //返回
     protected void btnCancel_Click(object sender, EventArgs e)
     {
-        SetPrompt("",false);
+        SetPrompt("", false);
         this.lblProjectNum.Visible = false;
         if (ViewState["retu"] != null)
         {

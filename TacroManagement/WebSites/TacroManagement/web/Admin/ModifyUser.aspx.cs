@@ -4,11 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using BLL;
 using Model;
 
-public partial class web_Admin_EditUser : System.Web.UI.Page
+public partial class web_Admin_ModifyUser : System.Web.UI.Page
 {
     User userBLL = new User();
     Department departBLL = new Department();
@@ -18,14 +17,14 @@ public partial class web_Admin_EditUser : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            if (Request.UrlReferrer!=null)
+            if (Request.UrlReferrer != null)
             {
                 ViewState["retu"] = Request.UrlReferrer.ToString();
             }
 
             if (!string.IsNullOrEmpty(Request.QueryString["userId"]))
             {
-                int userID =Int32.Parse(Request.QueryString["userId"]);
+                int userID = Int32.Parse(Request.QueryString["userId"]);
                 BindUserInfo(userID);
             }
         }
@@ -40,7 +39,7 @@ public partial class web_Admin_EditUser : System.Web.UI.Page
         this.txtEmail.Text = userInfo.UserEmail;
         this.txtPhone.Text = userInfo.UserPhone;
         BindDDLDepartment();
-        this.ddlDepart.SelectedIndex = userInfo.DepartID;  
+        this.ddlDepart.SelectedIndex = userInfo.DepartID;
     }
 
     protected void btComfirm_Click(object sender, EventArgs e)
@@ -59,7 +58,7 @@ public partial class web_Admin_EditUser : System.Web.UI.Page
             if (userBLL.ModifyUser(userID, userName, password, userType, userEmail, userPhone, departID))
                 SetPrompt("修改成功", true);
             else
-                SetPrompt("修改失败",true);
+                SetPrompt("修改失败", true);
         }
     }
 
@@ -68,7 +67,7 @@ public partial class web_Admin_EditUser : System.Web.UI.Page
         if (ViewState["retu"] != null)
         {
             Response.Redirect(ViewState["retu"].ToString());
-        }     
+        }
     }
 
     private void SetPrompt(string Prompt, bool IsVisible)
@@ -82,9 +81,9 @@ public partial class web_Admin_EditUser : System.Web.UI.Page
         this.ddlDepart.Items.Add(new ListItem("请选择部门"));
         IList<DepartmentInfo> departments = departBLL.GetDepartments();
         foreach (DepartmentInfo item in departments)
-	    {
+        {
             string departName = item.DepartName;
             this.ddlDepart.Items.Add(new ListItem(departName));
-	    }
+        }
     }
 }

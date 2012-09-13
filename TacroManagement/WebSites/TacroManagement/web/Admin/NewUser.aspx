@@ -1,91 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="EditUser.aspx.cs" Inherits="web_Admin_EditUser" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/web/Admin/admin.master" AutoEventWireup="true" CodeFile="NewUser.aspx.cs" Inherits="web_Admin_NewUser" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>编辑用户</title>
-    <style type="text/css">
-        .style6
-        {
-            height: 38px;
-            width: 75px;
-        }
-        .style7
-        {
-            width: 183px;
-            height: 38px;
-        }
-        .style8
-        {
-            width: 271px;
-            height: 38px;
-        }
-        .style9
-        {
-            height: 27px;
-            width: 75px;
-        }
-        .style10
-        {
-            width: 183px;
-            height: 27px;
-        }
-        .style11
-        {
-            width: 271px;
-            height: 27px;
-        }
-        .style12
-        {
-            height: 29px;
-            width: 75px;
-        }
-        .style13
-        {
-            width: 183px;
-            height: 29px;
-        }
-        .style14
-        {
-            width: 271px;
-            height: 29px;
-        }
-        .style15
-        {
-            height: 35px;
-            width: 75px;
-        }
-        .style16
-        {
-            width: 183px;
-            height: 35px;
-        }
-        .style17
-        {
-            width: 271px;
-            height: 35px;
-        }
-        .style18
-        {
-            height: 32px;
-            width: 75px;
-        }
-        .style19
-        {
-            width: 183px;
-            height: 32px;
-        }
-        .style20
-        {
-            width: 271px;
-            height: 32px;
-        }
-    </style>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <h3>
-        用户管理 > 用户信息</h3>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
+
+  <h3>
+        用户管理 > 用户列表</h3>
     <div style="margin: 0 auto; font-size: 12px; font-weight: bold;">
         <table>
             <tr>
@@ -95,8 +16,10 @@
                 <td class="style19">
                     <asp:TextBox ID="txtUserName" runat="server" Width="180px"></asp:TextBox>
                 </td>
-                <td class="style20">
-                    &nbsp;
+                <td class="style17">
+                    <asp:RequiredFieldValidator ID="rfvName" runat="server" 
+                        ControlToValidate="txtUserName" ErrorMessage="请输入用户名" Display="Dynamic"></asp:RequiredFieldValidator>
+                   <asp:Label ID="lblUserName" Text="用户名已存在" runat="server" Visible="false" Style="color: Red"></asp:Label>
                 </td>
             </tr>
             <tr>
@@ -179,7 +102,6 @@
                 </td>
                 <td class="style13">
                     <asp:DropDownList ID="ddlDepart" runat="server">
-        
                     </asp:DropDownList>
                 </td>
                 <td class="style14">
@@ -191,9 +113,9 @@
                 <td class="style6">
                 </td>
                 <td class="style7">
-                    <asp:Button ID="btComfirm" runat="server" Text="确认" OnClick="btComfirm_Click" />
+                    <asp:Button ID="btAdd" runat="server" Text="添加" onclick="btAdd_Click"/>
                     <asp:Button ID="btnCancle" runat="server" Text="返回" OnClick="btnCancle_Click" 
-                        CausesValidation="False" Width="40px" />
+                        CausesValidation="False" Width="40px" style="height: 26px" />
                 </td>
                 <td class="style8">
                     <asp:Label ID="lblPrompt" Text="" runat="server" Visible="false" Style="color: Red"></asp:Label>
@@ -201,6 +123,5 @@
             </tr>
         </table>
     </div>
-    </form>
-</body>
-</html>
+</asp:Content>
+

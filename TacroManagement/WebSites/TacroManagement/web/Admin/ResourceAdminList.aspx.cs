@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using BLL;
 using Model;
 
-public partial class web_Admin_ResourceAdminLists : System.Web.UI.Page
+public partial class web_Admin_ResourceAdminList : System.Web.UI.Page
 {
     User userBLL = new User();
     ResourceAdmin raBLL = new ResourceAdmin();

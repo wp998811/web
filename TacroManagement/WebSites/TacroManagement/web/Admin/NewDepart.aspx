@@ -1,9 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddDepartment.aspx.cs" Inherits="web_Admin_AddDepartment" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/web/Admin/admin.master" AutoEventWireup="true" CodeFile="NewDepart.aspx.cs" Inherits="web_Admin_AddDepart" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>新建部门</title>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
     <style type="text/css">
         .style6
         {
@@ -81,10 +79,12 @@
             height: 32px;
         }
     </style>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <h3>
+
+</asp:Content>
+
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+  <h3>
         部门管理 > 部门信息</h3>
     <div style="margin: 0 auto; font-size: 12px; font-weight: bold;">
         <table>
@@ -126,6 +126,7 @@
             </tr>
         </table>
     </div>
-    </form>
-</body>
-</html>
+
+
+</asp:Content>
+

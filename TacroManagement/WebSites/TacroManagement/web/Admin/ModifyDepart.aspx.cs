@@ -4,13 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using BLL;
 using Model;
 
-public partial class web_Admin_EditDepartment : System.Web.UI.Page
+public partial class web_Admin_ModifyDepart : System.Web.UI.Page
 {
-
     Department departBLL = new Department();
 
     protected void Page_Load(object sender, EventArgs e)
@@ -46,7 +44,7 @@ public partial class web_Admin_EditDepartment : System.Web.UI.Page
         {
             int departID = Int32.Parse(Request.QueryString["departId"]);
 
-            if (departBLL.EditDepartment(departID,departName,departAdmin))
+            if (departBLL.EditDepartment(departID, departName, departAdmin))
                 SetPrompt("修改成功", true);
             else
                 SetPrompt("修改失败", true);
@@ -64,6 +62,6 @@ public partial class web_Admin_EditDepartment : System.Web.UI.Page
         if (ViewState["retu"] != null)
         {
             Response.Redirect(ViewState["retu"].ToString());
-        }     
+        }
     }
 }

@@ -4,11 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using BLL;
 using Model;
-
-public partial class web_Admin_UserLists : System.Web.UI.Page
+public partial class web_Admin_UserList : System.Web.UI.Page
 {
     User userBLL = new User();
     Department departmentBLL = new Department();
@@ -52,11 +50,11 @@ public partial class web_Admin_UserLists : System.Web.UI.Page
 
     protected string GetDepartName(string departID)
     {
-        if (departID=="0")
+        if (departID == "0")
         {
             return "暂无部门";
         }
-        DepartmentInfo departmentInfo=departmentBLL.GetDepartmentByID(Int32.Parse(departID));
+        DepartmentInfo departmentInfo = departmentBLL.GetDepartmentByID(Int32.Parse(departID));
         return departmentInfo.DepartName;
     }
 

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using BLL;
 using Model;
 
-public partial class web_Admin_EditProject : System.Web.UI.Page
+public partial class web_Admin_ModifyProject : System.Web.UI.Page
 {
     User userBLL = new User();
     Client clientBLL = new Client();
@@ -21,8 +20,8 @@ public partial class web_Admin_EditProject : System.Web.UI.Page
             if (Request.UrlReferrer != null)
             {
                 ViewState["retu"] = Request.UrlReferrer.ToString();
-            } 
-            
+            }
+
             if (!string.IsNullOrEmpty(Request.QueryString["projectNum"].ToString()))
             {
                 string projectNum = Request.QueryString["projectNum"].ToString();
@@ -53,8 +52,8 @@ public partial class web_Admin_EditProject : System.Web.UI.Page
         this.ddlProjectType.SelectedValue = projectInfo.ProjectType;
         this.txtProjectDes.Text = projectInfo.ProjectDescription;
 
-        this.iBeginDate.Value =FormatDate(projectInfo.BeginTime);
-        this.iEndDate.Value =FormatDate(projectInfo.EndTime);
+        this.iBeginDate.Value = FormatDate(projectInfo.BeginTime);
+        this.iEndDate.Value = FormatDate(projectInfo.EndTime);
 
     }
 
@@ -88,7 +87,7 @@ public partial class web_Admin_EditProject : System.Web.UI.Page
     protected void btnOk_Click(object sender, EventArgs e)
     {
         string projectNum = this.lblProjectNum.Text.Trim();
-        string projectAdmin=this.ddlAdmin.SelectedValue;
+        string projectAdmin = this.ddlAdmin.SelectedValue;
         UserInfo userInfo = userBLL.GetUserByName(projectAdmin);
         int projectAdminID = userInfo.UserID;
 

@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+
 using BLL;
 using Model;
 
-public partial class web_Admin_DepartmentLists : System.Web.UI.Page
+public partial class web_Admin_DepartList : System.Web.UI.Page
 {
     Department departBLL = new Department();
 

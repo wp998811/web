@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+
 using BLL;
 using Model;
 
-public partial class web_Admin_AddResourceAdmin : System.Web.UI.Page
+public partial class web_Admin_NewResourceAdmin : System.Web.UI.Page
 {
     User userBLL = new User();
 
@@ -63,7 +64,7 @@ public partial class web_Admin_AddResourceAdmin : System.Web.UI.Page
 
         int userID = user.UserID;
 
-        if (raBLL.AddResourceAdmin(userID,resourceType))
+        if (raBLL.AddResourceAdmin(userID, resourceType))
         {
             SetPrompt("指定成功", true);
         }

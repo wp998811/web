@@ -4,11 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using BLL;
 using Model;
-
-public partial class web_Admin_ProjectLists : System.Web.UI.Page
+public partial class web_Admin_ProjectList : System.Web.UI.Page
 {
     Project projectBLL = new Project();
     User userBLL = new User();

@@ -8,8 +8,7 @@ using System.Web.UI.WebControls;
 using BLL;
 using Model;
 
-
-public partial class web_Admin_AddDepartment : System.Web.UI.Page
+public partial class web_Admin_AddDepart : System.Web.UI.Page
 {
     Department departBLL = new Department();
 
