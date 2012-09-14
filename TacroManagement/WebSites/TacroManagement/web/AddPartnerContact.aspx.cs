@@ -17,31 +17,41 @@ using Model;
 
 public partial class web_AddPartnerContact : System.Web.UI.Page
 {
+    Contact contact = new Contact();
+    PartnerContact partnerContact = new PartnerContact();
+    User user = new User();
+    public static string partnerResourceID = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
         {
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
+
+            if (Request.Params["partnerResourceID"] != null && Request.Params["partnerResourceID"].Trim() != "")
+            {
+                partnerResourceID = Request.Params["partnerResourceID"];
+            }
         }
     }
 
     protected void Add_PartnerContact(object sender, EventArgs e)
     {
-        Contact contact = new Contact();
-        ContactInfo contactInfo = new ContactInfo();
-        PartnerContact partnerContact = new PartnerContact();
         PartnerContactInfo partnerContactInfo = new PartnerContactInfo();
-        contactInfo.ContactName = textBox_contactName.Text;
-        contactInfo.Position = textBox_position.Text;
-        contactInfo.Mobilephone = textBox_mobilephone.Text;
-        contactInfo.Telephone = textBox_telephone.Text;
-        contactInfo.Email = textBox_email.Text;
-        contactInfo.Address = textBox_address.Text;
-        contactInfo.PostCode = textBox_postCode.Text;
-        contactInfo.FaxNumber = textBox_faxNumber.Text;
+        ContactInfo contactInfo = new ContactInfo();
+        contactInfo.ContactName = txtContactName.Text;
+        contactInfo.Position = txtPosition.Text;
+        contactInfo.Mobilephone = txtMobilephone.Text;
+        contactInfo.Telephone = txtTelephone.Text;
+        contactInfo.Email = txtEmail.Text;
+        contactInfo.Address = txtAddress.Text;
+        contactInfo.PostCode = txtPostCode.Text;
+        contactInfo.FaxNumber = txtFaxNumber.Text;
 
-        int partnerResourceID = Convert.ToInt32(Request.QueryString["partnerResourceID"]);
-
-        partnerContactInfo.PartnerID = partnerResourceID;
+        partnerContactInfo.PartnerID = Convert.ToInt32(partnerResourceID);
 
         if (contact.InsertContact(contactInfo) == 1)
         {
@@ -55,5 +65,22 @@ public partial class web_AddPartnerContact : System.Web.UI.Page
         }
 
         Response.Redirect("ModifyPartnerResource.aspx?partnerResourceID=" + partnerResourceID.ToString());
+    }
+
+    protected void Abort(object sender, EventArgs e)
+    {
+        Response.Redirect("ModifyPartnerResource.aspx?partnerResourceID=" + partnerResourceID.ToString());
+    }
+
+    protected bool isUserLogin()
+    {
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
     }
 }

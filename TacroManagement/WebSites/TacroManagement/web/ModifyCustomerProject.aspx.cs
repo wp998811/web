@@ -17,40 +17,50 @@ using Model;
 
 public partial class web_ModifyCustomerProjContact : System.Web.UI.Page
 {
+    CustomerProject customerProject = new CustomerProject();
+    Customer customer = new Customer();
+    CustomerContact customerContact = new CustomerContact();
+    User user = new User();
+    public static string customerProjID = "";
+    public static string customerID = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
         {
-            CustomerProjDataBind();
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
+            if (Request.Params["customerProjID"] != null && Request.Params["customerProjID"] != "")
+            {
+                customerProjID = Request.Params["customerProjID"];
+                customerID = customerProject.GetCustomerProjByPorjId(Convert.ToInt32(customerProjID)).CustomerID.ToString();
+                CustomerProjDataBind();
+            }
         }
     }
 
     private void CustomerProjDataBind()
     {
         int customerProjID = Convert.ToInt32(Request["customerProjID"]);
-        CustomerProject customerProject = new CustomerProject();
-        Customer customer = new Customer();
-        CustomerContact customerContact = new CustomerContact();
 
-        CustomerGridView.DataSource = customer.SearchAllCustomers();
-        CustomerGridView.DataBind();
-
-        if (CustomerID_TextBox.Text != "")
+        if (txtHiddenCustomerID.Text != "")
         {
-            int customerID = Convert.ToInt32(CustomerID_TextBox.Text);
-            ContactGridView.DataSource = customerContact.SearchAllContactsByCustomerID(customerID);
-            ContactGridView.DataBind();
+            int customerID = Convert.ToInt32(txtHiddenCustomerID.Text);
+            rpContactList.DataSource = customerContact.SearchAllContactsByCustomerID(customerID);
+            txtHiddenCustomerID.DataBind();
         }
 
         CustomerProjectInfo customerProjectInfo = customerProject.GetCustomerProjByPorjId(customerProjID);
         CustomerInfo customerInfo = customer.GetCustomerById(customerProjectInfo.CustomerID);
-        textBox_service.Text = customerProjectInfo.Service;
-        textBox_productName.Text = customerProjectInfo.ProductName;
-        textBox_projectType.Text = customerProjectInfo.ProjectType;
-        textBox_contractAmount.Text = customerProjectInfo.ContractAmount.ToString();
-        textBox_payment.Text = customerProjectInfo.Payment;
-        textBox_customerName.Text = customerInfo.CustomerName;
-        CustomerID_TextBox.Text = customerInfo.CustomerID.ToString();
+        txtService.Text = customerProjectInfo.Service;
+        txtProductName.Text = customerProjectInfo.ProductName;
+        txtProjectType.Text = customerProjectInfo.ProjectType;
+        txtContractAmount.Text = customerProjectInfo.ContractAmount.ToString();
+        txtPayment.Text = customerProjectInfo.Payment;
+        txtCustomerName.Text = customerInfo.CustomerName;
+        txtHiddenCustomerID.Text = customerInfo.CustomerID.ToString();
 
         ArrayList progressList = new ArrayList();
         progressList.Add("洽谈");
@@ -61,9 +71,9 @@ public partial class web_ModifyCustomerProjContact : System.Web.UI.Page
         progressList.Add("关闭");
         for (int i = 0; i < progressList.Count; i++)
         {
-            ddl_progress.Items.Add(new ListItem(progressList[i].ToString(), i.ToString()));
+            ddlProgress.Items.Add(new ListItem(progressList[i].ToString(), i.ToString()));
             if (customerProjectInfo.Progress == progressList[i].ToString())
-                ddl_progress.SelectedIndex = i;
+                ddlProgress.SelectedIndex = i;
         }
         ArrayList payStateList = new ArrayList();
         payStateList.Add("未付款");
@@ -71,114 +81,94 @@ public partial class web_ModifyCustomerProjContact : System.Web.UI.Page
         payStateList.Add("已开票");
         for (int i = 0; i < payStateList.Count; i++)
         {
-            ddl_payState.Items.Add(new ListItem(payStateList[i].ToString(), i.ToString()));
+            ddlPayState.Items.Add(new ListItem(payStateList[i].ToString(), i.ToString()));
             if (customerProjectInfo.PayState == payStateList[i].ToString())
-                ddl_payState.SelectedIndex = i;
+                ddlPayState.SelectedIndex = i;
         }
+
+        //绑定用户ddlUser
+        IList<CustomerInfo> customerInfos = customer.GetCustomers();
+        ddlCustomer.DataTextField = "CustomerName";
+        ddlCustomer.DataValueField = "CustomerID";
+
+        ddlCustomer.DataSource = customerInfos;
+        ddlCustomer.DataBind();
+
+        ContactRpDataBind();
     }
 
-    protected void Modify_CustomerProj(object sender, EventArgs e)
+    protected void CustomerContact_PageChanged(object sender, EventArgs e)
+    {
+        ContactRpDataBind();
+    }
+
+    protected void ContactRpDataBind()
+    {
+        CustomerProjectInfo customerProjectInfo = customerProject.GetCustomerProjByPorjId(Convert.ToInt32(customerProjID));
+
+        DataTable contactdt = customerContact.SearchAllContactsByCustomerID(customerProjectInfo.CustomerID);
+
+        this.CustomerContactPager.RecordCount = contactdt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
+
+        pds.DataSource = contactdt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = CustomerContactPager.CurrentPageIndex - 1;
+        pds.PageSize = CustomerContactPager.PageSize;
+
+        rpContactList.DataSource = pds;
+        rpContactList.DataBind();
+    }
+
+    protected void ModifyCustomerProject(object sender, EventArgs e)
     {
         CustomerProject customerProject = new CustomerProject();
         CustomerProjectInfo customerProjectInfo = customerProject.GetCustomerProjByPorjId(Convert.ToInt32(Request["customerProjID"]));
 
-        customerProjectInfo.CustomerID = Convert.ToInt32(CustomerID_TextBox.Text);
-        customerProjectInfo.Service = textBox_service.Text;
-        customerProjectInfo.Progress = ddl_progress.SelectedItem.Text;
-        customerProjectInfo.ProductName = textBox_productName.Text;
-        customerProjectInfo.ProjectType = textBox_projectType.Text;
-        customerProjectInfo.ContractAmount = (float)Convert.ToDouble(textBox_contractAmount.Text);
-        customerProjectInfo.Payment = textBox_payment.Text;
-        customerProjectInfo.PayState = ddl_payState.SelectedItem.Text;
+        customerProjectInfo.CustomerID = Convert.ToInt32(txtHiddenCustomerID.Text);
+        customerProjectInfo.Service = txtService.Text;
+        customerProjectInfo.Progress = ddlProgress.SelectedItem.Text;
+        customerProjectInfo.ProductName = txtProductName.Text;
+        customerProjectInfo.ProjectType = txtProjectType.Text;
+        customerProjectInfo.ContractAmount = (float)Convert.ToDouble(txtContractAmount.Text);
+        customerProjectInfo.Payment = txtPayment.Text;
+        customerProjectInfo.PayState = ddlPayState.SelectedItem.Text;
 
         if (customerProject.UpdateCustomerProject(customerProjectInfo) == 1)
-        {
-            Response.Write("<script  language='javascript'> window.alert('修改成功'); </script>");
-        }
-        else
-        {
-            Response.Write("<script  language='javascript'> alert('修改失败'); </script>");
-        }
+            Response.Redirect("CustomerProjList.aspx");
+    }
 
+    protected void Abort(object sender, EventArgs e)
+    {
         Response.Redirect("CustomerProjList.aspx");
     }
 
-    protected void Select_Customer(object sender, EventArgs e)
+    protected void lbtnSelectCustomer_Command(object sender, CommandEventArgs e)
     {
-        CustomerGridView.Visible = true;
-        Customer_Hidden.Visible = true;
-    }
-
-    /// <summary>
-    /// 当复选框被点击时发生
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void CustomerCheckBoxChanged(object sender, EventArgs e)
-    {
-        for (int i = 0; i <= CustomerGridView.Rows.Count - 1; i++)
+        if (e.CommandName == "select")
         {
-            CheckBox cbox = (CheckBox)(CustomerGridView.Rows[i].FindControl("Customer_CheckBox"));
-            if (cbox != (CheckBox)sender)
-                cbox.Checked = false;
-        }
-        int customerID = Convert.ToInt32(GetCustomerID());
-        Customer customer = new Customer();
-        CustomerInfo customerInfo = customer.GetCustomerById(customerID);
-        textBox_customerName.Text = customerInfo.CustomerName;
-        CustomerID_TextBox.Text = customerID.ToString();
-    }
+            if (ddlCustomer.Items.Count == 0)
+                return;
+            int customerID = Convert.ToInt32(ddlCustomer.SelectedValue);
+            CustomerInfo customerInfo = customer.GetCustomerById(customerID);
 
-    public string GetCustomerID()
-    {
-        //取选中的事件编号
-        string streid = "";
-        if (CustomerGridView != null)
-        {
-            int i, row;
-            i = 0;
-            row = CustomerGridView.Rows.Count;
-            CheckBox mycb = new CheckBox();
-            for (i = 0; i < row; i++)
+            if (customerInfo != null)
             {
-                mycb = (CheckBox)CustomerGridView.Rows[i].FindControl("Customer_CheckBox");
-                if (mycb != null)
-                {
-                    if (mycb.Checked)
-                    {
-                        TextBox mytb = new TextBox();
-                        mytb = (TextBox)CustomerGridView.Rows[i].FindControl("Customer_TextBox");
-                        if (mytb != null)
-                        {
-                            streid = streid + mytb.Text.Trim() + ",";
-                        }
-                    }
-                }
+                txtCustomerName.Text = customerInfo.CustomerName;
+                txtHiddenCustomerID.Text = customerID.ToString();
             }
         }
-        if (streid.Length > 0)
-        {
-            streid = streid.Remove(streid.Length - 1);
-        }
-        return streid;
     }
 
-    protected void CustomerList_Hidden(object sender, EventArgs e)
+    protected bool isUserLogin()
     {
-        CustomerGridView.Visible = false;
-        Customer_Hidden.Visible = false;
-    }
+        if (Session["userID"].ToString() == "")
+            return false;
 
-    protected void Select_Contact(object sender, EventArgs e)
-    {
-        ContactGridView.Visible = true;
-        Contact_Hidden.Visible = true;
-        CustomerProjDataBind();
-    }
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
 
-    protected void ContactList_Hidden(object sender, EventArgs e)
-    {
-        ContactGridView.Visible = false;
-        Contact_Hidden.Visible = false;
+        return true;
     }
 }

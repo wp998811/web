@@ -90,6 +90,11 @@ namespace BLL
             return dal.GetContactsByGoverResourceId(goverResourceId);
         }
 
+        public IList<GoverResourceInfo> GetGoverResourceByUserId(int userId)
+        {
+            return dal.GetGoverResourceByUserId(userId);
+        }
+
         #endregion
 
         /// <summary>
@@ -334,6 +339,43 @@ namespace BLL
                 dataRow["地址"] = contactInfo.Address;
                 dataRow["邮编"] = contactInfo.PostCode;
                 dataRow["传真号"] = contactInfo.FaxNumber;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
+        }
+
+        public DataTable SearchGoverResourcesByUserId(int userId)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn goverResourceID = new DataColumn("政府资源ID");
+            DataColumn userName = new DataColumn("负责人姓名");
+            DataColumn city = new DataColumn("城市");
+            DataColumn organName = new DataColumn("组织名称");
+            DataColumn organIntro = new DataColumn("组织简介");
+
+            dataTable.Columns.Add(goverResourceID);
+            dataTable.Columns.Add(userName);
+            dataTable.Columns.Add(city);
+            dataTable.Columns.Add(organName);
+            dataTable.Columns.Add(organIntro);
+
+            IList<GoverResourceInfo> goverResourceInfos = GetGoverResourceByUserId(userId); //查询语句
+            GoverResource partnerResource = new GoverResource();
+            User user = new User();
+
+            for (int i = 0; i < goverResourceInfos.Count; ++i)
+            {
+                GoverResourceInfo goverResourceInfo = goverResourceInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["政府资源ID"] = goverResourceInfo.GoverID;
+
+                UserInfo userInfo = user.GetUserById(goverResourceInfo.UserID);
+                dataRow["负责人姓名"] = userInfo.UserName;
+
+                dataRow["城市"] = goverResourceInfo.GoverCity;
+                dataRow["组织名称"] = goverResourceInfo.OrganName;
+                dataRow["组织简介"] = goverResourceInfo.OrganIntro;
 
                 dataTable.Rows.Add(dataRow);
             }

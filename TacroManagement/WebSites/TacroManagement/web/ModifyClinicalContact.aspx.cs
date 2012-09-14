@@ -15,12 +15,12 @@ using System.Collections.Generic;
 using BLL;
 using Model;
 
-public partial class web_ModifyPartnerContact : System.Web.UI.Page
+public partial class web_ModifyClinicalContact : System.Web.UI.Page
 {
     Contact contact = new Contact();
     User user = new User();
     public static string contactID = "";
-    public static string partnerResourceID = "";
+    public static string clinicalResourceID = "";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -30,12 +30,11 @@ public partial class web_ModifyPartnerContact : System.Web.UI.Page
             {
                 Response.Redirect("login.aspx");
             }
-
             if (Request.Params["contactID"] != null && Request.Params["contactID"] != "" &&
-                Request.Params["partnerResourceID"] != null && Request.Params["partnerResourceID"] != "")
+                Request.Params["clinicalResourceID"] != null && Request.Params["clinicalResourceID"] != "")
             {
                 contactID = Request.Params["contactID"];
-                partnerResourceID = Request.Params["partnerResourceID"];
+                clinicalResourceID = Request.Params["clinicalResourceID"];
                 ContactDataBind();
             }
         }
@@ -57,7 +56,7 @@ public partial class web_ModifyPartnerContact : System.Web.UI.Page
         }
     }
 
-    protected void Modify_PartnerContact(object sender, EventArgs e)
+    protected void Modify_ClinicalContact(object sender, EventArgs e)
     {
         ContactInfo contactInfo = contact.GetContactById(Convert.ToInt32(contactID));
         contactInfo.ContactName = txtContactName.Text;
@@ -78,12 +77,12 @@ public partial class web_ModifyPartnerContact : System.Web.UI.Page
             Response.Write("<script  language='javascript'> alert('修改失败'); </script>");
         }
 
-        Response.Redirect("ModifyPartnerResource.aspx?goverResourceID=" + partnerResourceID.ToString());
+        Response.Redirect("ModifyClinicalResource.aspx?clinicalResourceID=" + clinicalResourceID.ToString());
     }
 
     protected void Abort(object sender, EventArgs e)
     {
-        Response.Redirect("ModifyPartnerResource.aspx?goverResourceID=" + partnerResourceID.ToString());
+        Response.Redirect("ModifyClinicalResource.aspx?clinicalResourceID=" + clinicalResourceID.ToString());
     }
 
     protected bool isUserLogin()

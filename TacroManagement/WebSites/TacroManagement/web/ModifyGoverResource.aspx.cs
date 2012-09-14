@@ -17,84 +17,75 @@ using Model;
 
 public partial class web_ModifyGoverResource : System.Web.UI.Page
 {
+    GoverResource goverResource = new GoverResource();
+    GoverContact goverContact = new GoverContact();
+    Contact contact = new Contact();
+    User user = new User();
+    public static string goverResourceID = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
         {
-            GoverResourceDataBind();
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
 
-            //if (Session["userID"].ToString() == "")
-            //{
-            //    Response.Redirect("login.aspx");
-            //}
-            ContactGridView.Visible = false;
-            UserGridView.Visible = false;
-            ChangeUserGridLabelState();
-            ChangeContactGridLabelState();
+            if (Request.Params["goverResourceID"] != null && Request.Params["goverResourceID"].Trim() != "")
+            {
+                goverResourceID = Request.Params["goverResourceID"];
+                GoverResourceDataBind();
+            }
         }
-    }
-
-    private void UserGridViewDataBind()
-    {
-        User user = new User();
-
-        UserGridView.DataSource = user.SearchAllUsers();
-        UserGridView.DataBind();
-
-        ddl_UserPage.Items.Clear();
-        for (int i = 1; i <= UserGridView.PageCount; i++)
-        {
-            ddl_UserPage.Items.Add(i.ToString());
-        }
-        if (ddl_UserPage.SelectedIndex != -1)
-            ddl_UserPage.SelectedIndex = UserGridView.PageIndex;
-    }
-
-    private void ContactGridViewDataBind()
-    {
-        User user = new User();
-        GoverResource goverResource = new GoverResource();
-        int goverResourceID = Convert.ToInt32(Request["goverResourceID"]);
-
-        ContactGridView.DataSource = goverResource.SearchAllContactsByGoverResourceID(goverResourceID);
-        ContactGridView.DataBind();
-
-        ddl_ContactPage.Items.Clear();
-        for (int i = 1; i <= ContactGridView.PageCount; i++)
-        {
-            ddl_ContactPage.Items.Add(i.ToString());
-        }
-        if (ddl_ContactPage.SelectedIndex != -1)
-            ddl_ContactPage.SelectedIndex = ContactGridView.PageIndex;
     }
 
     private void GoverResourceDataBind()
     {
-        User user = new User();
-        GoverResource goverResource = new GoverResource();
-
-        int goverResourceID = Convert.ToInt32(Request["goverResourceID"]);
-        GoverResourceInfo goverResourceInfo = goverResource.GetGoverResourceById(goverResourceID);
+        GoverResourceInfo goverResourceInfo = goverResource.GetGoverResourceById(Convert.ToInt32(goverResourceID));
         UserInfo userInfo = user.GetUserById(goverResourceInfo.UserID);
 
-        textBox_manager.Text = userInfo.UserName;
-        textBox_city.Text = goverResourceInfo.GoverCity;
-        UserID_TextBox.Text = userInfo.UserID.ToString();
-        textBox_organName.Text = goverResourceInfo.OrganName;
-        textBox_organIntro.Text = goverResourceInfo.OrganIntro;
+        txtManager.Text = userInfo.UserName;
+        txtCity.Text = goverResourceInfo.GoverCity;
+        txtHiddenUserID.Text = userInfo.UserID.ToString();
+        txtOrganName.Text = goverResourceInfo.OrganName;
+        txtOrganIntro.Text = goverResourceInfo.OrganIntro;
 
-        ContactGridViewDataBind();
-        UserGridViewDataBind();
+        IList<UserInfo> userInfos = user.GetUsers();
+        ddlUser.DataTextField = "UserName";
+        ddlUser.DataValueField = "UserID";
+
+        ddlUser.DataSource = userInfos;
+        ddlUser.DataBind();
+
+
+        ContactRpDataBind();
     }
+
+    private void ContactRpDataBind()
+    {
+        DataTable contactdt = goverResource.SearchAllContactsByGoverResourceID(Convert.ToInt32(goverResourceID));
+
+        this.ContactPager.RecordCount = contactdt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
+
+        pds.DataSource = contactdt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = ContactPager.CurrentPageIndex - 1;
+        pds.PageSize = ContactPager.PageSize;
+
+        rpContactList.DataSource = pds;
+        rpContactList.DataBind();
+    }
+
 
     protected void Modify_GoverResource(object sender, EventArgs e)
     {
-        GoverResource goverResource = new GoverResource();
-        GoverResourceInfo goverResourceInfo = goverResource.GetGoverResourceById(Convert.ToInt32(Request["goverResourceID"]));
-        goverResourceInfo.UserID = Convert.ToInt32(UserID_TextBox.Text);
-        goverResourceInfo.GoverCity = textBox_city.Text;
-        goverResourceInfo.OrganName = textBox_organName.Text;
-        goverResourceInfo.OrganIntro = textBox_organIntro.Text;
+        GoverResourceInfo goverResourceInfo = goverResource.GetGoverResourceById(Convert.ToInt32(goverResourceID));
+        goverResourceInfo.UserID = Convert.ToInt32(txtHiddenUserID.Text);
+        goverResourceInfo.GoverCity = txtCity.Text;
+        goverResourceInfo.OrganName = txtOrganName.Text;
+        goverResourceInfo.OrganIntro = txtOrganIntro.Text;
 
         if (goverResource.UpdeteGoverResource(goverResourceInfo) == 1)
         {
@@ -108,254 +99,78 @@ public partial class web_ModifyGoverResource : System.Web.UI.Page
         Response.Redirect("GoverResourceList.aspx");
     }
 
-    protected void Select_Manager(object sender, EventArgs e)
+    protected void Contact_PageChanged(object sender, EventArgs e)
     {
-        UserGridView.Visible = true;
-        User_Hidden.Visible = true;
-        ChangeUserGridLabelState();
+        ContactRpDataBind();
     }
 
-    protected void Select_Contact(object sender, EventArgs e)
+    protected void Abort(object sender, EventArgs e)
     {
-        ContactGridView.Visible = true;
-        Contact_Hidden.Visible = true;
-        addContact.Visible = true;
-        ContactGridViewDataBind();
-        ChangeContactGridLabelState();
+        Response.Redirect("GoverResourceList.aspx");
     }
 
-    /// <summary>
-    /// 当复选框被点击时发生
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void UserCheckBoxChanged(object sender, EventArgs e)
+    protected void lbtnSelectUser_Command(object sender, CommandEventArgs e)
     {
-        for (int i = 0; i <= UserGridView.Rows.Count - 1; i++)
+        if (e.CommandName == "select")
         {
-            CheckBox cbox = (CheckBox)(UserGridView.Rows[i].FindControl("User_CheckBox"));
-            if (cbox != (CheckBox)sender)
-                cbox.Checked = false;
-        }
-        int userID = Convert.ToInt32(GetUserID());
-        User user = new User();
-        UserInfo userInfo = user.GetUserById(userID);
-        textBox_manager.Text = userInfo.UserName;
-        UserID_TextBox.Text = userInfo.UserID.ToString();
-    }
+            if (ddlUser.Items.Count == 0)
+                return;
+            int userID = Convert.ToInt32(ddlUser.SelectedValue);
+            UserInfo userInfo = user.GetUserById(userID);
 
-    public string GetUserID()
-    {
-        //取选中的事件编号
-        string streid = "";
-        if (UserGridView != null)
-        {
-            int i, row;
-            i = 0;
-            row = UserGridView.Rows.Count;
-            CheckBox mycb = new CheckBox();
-            for (i = 0; i < row; i++)
+            if (userInfo != null)
             {
-                mycb = (CheckBox)UserGridView.Rows[i].FindControl("User_CheckBox");
-                if (mycb != null)
-                {
-                    if (mycb.Checked)
-                    {
-                        TextBox mytb = new TextBox();
-                        mytb = (TextBox)UserGridView.Rows[i].FindControl("User_TextBox");
-                        if (mytb != null)
-                        {
-                            streid = streid + mytb.Text.Trim() + ",";
-                        }
-                    }
-                }
+                txtManager.Text = userInfo.UserName;
+                txtHiddenUserID.Text = userID.ToString();
             }
         }
-        if (streid.Length > 0)
+    }
+
+    protected void rpContactList_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        switch (e.CommandName)
         {
-            streid = streid.Remove(streid.Length - 1);
-        }
-        return streid;
-    }
+            case "edit":
+                {
+                    int contactID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("ModifyGoverContact.aspx?goverResourceID=" + goverResourceID.ToString() + "&contactID=" + contactID.ToString());
+                    break;
+                }
+            case "delete":
+                {
+                    int contactId = Convert.ToInt32(e.CommandArgument.ToString());
 
-    protected void UserList_Hidden(object sender, EventArgs e)
-    {
-        UserGridView.Visible = false;
-        User_Hidden.Visible = false;
-        ChangeUserGridLabelState();
-    }
-
-    protected void ContactList_Hidden(object sender, EventArgs e)
-    {
-        ContactGridView.Visible = false;
-        Contact_Hidden.Visible = false;
-        addContact.Visible = false;
-        ChangeContactGridLabelState();
-    }
-
-    protected void Add_GoverContact(object sender, EventArgs e)
-    {
-        string goverResourceID = Request.QueryString["goverResourceID"];
-        Response.Redirect("AddGoverContact.aspx?goverResourceID=" + goverResourceID);
-    }
-
-    protected void ContactGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
-    {
-        Contact contact = new Contact();
-        GoverContact goverContact = new GoverContact();
-
-        int contactId = Convert.ToInt32(ContactGridView.DataKeys[e.RowIndex][0].ToString());
-
-        if (goverContact.DeleteGoverContactByContactId(contactId) == 1 && contact.DeleteContact(contactId) == 1)
-        {
-            Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
-        }
-        else
-        {
-            Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
-        }
-
-        ContactGridViewDataBind();
-    }
-
-    /// <summary>
-    /// 重新绑定
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void Contact_DropDownList_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        this.ContactGridView.PageIndex = this.ddl_ContactPage.SelectedIndex;
-        ContactGridViewDataBind();
-    }
-    protected void Contact_FirstPage_Click(object sender, EventArgs e)
-    {
-        this.ContactGridView.PageIndex = 0;
-        ContactGridViewDataBind();
-    }
-    protected void Contact_PrePage_Click(object sender, EventArgs e)
-    {
-        if (this.ContactGridView.PageIndex > 0)
-        {
-            this.ContactGridView.PageIndex = this.ContactGridView.PageIndex - 1;
-            ContactGridViewDataBind();
-        }
-    }
-    protected void Contact_NextPage_Click(object sender, EventArgs e)
-    {
-        if (this.ContactGridView.PageIndex < this.ContactGridView.PageCount)
-        {
-            this.ContactGridView.PageIndex = this.ContactGridView.PageIndex + 1;
-            ContactGridViewDataBind();
-        }
-    }
-    protected void Contact_LastPage_Click(object sender, EventArgs e)
-    {
-        this.ContactGridView.PageIndex = this.ContactGridView.PageCount;
-        ContactGridViewDataBind();
-    }
-
-
-    /// <summary>
-    /// 重新绑定
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void User_DropDownList_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        this.UserGridView.PageIndex = this.ddl_UserPage.SelectedIndex;
-        UserGridViewDataBind();
-    }
-    protected void User_FirstPage_Click(object sender, EventArgs e)
-    {
-        this.UserGridView.PageIndex = 0;
-        UserGridViewDataBind();
-    }
-    protected void User_PrePage_Click(object sender, EventArgs e)
-    {
-        if (this.UserGridView.PageIndex > 0)
-        {
-            this.UserGridView.PageIndex = this.UserGridView.PageIndex - 1;
-            UserGridViewDataBind();
-        }
-    }
-    protected void User_NextPage_Click(object sender, EventArgs e)
-    {
-        if (this.UserGridView.PageIndex < this.UserGridView.PageCount)
-        {
-            this.UserGridView.PageIndex = this.UserGridView.PageIndex + 1;
-            UserGridViewDataBind();
-        }
-    }
-    protected void User_LastPage_Click(object sender, EventArgs e)
-    {
-        this.UserGridView.PageIndex = this.UserGridView.PageCount;
-        UserGridViewDataBind();
-    }
-
-    protected void UserGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        this.label_User_CurrentPage.Text = string.Format("当前第{0}页/总共{1}页", this.UserGridView.PageIndex + 1, this.UserGridView.PageCount);
-
-        //遍历所有行设置边框样式
-        foreach (TableCell tc in e.Row.Cells)
-        {
-            tc.Attributes["style"] = "border-color:Black";
-        }
-        //用索引来取得编号
-        if (e.Row.RowIndex != -1)
-        {
-            int id = UserGridView.PageIndex * UserGridView.PageSize + e.Row.RowIndex + 1;
-            e.Row.Cells[0].Text = id.ToString();
+                    if (contact.DeleteContact(contactId) == 1)
+                    {
+                        Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
+                    }
+                    ContactRpDataBind();
+                    break;
+                }
+            case "addVisitRecord":
+                {
+                    int contactID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("AddVisitRecord.aspx?contactID=" + contactID.ToString() + "&ID=" + goverResourceID + "&resourceType=政府");
+                    ContactRpDataBind();
+                    break;
+                }
         }
     }
 
-    protected void ContactGridView_RowEditing(object sender, GridViewEditEventArgs e)
+    protected bool isUserLogin()
     {
-        string goverResourceID = Request.QueryString["goverResourceID"];
-        string contactId = ContactGridView.DataKeys[e.NewEditIndex][0].ToString();
-        Response.Redirect("ModifyGoverContact.aspx?contactID=" + contactId + "&goverResourceID=" + goverResourceID);
-    }
+        if (Session["userID"].ToString() == "")
+            return false;
 
-    protected void ContactGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        this.label_Contact_CurrentPage.Text = string.Format("当前第{0}页/总共{1}页", this.ContactGridView.PageIndex + 1, this.ContactGridView.PageCount);
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
 
-        //遍历所有行设置边框样式
-        foreach (TableCell tc in e.Row.Cells)
-        {
-            tc.Attributes["style"] = "border-color:Black";
-        }
-        //用索引来取得编号
-        if (e.Row.RowIndex != -1)
-        {
-            int id = ContactGridView.PageIndex * ContactGridView.PageSize + e.Row.RowIndex + 1;
-            e.Row.Cells[0].Text = id.ToString();
-        }
-    }
-
-    protected void ChangeUserGridLabelState()
-    {
-        label_UserFirstPage.Visible = !label_UserFirstPage.Visible;
-        label_UserPrePage.Visible = !label_UserPrePage.Visible;
-        label_User_CurrentPage.Visible = !label_User_CurrentPage.Visible;
-        label_UserNextPage.Visible = !label_UserNextPage.Visible;
-        label_UserLastPage.Visible = !label_UserLastPage.Visible;
-        label_UserGoto.Visible = !label_UserGoto.Visible;
-        ddl_UserPage.Visible = !ddl_UserPage.Visible;
-        label_UserPage.Visible = !label_UserPage.Visible;
-    }
-
-    protected void ChangeContactGridLabelState()
-    {
-        label_ContactFirstPage.Visible = !label_ContactFirstPage.Visible;
-        label_ContactPrePage.Visible = !label_ContactPrePage.Visible;
-        label_Contact_CurrentPage.Visible = !label_Contact_CurrentPage.Visible;
-        label_ContactNextPage.Visible = !label_ContactNextPage.Visible;
-        label_ContactLastPage.Visible = !label_ContactLastPage.Visible;
-        label_ContactGoto.Visible = !label_ContactGoto.Visible;
-        ddl_ContactPage.Visible = !ddl_ContactPage.Visible;
-        label_ContactPage.Visible = !label_ContactPage.Visible;
+        return true;
     }
 }
 

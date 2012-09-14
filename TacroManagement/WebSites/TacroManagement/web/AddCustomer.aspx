@@ -10,13 +10,21 @@
     <div class="container">
         <div class="row">
             <form class="form-horizontal">
-                <legend>添加客户</legend>
+            <ul class="breadcrumb">
+                <li><a href="CustomerList.aspx">客户管理</a> <span class="divider">/</span> </li>
+                <li class="active">
+                    <asp:Label ID="Label1" runat="Server" Text="添加客户"></asp:Label></li>
+            </ul>
                 <div class="form-horizontal control-group">
                     <label class="control-label">
                     客户名称
                     </label>
                     <div class="controls">
-                        <asp:TextBox runat="Server" ID="textBox_customerName"></asp:TextBox>
+                        <asp:TextBox runat="Server" ID="txtCustomerName"></asp:TextBox>
+                        <asp:RegularExpressionValidator runat="server" ControlToValidate="txtCustomerName"
+                    ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                        <asp:RequiredFieldValidator runat="server" ErrorMessage="客户名称不能为空"
+                    ControlToValidate="txtCustomerName" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
@@ -24,7 +32,11 @@
                     客户负责人
                     </label>
                     <div class="controls">
-                        <asp:dropdownlist id="dropDown_customerManager" runat="server"/>
+                        <asp:dropdownlist id="ddlManager" runat="server"/>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="ddlManager"
+                    ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="负责人不能为空"
+                    ControlToValidate="ddlManager" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
@@ -32,7 +44,9 @@
                     所在城市
                     </label>
                     <div class="controls">
-                        <asp:TextBox runat="Server" ID="textBox_city"></asp:TextBox>
+                        <asp:TextBox runat="Server" ID="txtCity"></asp:TextBox>
+                         <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtCity"
+                    ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
@@ -40,7 +54,9 @@
                     客户类别
                     </label>
                     <div class="controls">
-                        <asp:DropDownList id="ddl_clientType" runat="server" />
+                        <asp:DropDownList id="ddlCustomerType" runat="server" />
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="ddlCustomerType"
+                            ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
@@ -48,7 +64,9 @@
                     级别
                     </label>
                     <div class="controls">
-                        <asp:TextBox runat="Server" ID="textBox_level"></asp:TextBox>
+                        <asp:TextBox runat="Server" ID="txtLevel"></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtLevel"
+                            ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
@@ -56,7 +74,9 @@
                     产品范围
                     </label>
                     <div class="controls">
-                        <asp:DropDownList id="ddl_productRange" runat="server" />
+                        <asp:DropDownList id="ddlProductRange" runat="server" />
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ControlToValidate="ddlProductRange"
+                            ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
@@ -64,7 +84,9 @@
                     税务登记号
                     </label>
                     <div class="controls">
-                        <asp:TextBox runat="Server" ID="textBox_taxID"></asp:TextBox>
+                        <asp:TextBox runat="Server" ID="txtTaxID"></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ControlToValidate="txtTaxID"
+                            ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
@@ -72,58 +94,18 @@
                     组织机构代码
                     </label>
                     <div class="controls">
-                        <asp:TextBox runat="Server" ID="textBox_organCode"></asp:TextBox>
+                       <asp:TextBox runat="Server" ID="txtOrganCode"></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtOrganCode"
+                            ErrorMessage="输入有误" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
                     </div>
                 </div>
                 <div class="form-horizontal control-group">
                     <div class="controls">
                         <asp:Button class="btn btn-primary" id="addCustomer" Text="确定" runat="server" OnClick="Add_Customer" />
-                        <asp:Button class="btn" id="btnCancel" Text="取消" runat="server"/>
+                        <asp:Button class="btn" id="btnCancel" Text="取消" runat="server" OnClick="Abort"/>
                     </div>
                 </div>
              </form>
          </div>
      </div>
-    <%--<div>
-    
-        <asp:Label ID="Label1" runat="server" Text="添加客户"></asp:Label>
-    
-    </div>
-    <table border="0" cellspacing="0" cellpadding="0" width="100%">
-    	<tr>
-    		<td><asp:label id="label_customerName" runat="server" Text="客户名称"/></td>
-    		<td><asp:TextBox id="textBox_customerName" runat="server" /></td>
-    	</tr>
-    	<tr>
-    		<td><asp:label id="label_customerManager" runat="server" Text="客户负责人"/></td>
-    		<td><asp:dropdownlist id="dropDown_customerManager" runat="server"/></td>
-    	</tr>
-    	<tr>
-    		<td><asp:label id="label_city" runat="server" Text="所在城市"/></td>
-    		<td><asp:TextBox id="textBox_city" runat="server" /></td>
-    	</tr>
-    	<tr>
-    		<td><asp:label id="label_clientType" runat="server" Text="客户类别"/></td>
-    		<td><asp:DropDownList id="ddl_clientType" runat="server" /></td>
-    	</tr>
-    	<tr>
-    		<td><asp:label id="label_level" runat="server" Text="级别"/></td>
-    		<td><asp:TextBox id="textBox_level" runat="server" /></td>
-    	</tr>
-    	<tr>
-    		<td><asp:label id="label_productRange" runat="server" Text="产品范围"/></td>
-    		<td><asp:DropDownList id="ddl_productRange" runat="server" /></td>
-    	</tr>
-    	<tr>
-    		<td><asp:label id="label_taxID" runat="server" Text="税务登记号"/></td>
-    		<td><asp:TextBox id="textBox_taxID" runat="server" /></td>
-    	</tr>
-    	<tr>
-    		<td><asp:label id="label_organCode" runat="server" Text="组织机构代码"/></td>
-    		<td><asp:TextBox id="textBox_organCode" runat="server" /></td>
-    	</tr>
-    	<tr>
-    	    <td><asp:Button id="addCustomer" Text="添加客户" runat="server" OnClick="Add_Customer" /></td>
-    	</tr>
-    </table>--%>
 </asp:Content>

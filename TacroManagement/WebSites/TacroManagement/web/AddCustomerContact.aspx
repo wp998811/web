@@ -1,28 +1,26 @@
-﻿<%@ Page Language="C#" Async="true" AutoEventWireup="true" MasterPageFile="~/web/index.master"  CodeFile="AddPartnerContact.aspx.cs" Inherits="web_AddPartnerContact"  Title="添加合作伙伴资源联系人" %>
+﻿<%@ Page Language="C#" Async="true" AutoEventWireup="true" MasterPageFile="~/web/index.master"
+    CodeFile="AddCustomerContact.aspx.cs" Inherits="web_AddContact" Title="添加客户联系人" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server" >
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
 </asp:Content>
-
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <div style="padding-top: 10px">
+    </div>
     <div class="container">
         <div class="row">
             <form class="form-horizontal">
-           <ul class="breadcrumb">
-                <li>
-                    <a href="PartnerResourceList.aspx">合作伙伴资源管理</a> <span class="divider">/</span>
-                </li>
-                <li>
-                    <a href="ModifyPartnerResource.aspx?partnerResourceID=<%=partnerResourceID %>">编辑合作伙伴资源</a> <span class="divider">/</span>
-                 </li>
-                  <li class="active">
-                    <asp:Label runat="Server" Text="添加合作伙伴资源联系人"></asp:Label></li>
+            <ul class="breadcrumb">
+                <li><a href="CustomerList.aspx">客户管理</a> <span class="divider">/</span> </li>
+                <li><a href="ModifyCustomer.aspx?customerID=<%=customerID %>">编辑客户</a> <span class="divider">
+                    /</span> </li>
+                <li class="active">
+                    <asp:Label runat="Server" Text="添加客户联系人"></asp:Label></li>
             </ul>
-                        <div class="row" style="align:middle">
-                        <form class="form-horizontal">
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    联系人姓名</label>
+                    联系人姓名
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtContactName"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtContactName"
@@ -33,7 +31,8 @@
             </div>
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    职位</label>
+                    职位
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtPosition"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtPosition"
@@ -42,7 +41,8 @@
             </div>
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    手机</label>
+                    手机
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtMobilephone"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtMobilephone"
@@ -52,7 +52,8 @@
             </div>
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    固定电话</label>
+                    固定电话
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtTelephone"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtTelephone"
@@ -61,7 +62,8 @@
             </div>
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    电子邮件</label>
+                    电子邮件
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtEmail"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ControlToValidate="txtEmail"
@@ -71,7 +73,8 @@
             </div>
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    地址</label>
+                    地址
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtAddress"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ControlToValidate="txtAddress"
@@ -80,7 +83,8 @@
             </div>
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    邮政编码</label>
+                    邮政编码
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtPostCode"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtPostCode"
@@ -89,26 +93,21 @@
             </div>
             <div class="form-horizontal control-group">
                 <label class="control-label">
-                    传真号</label>
+                    传真号
+                </label>
                 <div class="controls">
                     <asp:TextBox runat="Server" ID="txtFaxNumber"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="txtFaxNumber"
                         ErrorMessage="传真号格式不正确" ValidationExpression="([0-9]|-){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
                 </div>
             </div>
-                <div class="form-horizontal control-group">
-                    <div class="controls">
-                        <asp:Button class="btn btn-primary" id="addPartnerContact" Text="确定" runat="server" OnClick="Add_PartnerContact" />
-                        <asp:Button class="btn" ID="btnCancel" Text="取消" runat="Server" OnClick="Abort"/>
-                    </div>
+            <div class="form-horizontal control-group">
+                <div class="controls">
+                    <asp:Button class="btn btn-primary" ID="addCustomer" Text="确定" runat="server" OnClick="Add_Contact" />
+                    <asp:Button class="btn" ID="btnCancel" Text="取消" runat="Server" OnClick="Abort" />
                 </div>
+            </div>
             </form>
         </div>
     </div>
 </asp:Content>
-
-
-
-
-
-

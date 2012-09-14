@@ -17,123 +17,51 @@ using Model;
 
 public partial class web_ClinicalResourceList : System.Web.UI.Page
 {
+    ClinicalResource clinicalResource = new ClinicalResource();
+    User user = new User();
+    ResourceAdmin resourceAdmin = new ResourceAdmin();
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
+            if (!isClinicalResourceManager())
+            {
+                HideItems();
+            }
             ClinicalResourceDataBind();
         }
     }
 
     private void ClinicalResourceDataBind()
     {
-        ClinicalResource clinicalResource = new ClinicalResource();
-
-        ClinicalResourceGridView.DataSource = clinicalResource.SearchAllClinicalResources();
-        ClinicalResourceGridView.DataBind();
-
-        ddlCurrentPage.Items.Clear();
-        for (int i = 1; i <= ClinicalResourceGridView.PageCount; i++)
+        DataTable clinicalResourcedt = new DataTable();
+        if (!isClinicalResourceManager())
         {
-            ddlCurrentPage.Items.Add(i.ToString());
+            clinicalResourcedt = clinicalResource.SearchAllClinicalResources();
         }
-        if (ddlCurrentPage.SelectedIndex != -1)
-            ddlCurrentPage.SelectedIndex = ClinicalResourceGridView.PageIndex;
-    }
+        else
+            clinicalResourcedt = clinicalResource.SearchClinicalResourcesByUserId(Convert.ToInt32(Session["userID"].ToString()));
 
-    protected void ClinicalResourceGridView_RowEditing(object sender, GridViewEditEventArgs e)
-    {
-        string clinicalResourceId = ClinicalResourceGridView.DataKeys[e.NewEditIndex][0].ToString();
-        Response.Redirect("ModifyClinicalResource.aspx?clinicalResourceID=" + clinicalResourceId);
-    }
+        this.ClinicalResourcePager.RecordCount = clinicalResourcedt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
 
+        pds.DataSource = clinicalResourcedt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = ClinicalResourcePager.CurrentPageIndex - 1;
+        pds.PageSize = ClinicalResourcePager.PageSize;
+
+        rpClinicalResourceList.DataSource = pds;
+        rpClinicalResourceList.DataBind();
+    }
 
     protected void Add_ClinicalResource(object sender, EventArgs e)
     {
         Response.Redirect("AddClinicalResource.aspx");
-    }
-
-    protected void ClinicalResourceGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
-    {
-        ClinicalResource clinicalResource = new ClinicalResource();
-
-        int clinicalResourceId = Convert.ToInt32(ClinicalResourceGridView.DataKeys[e.RowIndex][0].ToString());
-
-        if (clinicalResource.DeleteClinicalResource(clinicalResourceId) == 1)
-        {
-            Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
-        }
-        else
-        {
-            Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
-        }
-
-        ClinicalResourceDataBind();
-    }
-
-    /// <summary>
-    /// 重新绑定
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        this.ClinicalResourceGridView.PageIndex = this.ddlCurrentPage.SelectedIndex;
-        ClinicalResourceDataBind();
-    }
-    protected void lnkbtnFrist_Click(object sender, EventArgs e)
-    {
-        this.ClinicalResourceGridView.PageIndex = 0;
-        ClinicalResourceDataBind();
-    }
-    protected void lnkbtnPre_Click(object sender, EventArgs e)
-    {
-        if (this.ClinicalResourceGridView.PageIndex > 0)
-        {
-            this.ClinicalResourceGridView.PageIndex = this.ClinicalResourceGridView.PageIndex - 1;
-            ClinicalResourceDataBind();
-        }
-    }
-    protected void lnkbtnNext_Click(object sender, EventArgs e)
-    {
-        if (this.ClinicalResourceGridView.PageIndex < this.ClinicalResourceGridView.PageCount)
-        {
-            this.ClinicalResourceGridView.PageIndex = this.ClinicalResourceGridView.PageIndex + 1;
-            ClinicalResourceDataBind();
-        }
-    }
-    protected void lnkbtnLast_Click(object sender, EventArgs e)
-    {
-        this.ClinicalResourceGridView.PageIndex = this.ClinicalResourceGridView.PageCount;
-        ClinicalResourceDataBind();
-    }
-
-    protected void ClinicalResourceGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        this.lblCurrentPage.Text = string.Format("当前第{0}页/总共{1}页", this.ClinicalResourceGridView.PageIndex + 1, this.ClinicalResourceGridView.PageCount);
-
-        //遍历所有行设置边框样式
-        foreach (TableCell tc in e.Row.Cells)
-        {
-            tc.Attributes["style"] = "border-color:Black";
-        }
-        //用索引来取得编号
-        if (e.Row.RowIndex != -1)
-        {
-            int id = ClinicalResourceGridView.PageIndex * ClinicalResourceGridView.PageSize + e.Row.RowIndex + 1;
-            e.Row.Cells[0].Text = id.ToString();
-        }
-    }
-
-    protected void ClinicalResourceGridView_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-        switch (e.CommandName)
-        {
-            case "Detail":
-                string clinicalResourceId = ClinicalResourceGridView.DataKeys[Convert.ToInt32(e.CommandArgument)][0].ToString();
-                Response.Redirect("ClinicalResourceDetail.aspx?clinicalResourceID=" + clinicalResourceId);
-                break;
-        }
     }
 
     protected void Query_ClinicalResource(object sender, EventArgs e)
@@ -141,12 +69,117 @@ public partial class web_ClinicalResourceList : System.Web.UI.Page
         string manager = txtManager.Text.Trim();
         string city = txtCity.Text.Trim();
         string hospital = txtHospital.Text.Trim();
-        string deptName = txtDepartment.Text.Trim();
+        string deptName = txtDepartmentName.Text.Trim();
         string contactName = txtContactName.Text.Trim();
 
-        ClinicalResource clinicalResource = new ClinicalResource();
-        DataTable clinicalResources = clinicalResource.GetDataTableByClinicalList(clinicalResource.GetClinicalResearchBySearch(manager, city, hospital, deptName, contactName));
-        ClinicalResourceGridView.DataSource = clinicalResources;
-        ClinicalResourceGridView.DataBind();
+        UserInfo userInfo = user.GetUserById(Convert.ToInt32(Session["UserID"]));
+
+        DataTable clinicalResourcedt = new DataTable();
+        if (!isClinicalResourceManager())
+            clinicalResourcedt = clinicalResource.GetDataTableByClinicalList(clinicalResource.GetClinicalResearchBySearch(manager, city, hospital, deptName, contactName));
+        else
+        {
+            if (userInfo.UserID != 0)
+                clinicalResourcedt = clinicalResource.GetDataTableByClinicalList(clinicalResource.GetClinicalResearchBySearch(userInfo.UserName, city, hospital, deptName, contactName));
+        }
+
+        this.ClinicalResourcePager.RecordCount = clinicalResourcedt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
+
+        pds.DataSource = clinicalResourcedt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = ClinicalResourcePager.CurrentPageIndex - 1;
+        pds.PageSize = ClinicalResourcePager.PageSize;
+
+        rpClinicalResourceList.DataSource = pds;
+        rpClinicalResourceList.DataBind();
+    }
+
+    protected void rpClinicalResourceList_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        switch (e.CommandName)
+        {
+            case "edit":
+                {
+                    int clinicalResourceID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("ModifyClinicalResource.aspx?clinicalResourceID=" + clinicalResourceID.ToString());
+                    break;
+                }
+            case "delete":
+                {
+                    int clinicalResourceID = Convert.ToInt32(e.CommandArgument.ToString());
+
+                    if (clinicalResource.DeleteClinicalResource(clinicalResourceID) == 1)
+                    {
+                        Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
+                    }
+                    ClinicalResourceDataBind();
+                    break;
+                }
+            case "detail":
+                {
+                    int clinicalResourceID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("ClinicalResourceDetail.aspx?clinicalResourceID=" + clinicalResourceID);
+                    break;
+                }
+        }
+    }
+
+    protected void ClinicalResource_PageChanged(object sender, EventArgs e)
+    {
+        ClinicalResourceDataBind();
+    }
+
+    protected bool isUserLogin()
+    {
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
+    }
+
+    protected bool isClinicalResourceManager()
+    {
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        ResourceAdminInfo resourceAdminInfo = resourceAdmin.GetResourceAdminByResourceTypeAndUserID(userID, "临床资源");
+        if (resourceAdminInfo.ResourceAdminID == 0)
+            return false;
+
+        return true;
+    }
+
+    protected void ClinicalResourceRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (!isClinicalResourceManager())
+        {
+            Control deleteCon = e.Item.FindControl("lbtnRpEdit");
+            if (deleteCon != null)
+            {
+                LinkButton deleteBtn = (LinkButton)deleteCon;
+                deleteBtn.Visible = false;
+            }
+            Control modifyCon = e.Item.FindControl("lbtnRpDelete");
+            if (modifyCon != null)
+            {
+                LinkButton modifyBtn = (LinkButton)modifyCon;
+                modifyBtn.Visible = false;
+            }
+        }
+    }
+
+    protected void HideItems()
+    {
+        icon.Visible = false;
+        hrefAdd.Visible = false;
+        lblManager.Visible = false;
+        txtManager.Visible = false;
     }
 }

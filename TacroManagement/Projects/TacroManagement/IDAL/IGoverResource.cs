@@ -18,5 +18,6 @@ namespace IDAL
         GoverResourceInfo GetGoverResourceByOrganName(string organName);                            //通过政府机构名称查找政府资源
         IList<GoverResourceInfo> GetGoverResourceByCondition(string selectCondition);               //通过查询条件查找政府资源
         IList<ContactInfo> GetContactsByGoverResourceId(int goverResourceId);
+        IList<GoverResourceInfo> GetGoverResourceByUserId(int userId);
     }
 }

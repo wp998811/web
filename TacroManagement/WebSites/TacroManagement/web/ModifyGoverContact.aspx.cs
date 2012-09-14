@@ -17,44 +17,56 @@ using Model;
 
 public partial class web_ModifyGoverContact : System.Web.UI.Page
 {
+    Contact contact = new Contact();
+    User user = new User();
+    public static string contactID = "";
+    public static string goverResourceID = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
         {
-            ContactDataBind();
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
+            if (Request.Params["contactID"] != null && Request.Params["contactID"] != "" &&
+                Request.Params["goverResourceID"] != null && Request.Params["goverResourceID"] != "")
+            {
+                contactID = Request.Params["contactID"];
+                goverResourceID = Request.Params["goverResourceID"];
+                ContactDataBind();
+            }
         }
     }
 
     private void ContactDataBind()
     {
-        int contactID = Convert.ToInt32(Request["contactID"]);
-        Contact contact = new Contact();
-        ContactInfo contactInfo = contact.GetContactById(contactID);
+        ContactInfo contactInfo = contact.GetContactById(Convert.ToInt32(contactID));
         if (contactInfo != null)
         {
-            textBox_contactName.Text = contactInfo.ContactName;
-            textBox_position.Text = contactInfo.Position;
-            textBox_mobilephone.Text = contactInfo.Mobilephone;
-            textBox_telephone.Text = contactInfo.Telephone;
-            textBox_email.Text = contactInfo.Email;
-            textBox_address.Text = contactInfo.Address;
-            textBox_postCode.Text = contactInfo.PostCode;
-            textBox_faxNumber.Text = contactInfo.FaxNumber;
+            txtContactName.Text = contactInfo.ContactName;
+            txtPosition.Text = contactInfo.Position;
+            txtMobilephone.Text = contactInfo.Mobilephone;
+            txtTelephone.Text = contactInfo.Telephone;
+            txtEmail.Text = contactInfo.Email;
+            txtAddress.Text = contactInfo.Address;
+            txtPostCode.Text = contactInfo.PostCode;
+            txtFaxNumber.Text = contactInfo.FaxNumber;
         }
     }
 
     protected void Modify_GoverContact(object sender, EventArgs e)
     {
-        Contact contact = new Contact();
-        ContactInfo contactInfo = contact.GetContactById(Convert.ToInt32(Request.QueryString["contactID"]));
-        contactInfo.ContactName = textBox_contactName.Text;
-        contactInfo.Position = textBox_position.Text;
-        contactInfo.Mobilephone = textBox_mobilephone.Text;
-        contactInfo.Telephone = textBox_telephone.Text;
-        contactInfo.Email = textBox_email.Text;
-        contactInfo.Address = textBox_address.Text;
-        contactInfo.PostCode = textBox_postCode.Text;
-        contactInfo.FaxNumber = textBox_faxNumber.Text;
+        ContactInfo contactInfo = contact.GetContactById(Convert.ToInt32(contactID));
+        contactInfo.ContactName = txtContactName.Text;
+        contactInfo.Position = txtPosition.Text;
+        contactInfo.Mobilephone = txtMobilephone.Text;
+        contactInfo.Telephone = txtTelephone.Text;
+        contactInfo.Email = txtEmail.Text;
+        contactInfo.Address = txtAddress.Text;
+        contactInfo.PostCode = txtPostCode.Text;
+        contactInfo.FaxNumber = txtFaxNumber.Text;
 
         if (contact.UpdateContact(contactInfo) != -1)
         {
@@ -65,7 +77,23 @@ public partial class web_ModifyGoverContact : System.Web.UI.Page
             Response.Write("<script  language='javascript'> alert('修改失败'); </script>");
         }
 
-        string goverResourceID = Request.QueryString["goverResourceID"];
-        Response.Redirect("ModifyGoverResource.aspx?goverResourceId=" + goverResourceID.ToString());
+        Response.Redirect("ModifyGoverResource.aspx?goverResourceID=" + goverResourceID.ToString());
+    }
+
+    protected void Abort(object sender, EventArgs e)
+    {
+        Response.Redirect("ModifyGoverResource.aspx?goverResourceID=" + goverResourceID.ToString());
+    }
+
+    protected bool isUserLogin()
+    {
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
     }
 }

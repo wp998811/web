@@ -16,5 +16,6 @@ namespace IDAL
         PartnerResourceInfo GetPartnerResourceById(int id);                            //通过合作人资源ID查找合作人资源
         IList<PartnerResourceInfo> GetPartnerResourceByCondition(string selectCondition);   //通过查询条件查找合作人资料
         IList<ContactInfo> GetContactsByPartnerResourceId(int partnerResourceId);
+        IList<PartnerResourceInfo> GetPartnerResourceByUserId(int userId);
     }
 }

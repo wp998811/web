@@ -30,6 +30,7 @@ namespace MySQLDAL
         private const string SQL_SELECT_GOVERRESOURCE_BY_ID = "SELECT * FROM goverresource WHERE GoverID = @GoverID";
         private const string SQL_SELECT_GOVERRESOURCE_BY_ORGANNAME = "SELECT * FROM goverresource WHERE  OrganName = @OrganName";
         private const string SQL_SELECT_CONTACT_BY_GOVERID = "select * from contact where ContactID  in (select ContactID from govercontact where GoverID=@GoverID)";
+        private const string SQL_SELECT_GOVERRESOURCE_BY_USERID = "select * from goverresource where UserID=@UserID";
 
 
         #endregion
@@ -279,6 +280,31 @@ namespace MySQLDAL
                 Console.WriteLine(se.Message);
             }
             return contactInfos;
+        }
+
+        public IList<GoverResourceInfo> GetGoverResourceByUserId(int userId)
+        {
+            IList<GoverResourceInfo> goverResourceInfos = new List<GoverResourceInfo>();
+
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_USERID, MySqlDbType.Int32, 50);
+                parm.Value = userId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_GOVERRESOURCE_BY_USERID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        GoverResourceInfo goverResourceInfo = new GoverResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        goverResourceInfos.Add(goverResourceInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return goverResourceInfos;
         }
 
         #endregion

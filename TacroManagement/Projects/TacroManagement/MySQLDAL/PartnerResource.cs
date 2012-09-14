@@ -28,6 +28,7 @@ namespace MySQLDAL
         private const string SQL_SELECT_PARTNERRESOURCE = "SELECT * FROM partnerresource";
         private const string SQL_SELECT_PARTNERRESOURCE_BY_ID = "SELECT * FROM partnerresource WHERE PartnerID = @PartnerID";
         private const string SQL_SELECT_CONTACT_BY_PARTNERID = "select * from contact where ContactID  in (select ContactID from partnercontact where PartnerID=@PartnerID)";
+        private const string SQL_SELECT_PARTNERRESOURCE_BY_USERID = "select * from goverresource where UserID=@UserID";
 
         #endregion
 
@@ -246,6 +247,31 @@ namespace MySQLDAL
                 Console.WriteLine(se.Message);
             }
             return contactInfos;
+        }
+
+        public IList<PartnerResourceInfo> GetPartnerResourceByUserId(int userId)
+        {
+            IList<PartnerResourceInfo> partnerResourceInfos = new List<PartnerResourceInfo>();
+
+            try
+            {
+                MySqlParameter parm = new MySqlParameter(PARM_USERID, MySqlDbType.Int32, 50);
+                parm.Value = userId;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_PARTNERRESOURCE_BY_USERID, parm))
+                {
+                    while (rdr.Read())
+                    {
+                        PartnerResourceInfo partnerResourceInfo = new PartnerResourceInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                        partnerResourceInfos.Add(partnerResourceInfo);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return partnerResourceInfos;
         }
 
         #endregion

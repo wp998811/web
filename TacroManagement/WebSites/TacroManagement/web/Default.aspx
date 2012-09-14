@@ -29,6 +29,5 @@
             </form>
         </div>
     </div>
-    <!-- /container -->
 </body>
 </html>

@@ -17,61 +17,76 @@ using Model;
 
 public partial class web_ModifyClinicalResource : System.Web.UI.Page
 {
+    ClinicalResource clinicalResource = new ClinicalResource();
+    ClinicalContact clinicalContact = new ClinicalContact();
+    Contact contact = new Contact();
+    User user = new User();
+    public static string clinicalResourceID = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
         {
-            ClinicalResourceDataBind();
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
 
-            //if (Session["userID"].ToString() == "")
-            //{
-            //    Response.Redirect("login.aspx");
-            //}
-            ContactGridView.Visible = false;
-            UserGridView.Visible = false;
+            if (Request.Params["clinicalResourceID"] != null && Request.Params["clinicalResourceID"].Trim() != "")
+            {
+                clinicalResourceID = Request.Params["clinicalResourceID"];
+                ClinicalResourceDataBind();
+            }
         }
     }
 
     private void ClinicalResourceDataBind()
     {
-        ClinicalResource clinicalResource = new ClinicalResource();
-        Contact contact = new Contact();
-        User user = new User();
-
-        int clinicalResourceID = Convert.ToInt32(Request["clinicalResourceID"]);
-        ClinicalResourceInfo clinicalResourceInfo = clinicalResource.GetClinicalResourceById(clinicalResourceID);
+        ClinicalResourceInfo clinicalResourceInfo = clinicalResource.GetClinicalResourceById(Convert.ToInt32(clinicalResourceID));
         UserInfo userInfo = user.GetUserById(clinicalResourceInfo.UserID);
 
-        textBox_manager.Text = userInfo.UserName;
-        textBox_city.Text = clinicalResourceInfo.City;
-        UserID_TextBox.Text = userInfo.UserID.ToString();
-        textBox_hospital.Text = clinicalResourceInfo.Hospital;
-        textBox_department.Text = clinicalResourceInfo.Department;
-        textBox_departIntro.Text = clinicalResourceInfo.DepartIntro;
+        txtManager.Text = userInfo.UserName;
+        txtCity.Text = clinicalResourceInfo.City;
+        txtHiddenUserID.Text = userInfo.UserID.ToString();
+        txtHospital.Text = clinicalResourceInfo.Hospital;
+        txtDepartmentName.Text = clinicalResourceInfo.Department;
+        txtDepartmentIntro.Text = clinicalResourceInfo.DepartIntro;
 
-        UserGridView.DataSource = user.SearchAllUsers();
-        UserGridView.DataBind();
+        IList<UserInfo> userInfos = user.GetUsers();
+        ddlUser.DataTextField = "UserName";
+        ddlUser.DataValueField = "UserID";
 
-        if (UserID_TextBox.Text != "")
-        {
-            int userID = Convert.ToInt32(UserID_TextBox.Text);
-            UserGridView.DataSource = user.SearchAllUsers();
-        }
+        ddlUser.DataSource = userInfos;
+        ddlUser.DataBind();
 
-        ClinicalContact  clinicalContact  = new ClinicalContact();
-        ContactGridView.DataSource = clinicalContact.SearchAllContactsByClinicalID(clinicalResourceID);
-        ContactGridView.DataBind();
+        ContactRpDataBind();
     }
+
+    private void ContactRpDataBind()
+    {
+        DataTable contactdt = clinicalContact.SearchAllContactsByClinicalID(Convert.ToInt32(clinicalResourceID));
+
+        this.ContactPager.RecordCount = contactdt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
+
+        pds.DataSource = contactdt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = ContactPager.CurrentPageIndex - 1;
+        pds.PageSize = ContactPager.PageSize;
+
+        rpContactList.DataSource = pds;
+        rpContactList.DataBind();
+    }
+
 
     protected void Modify_ClinicalResource(object sender, EventArgs e)
     {
-        ClinicalResource clinicalResource = new ClinicalResource();
         ClinicalResourceInfo clinicalResourceInfo = clinicalResource.GetClinicalResourceById(Convert.ToInt32(Request["clinicalResourceID"]));
-        clinicalResourceInfo.UserID = Convert.ToInt32(UserID_TextBox.Text);
-        clinicalResourceInfo.City = textBox_city.Text;
-        clinicalResourceInfo.Department = textBox_department.Text;
-        clinicalResourceInfo.DepartIntro = textBox_departIntro.Text;
-        clinicalResourceInfo.Hospital = textBox_hospital.Text;
+        clinicalResourceInfo.UserID = Convert.ToInt32(txtHiddenUserID.Text);
+        clinicalResourceInfo.City = txtCity.Text;
+        clinicalResourceInfo.Department = txtDepartmentName.Text;
+        clinicalResourceInfo.DepartIntro = txtDepartmentIntro.Text;
+        clinicalResourceInfo.Hospital = txtHospital.Text;
 
         if (clinicalResource.UpdateClinicalResource(clinicalResourceInfo) == 1)
         {
@@ -85,111 +100,83 @@ public partial class web_ModifyClinicalResource : System.Web.UI.Page
         Response.Redirect("ClinicalResourceList.aspx");
     }
 
-    protected void Select_Manager(object sender, EventArgs e)
-    {
-        UserGridView.Visible = true;
-        User_Hidden.Visible = true;
-    }
-
-    protected void Select_Contact(object sender, EventArgs e)
-    {
-        ContactGridView.Visible = true;
-        Contact_Hidden.Visible = true;
-        addContact.Visible = true;
-        ClinicalResourceDataBind();
-    }
-
-    //protected void CustomerGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    //{
-    //    if (e.Row.RowType == DataControlRowType.Header || e.Row.RowType == DataControlRowType.DataRow)
-    //    {
-    //        CheckBox mycb = new CheckBox();
-    //        mycb = (CheckBox)e.Row.FindControl("CheckBox1");
-    //        if (mycb != null)
-    //        {
-    //            //if (e.Row.RowType == DataControlRowType.DataRow)
-    //            //{
-    //            //    mycb.Attributes.Add("onclick", "select_customer(this.name)");
-    //            //}
-    //        }
-    //    }
-    //} 
-
-    /// <summary>
-    /// 当复选框被点击时发生
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void UserCheckBoxChanged(object sender, EventArgs e)
-    {
-        for (int i = 0; i <= UserGridView.Rows.Count - 1; i++)
-        {
-            CheckBox cbox = (CheckBox)(UserGridView.Rows[i].FindControl("User_CheckBox"));
-            if (cbox != (CheckBox)sender)
-                cbox.Checked = false;
-        }
-        int userID = Convert.ToInt32(GetUserID());
-        User user = new User();
-        UserInfo userInfo = user.GetUserById(userID);
-        textBox_manager.Text = userInfo.UserName;
-        UserID_TextBox.Text = userInfo.UserID.ToString();
-    }
-
-    public string GetUserID()
-    {
-        //取选中的事件编号
-        string streid = "";
-        if (UserGridView != null)
-        {
-            int i, row;
-            i = 0;
-            row = UserGridView.Rows.Count;
-            CheckBox mycb = new CheckBox();
-            for (i = 0; i < row; i++)
-            {
-                mycb = (CheckBox)UserGridView.Rows[i].FindControl("User_CheckBox");
-                if (mycb != null)
-                {
-                    if (mycb.Checked)
-                    {
-                        TextBox mytb = new TextBox();
-                        mytb = (TextBox)UserGridView.Rows[i].FindControl("User_TextBox");
-                        if (mytb != null)
-                        {
-                            streid = streid + mytb.Text.Trim() + ",";
-                        }
-                    }
-                }
-            }
-        }
-        if (streid.Length > 0)
-        {
-            streid = streid.Remove(streid.Length - 1);
-        }
-        return streid;
-    }
-
-    protected void UserList_Hidden(object sender, EventArgs e)
-    {
-        UserGridView.Visible = false;
-        User_Hidden.Visible = false;
-    }
-
-    protected void ContactList_Hidden(object sender, EventArgs e)
-    {
-        ContactGridView.Visible = false;
-        Contact_Hidden.Visible = false;
-        addContact.Visible = false;
-    }
-
     protected void Add_ClinicalContact(object sender, EventArgs e)
     {
         string clinicalResourceID = Request.QueryString["clinicalResourceID"];
         Response.Redirect("AddClinicalContact.aspx?clinicalResourceID=" + clinicalResourceID);
     }
 
-    protected void modify(object sender, EventArgs e)
+    protected void Contact_PageChanged(object sender, EventArgs e)
     {
+        ContactRpDataBind();
+    }
 
+    protected void Abort(object sender, EventArgs e)
+    {
+        Response.Redirect("ClinicalResourceList.aspx");
+    }
+
+    protected void lbtnSelectUser_Command(object sender, CommandEventArgs e)
+    {
+        if (e.CommandName == "select")
+        {
+            if (ddlUser.Items.Count == 0)
+                return;
+            int userID = Convert.ToInt32(ddlUser.SelectedValue);
+            UserInfo userInfo = user.GetUserById(userID);
+
+            if (userInfo != null)
+            {
+                txtManager.Text = userInfo.UserName;
+                txtHiddenUserID.Text = userID.ToString();
+            }
+        }
+    }
+
+    protected void rpContactList_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        switch (e.CommandName)
+        {
+            case "edit":
+                {
+                    int contactID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("ModifyClinicalContact.aspx?clinicalResourceID=" + clinicalResourceID.ToString() + "&contactID=" + contactID.ToString());
+                    break;
+                }
+            case "delete":
+                {
+                    int contactId = Convert.ToInt32(e.CommandArgument.ToString());
+
+                    if (contact.DeleteContact(contactId) == 1)
+                    {
+                        Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
+                    }
+                    ContactRpDataBind();
+                    break;
+                }
+            case "addVisitRecord":
+                {
+                    int contactID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("AddVisitRecord.aspx?contactID=" + contactID.ToString() + "&ID=" + clinicalResourceID + "&resourceType=临床");
+                    ContactRpDataBind();
+                    break;
+                }
+        }
+    }
+
+    protected bool isUserLogin()
+    {
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
     }
 }

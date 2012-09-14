@@ -17,30 +17,52 @@ using Model;
 
 public partial class web_VisitRecordDetail : System.Web.UI.Page
 {
+    VisitRecord visitRecord = new VisitRecord();
+    Customer customer = new Customer();
+    Contact contact = new Contact();
+    User user = new User();
+    public static string visitRecordID = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
         {
-            VisitRecordDataBind();
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
+            if (Request.Params["visitRecordID"] != null && Request.Params["visitRecordID"] != "")
+            {
+                visitRecordID = Request.Params["visitRecordID"];
+                VisitRecordDataBind();
+            }
         }
     }
 
     private void VisitRecordDataBind()
     {
-        int visitRecordID = Convert.ToInt32(Request["visitRecordID"]);
-        VisitRecord visitRecord = new VisitRecord();
-        Customer customer = new Customer();
-        Contact contact = new Contact();
-        VisitRecordInfo visitRecordInfo = visitRecord.GetVisitRecordById(visitRecordID);
+        VisitRecordInfo visitRecordInfo = visitRecord.GetVisitRecordById(Convert.ToInt32(visitRecordID));
         ContactInfo contactInfo = contact.GetContactById(visitRecordInfo.ContactID);
-        User user = new User();
+
         if (visitRecordInfo != null && contactInfo != null)
         {
-            label_contactName2.Text = contactInfo.ContactName;
-            label_address2.Text = contactInfo.Address;
-            label_telephone2.Text = contactInfo.Telephone;
-            label_recordTime2.Text = visitRecordInfo.RecordTime;
-            label_recordDetail2.Text = visitRecordInfo.VisitDetail;
+            lblContactName.Text = contactInfo.ContactName;
+            lblAddress.Text = contactInfo.Address;
+            lblTelephone.Text = contactInfo.Telephone;
+            lblVisitTime.Text = visitRecordInfo.RecordTime;
+            lblVisitDetail.Text = visitRecordInfo.VisitDetail;
         }
+    }
+
+    protected bool isUserLogin()
+    {
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
     }
 }

@@ -279,7 +279,9 @@ namespace BLL
         /// <returns>sql查询条件</returns>
         public string GetCustomerProjSearchCondition(string userName, string city, string customerType, string projectType, string progress, string customerName, string service, string productRange, string contactName)
         {
-            string searchCondition = "select * from customerproject where ProjectType like '%" + projectType + "%' and Progress like '%" + progress + "%' and Service like '%" + service + "%' and CustomerID in (select CustomerID from customercontact where ContactID in (select ContactID from contact where ContactName like '%" + contactName + "%') and CustomerID in (select CustomerID from customer where UserID in (select UserID from user where UserName like '%" + userName + "%') and CustomerCity like '%" + city + "%' and CustomerType like '%" + customerType + "%' and CustomerName like '%" + customerName + "%' and ProductRange like '%" + productRange + "%'))";
+            string searchCondition = "select * from customerproject where ProjectType like '%" + projectType + "%' and Progress like '%" + progress + "%' and Service like '%" + service + "%' and CustomerID in (select CustomerID from customer where UserID in (select UserID from user where UserName like '%" + userName + "%') and CustomerCity like '%" + city + "%' and CustomerType like '%" + customerType + "%' and CustomerName like '%" + customerName + "%' and ProductRange like '%" + productRange + "%')";
+
+//            string searchCondition = "select * from customerproject where ProjectType like '%" + projectType + "%' and Progress like '%" + progress + "%' and Service like '%" + service + "%' and CustomerID in (select CustomerID from customercontact where ContactID in (select ContactID from contact where ContactName like '%" + contactName + "%') and CustomerID in (select CustomerID from customer where UserID in (select UserID from user where UserName like '%" + userName + "%') and CustomerCity like '%" + city + "%' and CustomerType like '%" + customerType + "%' and CustomerName like '%" + customerName + "%' and ProductRange like '%" + productRange + "%'))";
 
             return searchCondition;
         }

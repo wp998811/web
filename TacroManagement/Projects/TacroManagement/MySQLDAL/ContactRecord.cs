@@ -42,7 +42,7 @@ namespace MySQLDAL
             {
                 MySqlParameter[] parms = new MySqlParameter[] { 
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,50),
-                    new MySqlParameter(PARM_RECORDDETAIL,MySqlDbType.VarChar,50),
+                    new MySqlParameter(PARM_RECORDDETAIL,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_RECORDTIME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,50)
                 };
@@ -101,7 +101,7 @@ namespace MySQLDAL
             {
                 MySqlParameter[] parms = new MySqlParameter[] {
                     new MySqlParameter(PARM_CONTACTID,MySqlDbType.Int32,50),
-                    new MySqlParameter(PARM_RECORDDETAIL,MySqlDbType.VarChar,50),
+                    new MySqlParameter(PARM_RECORDDETAIL,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_RECORDTIME,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_USERID,MySqlDbType.Int32,50),
                     new MySqlParameter(PARM_ID,MySqlDbType.Int32,50)

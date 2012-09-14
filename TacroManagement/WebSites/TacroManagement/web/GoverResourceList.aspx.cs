@@ -17,123 +17,51 @@ using Model;
 
 public partial class web_GoverResourceList : System.Web.UI.Page
 {
+    GoverResource goverResource = new GoverResource();
+    User user = new User();
+    ResourceAdmin resourceAdmin = new ResourceAdmin();
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
+            if (!isGoverResourceManager())
+            {
+                HideItems();
+            }
             GoverResourceDataBind();
         }
     }
 
     private void GoverResourceDataBind()
     {
-        GoverResource goverResource = new GoverResource();
-
-        GoverResourceGridView.DataSource = goverResource.SearchAllGoverResources();
-        GoverResourceGridView.DataBind();
-
-        ddlCurrentPage.Items.Clear();
-        for (int i = 1; i <= GoverResourceGridView.PageCount; i++)
+        DataTable goverResourcedt = new DataTable();
+        if (!isGoverResourceManager())
         {
-            ddlCurrentPage.Items.Add(i.ToString());
+            goverResourcedt = goverResource.SearchAllGoverResources();
         }
-        if (ddlCurrentPage.SelectedIndex != -1)
-            ddlCurrentPage.SelectedIndex = GoverResourceGridView.PageIndex;
-    }
+        else
+            goverResourcedt = goverResource.SearchGoverResourcesByUserId(Convert.ToInt32(Session["userID"].ToString()));
 
-    protected void GoverResourceGridView_RowEditing(object sender, GridViewEditEventArgs e)
-    {
-        string goverResourceID = GoverResourceGridView.DataKeys[e.NewEditIndex][0].ToString();
-        Response.Redirect("ModifyGoverResource.aspx?goverResourceID=" + goverResourceID);
-    }
+        this.GoverResourcePager.RecordCount = goverResourcedt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
 
+        pds.DataSource = goverResourcedt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = GoverResourcePager.CurrentPageIndex - 1;
+        pds.PageSize = GoverResourcePager.PageSize;
+
+        rpGoverResourceList.DataSource = pds;
+        rpGoverResourceList.DataBind();
+    }
 
     protected void Add_GoverResource(object sender, EventArgs e)
     {
         Response.Redirect("AddGoverResource.aspx");
-    }
-
-    protected void GoverResourceGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
-    {
-        GoverResource goverResource = new GoverResource();
-
-        int goverResourceId = Convert.ToInt32(GoverResourceGridView.DataKeys[e.RowIndex][0].ToString());
-
-        if (goverResource.DeleteGoverResource(goverResourceId) == 1)
-        {
-            Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
-        }
-        else
-        {
-            Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
-        }
-
-        GoverResourceDataBind();
-    }
-
-    /// <summary>
-    /// 重新绑定
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        this.GoverResourceGridView.PageIndex = this.ddlCurrentPage.SelectedIndex;
-        GoverResourceDataBind();
-    }
-    protected void lnkbtnFrist_Click(object sender, EventArgs e)
-    {
-        this.GoverResourceGridView.PageIndex = 0;
-        GoverResourceDataBind();
-    }
-    protected void lnkbtnPre_Click(object sender, EventArgs e)
-    {
-        if (this.GoverResourceGridView.PageIndex > 0)
-        {
-            this.GoverResourceGridView.PageIndex = this.GoverResourceGridView.PageIndex - 1;
-            GoverResourceDataBind();
-        }
-    }
-    protected void lnkbtnNext_Click(object sender, EventArgs e)
-    {
-        if (this.GoverResourceGridView.PageIndex < this.GoverResourceGridView.PageCount)
-        {
-            this.GoverResourceGridView.PageIndex = this.GoverResourceGridView.PageIndex + 1;
-            GoverResourceDataBind();
-        }
-    }
-    protected void lnkbtnLast_Click(object sender, EventArgs e)
-    {
-        this.GoverResourceGridView.PageIndex = this.GoverResourceGridView.PageCount;
-        GoverResourceDataBind();
-    }
-
-    protected void GoverResourceGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        this.lblCurrentPage.Text = string.Format("当前第{0}页/总共{1}页", this.GoverResourceGridView.PageIndex + 1, this.GoverResourceGridView.PageCount);
-
-        //遍历所有行设置边框样式
-        foreach (TableCell tc in e.Row.Cells)
-        {
-            tc.Attributes["style"] = "border-color:Black";
-        }
-        //用索引来取得编号
-        if (e.Row.RowIndex != -1)
-        {
-            int id = GoverResourceGridView.PageIndex * GoverResourceGridView.PageSize + e.Row.RowIndex + 1;
-            e.Row.Cells[0].Text = id.ToString();
-        }
-    }
-
-    protected void GoverResourceGridView_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-        switch (e.CommandName)
-        {
-            case "Detail":
-                string goverResourceId = GoverResourceGridView.DataKeys[Convert.ToInt32(e.CommandArgument)][0].ToString();
-                Response.Redirect("GoverResourceDetail.aspx?goverResourceId=" + goverResourceId);
-                break;
-        }
     }
 
     protected void Query_GoverResource(object sender, EventArgs e)
@@ -143,12 +71,115 @@ public partial class web_GoverResourceList : System.Web.UI.Page
         string organName = txtOrganName.Text.Trim();
         string contactName = txtContactName.Text.Trim();
 
-        GoverResource goverResource = new GoverResource();
-        DataTable goverResources = goverResource.GetDataTableByGoverList(goverResource.GetGoverResourceBySearch(manager, city, organName, contactName));
-        //DataColumn subTaskColumn = new DataColumn("项目子任务");//与页面的GirdView一致
-        //documents.Columns.Add(subTaskColumn);
-        GoverResourceGridView.DataSource = goverResources;
-        GoverResourceGridView.DataBind();
+        UserInfo userInfo = user.GetUserById(Convert.ToInt32(Session["UserID"]));
+
+        DataTable goverResourcedt = new DataTable();
+        if (!isGoverResourceManager())
+            goverResourcedt = goverResource.GetDataTableByGoverList(goverResource.GetGoverResourceBySearch(manager, city, organName, contactName));
+        else
+        {
+            if (userInfo.UserID != 0)
+                goverResourcedt = goverResource.GetDataTableByGoverList(goverResource.GetGoverResourceBySearch(userInfo.UserName, city, organName, contactName));
+        }
+
+        this.GoverResourcePager.RecordCount = goverResourcedt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
+
+        pds.DataSource = goverResourcedt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = GoverResourcePager.CurrentPageIndex - 1;
+        pds.PageSize = GoverResourcePager.PageSize;
+
+        rpGoverResourceList.DataSource = pds;
+        rpGoverResourceList.DataBind();
+    }
+
+    protected void rpGoverResourceList_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        switch (e.CommandName)
+        {
+            case "edit":
+                {
+                    int goverResourceID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("ModifyGoverResource.aspx?goverResourceID=" + goverResourceID.ToString());
+                    break;
+                }
+            case "delete":
+                {
+                    int goverResourceID = Convert.ToInt32(e.CommandArgument.ToString());
+
+                    if (goverResource.DeleteGoverResource(goverResourceID) == 1)
+                    {
+                        Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
+                    }
+                    GoverResourceDataBind();
+                    break;
+                }
+            case "detail":
+                {
+                    int goverResourceID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("GoverResourceDetail.aspx?goverResourceID=" + goverResourceID);
+                    break;
+                }
+        }
+    }
+
+    protected void GoverResource_PageChanged(object sender, EventArgs e)
+    {
+        GoverResourceDataBind();
+    }
+
+    protected bool isGoverResourceManager()
+    {
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        ResourceAdminInfo resourceAdminInfo = resourceAdmin.GetResourceAdminByResourceTypeAndUserID(userID, "政府资源");
+        if (resourceAdminInfo == null)
+            return false;
+
+        return true;
+    }
+
+    protected void GoverResourceRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (!isGoverResourceManager())
+        {
+            Control deleteCon = e.Item.FindControl("lbtnRpEdit");
+            if (deleteCon != null)
+            {
+                LinkButton deleteBtn = (LinkButton)deleteCon;
+                deleteBtn.Visible = false;
+            }
+            Control modifyCon = e.Item.FindControl("lbtnRpDelete");
+            if (modifyCon != null)
+            {
+                LinkButton modifyBtn = (LinkButton)modifyCon;
+                modifyBtn.Visible = false;
+            }
+        }
+    }
+
+    protected bool isUserLogin()
+    {
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
+    }
+
+    protected void HideItems()
+    {
+        icon.Visible = false;
+        hrefAdd.Visible = false;
+        lblManager.Visible = false;
+        txtManager.Visible = false;
     }
 }
 

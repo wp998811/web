@@ -17,123 +17,85 @@ using Model;
 
 public partial class web_VisitRecordList : System.Web.UI.Page
 {
+    VisitRecord visitRecord = new VisitRecord();
+    User user = new User();
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
+            if (!isUserLogin())
+            {
+                Response.Redirect("login.aspx");
+            }
             VisitRecordDataBind();
         }
     }
 
     private void VisitRecordDataBind()
     {
-        VisitRecord visitRecord = new VisitRecord();
-        IList<VisitRecordInfo> visitRecordInfos = visitRecord.GetVisitRecords();
+        DataTable visitRecorddt = visitRecord.SearchAllVisitRecordsByUserID(Convert.ToInt32(Session["UserID"]));
 
-        VisitRecordGridView.DataSource = visitRecord.SearchAllVisitRecords();
-        VisitRecordGridView.DataBind();
+        this.VisitRecordPager.RecordCount = visitRecorddt.Rows.Count;
+        PagedDataSource pds = new PagedDataSource();
 
-        ddlCurrentPage.Items.Clear();
-        for (int i = 1; i <= VisitRecordGridView.PageCount; i++)
-        {
-            ddlCurrentPage.Items.Add(i.ToString());
-        }
-        if (ddlCurrentPage.SelectedIndex != -1)
-            ddlCurrentPage.SelectedIndex = VisitRecordGridView.PageIndex;
+        pds.DataSource = visitRecorddt.DefaultView;
+        pds.AllowPaging = true;
+        pds.CurrentPageIndex = VisitRecordPager.CurrentPageIndex - 1;
+        pds.PageSize = VisitRecordPager.PageSize;
+
+        rpVisitRecordList.DataSource = pds;
+        rpVisitRecordList.DataBind();
     }
 
-    protected void VisitRecordGridView_RowEditing(object sender, GridViewEditEventArgs e)
-    {
-        string visitRecordId = VisitRecordGridView.DataKeys[e.NewEditIndex][0].ToString();
-        Response.Redirect("ModifyVisitRecord.aspx?visitRecordID=" + visitRecordId);
-    }
-
-
-    protected void Add_VisitRecord(object sender, EventArgs e)
-    {
-        Response.Redirect("AddVisitRecord.aspx");
-    }
-
-    protected void VisitRecordGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
-    {
-        VisitRecord visitRecord = new VisitRecord();
-
-        int visitRecordId = Convert.ToInt32(VisitRecordGridView.DataKeys[e.RowIndex][0].ToString());
-
-        if (visitRecord.DeleteVisitRecord(visitRecordId) == 1)
-        {
-            Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
-        }
-        else
-        {
-            Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
-        }
-
-        VisitRecordDataBind();
-    }
-
-    /// <summary>
-    /// 重新绑定
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        this.VisitRecordGridView.PageIndex = this.ddlCurrentPage.SelectedIndex;
-        VisitRecordDataBind();
-    }
-    protected void lnkbtnFrist_Click(object sender, EventArgs e)
-    {
-        this.VisitRecordGridView.PageIndex = 0;
-        VisitRecordDataBind();
-    }
-    protected void lnkbtnPre_Click(object sender, EventArgs e)
-    {
-        if (this.VisitRecordGridView.PageIndex > 0)
-        {
-            this.VisitRecordGridView.PageIndex = this.VisitRecordGridView.PageIndex - 1;
-            VisitRecordDataBind();
-        }
-    }
-    protected void lnkbtnNext_Click(object sender, EventArgs e)
-    {
-        if (this.VisitRecordGridView.PageIndex < this.VisitRecordGridView.PageCount)
-        {
-            this.VisitRecordGridView.PageIndex = this.VisitRecordGridView.PageIndex + 1;
-            VisitRecordDataBind();
-        }
-    }
-    protected void lnkbtnLast_Click(object sender, EventArgs e)
-    {
-        this.VisitRecordGridView.PageIndex = this.VisitRecordGridView.PageCount;
-        VisitRecordDataBind();
-    }
-
-    protected void VisitRecordGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        this.lblCurrentPage.Text = string.Format("当前第{0}页/总共{1}页", this.VisitRecordGridView.PageIndex + 1, this.VisitRecordGridView.PageCount);
-
-        //遍历所有行设置边框样式
-        foreach (TableCell tc in e.Row.Cells)
-        {
-            tc.Attributes["style"] = "border-color:Black";
-        }
-        //用索引来取得编号
-        if (e.Row.RowIndex != -1)
-        {
-            int id = VisitRecordGridView.PageIndex * VisitRecordGridView.PageSize + e.Row.RowIndex + 1;
-            e.Row.Cells[0].Text = id.ToString();
-        }
-    }
-
-    protected void VisitRecordGridView_RowCommand(object sender, GridViewCommandEventArgs e)
+    protected void rpVisitRecordList_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
         switch (e.CommandName)
         {
-            case "Detail":
-                string visitRecordId = VisitRecordGridView.DataKeys[Convert.ToInt32(e.CommandArgument)][0].ToString();
-                Response.Redirect("VisitRecordDetail.aspx?visitRecordID=" + visitRecordId);
-                break;
+            case "edit":
+                {
+                    int visitRecordID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("ModifyVisitRecord.aspx?visitRecordID=" + visitRecordID.ToString());
+                    break;
+                }
+            case "delete":
+                {
+                    int visitRecordID = Convert.ToInt32(e.CommandArgument.ToString());
+
+                    if (visitRecord.DeleteVisitRecord(visitRecordID) == 1)
+                    {
+                        Response.Write("<script  language='javascript'> window.alert('删除成功'); </script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script  language='javascript'> alert('删除失败'); </script>");
+                    }
+                    VisitRecordDataBind();
+                    break;
+                }
+            case "detail":
+                {
+                    int visitRecordID = Convert.ToInt32(e.CommandArgument.ToString());
+                    Response.Redirect("VisitRecordDetail.aspx?visitRecordID=" + visitRecordID);
+                    break;
+                }
         }
+    }
+
+    protected void VisitRecord_PageChanged(object sender, EventArgs e)
+    {
+        VisitRecordDataBind();
+    }
+
+    protected bool isUserLogin()
+    {
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
     }
 }

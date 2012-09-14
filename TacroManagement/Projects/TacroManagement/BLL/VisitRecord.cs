@@ -178,6 +178,52 @@ namespace BLL
             return dataTable;
         }
 
+        /// <summary>
+        /// 查询所有拜访记录信息
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchAllVisitRecordsByUserID(int userID)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn visitRecordID = new DataColumn("拜访记录ID");
+            DataColumn contactName = new DataColumn("联系人姓名");
+            DataColumn address = new DataColumn("地址");
+            DataColumn mobilephone = new DataColumn("手机");
+            DataColumn visitDetail = new DataColumn("拜访记录");
+            DataColumn visitTime = new DataColumn("拜访时间");
+
+            dataTable.Columns.Add(visitRecordID);
+            dataTable.Columns.Add(contactName);
+            dataTable.Columns.Add(address);
+            dataTable.Columns.Add(mobilephone);
+            dataTable.Columns.Add(visitDetail);
+            dataTable.Columns.Add(visitTime);
+
+            IList<VisitRecordInfo> visitRecordInfos = GetVisitRecordsByUserId(userID);
+            Customer customer = new Customer();
+            User user = new User();
+            Contact contact = new Contact();
+            CustomerContact customerContact = new CustomerContact();
+
+            for (int i = 0; i < visitRecordInfos.Count; ++i)
+            {
+                VisitRecordInfo vistiRecordInfo = visitRecordInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["拜访记录ID"] = vistiRecordInfo.ID;
+
+                ContactInfo contactInfo = contact.GetContactById(vistiRecordInfo.ContactID);
+                dataRow["联系人姓名"] = contactInfo.ContactName;
+                dataRow["地址"] = contactInfo.Address;
+                dataRow["手机"] = contactInfo.Telephone;
+
+                dataRow["拜访记录"] = vistiRecordInfo.VisitDetail;
+                dataRow["拜访时间"] = vistiRecordInfo.RecordTime;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
+        }
+
     }
 }
 

@@ -152,8 +152,8 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CONTRACTAMOUNT,MySqlDbType.Float,50),
                     new MySqlParameter(PARM_PAYMENT,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_PAYSTATE,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_PROJID,MySqlDbType.Int32,50),
-                    new MySqlParameter(PARM_PROJTYPE,MySqlDbType.VarChar,50)
+                    new MySqlParameter(PARM_PROJTYPE,MySqlDbType.VarChar,50),
+                    new MySqlParameter(PARM_PROJID,MySqlDbType.Int32,50) 
                 };
                 parms[0].Value = customerProject.CustomerID;
                 parms[1].Value = customerProject.ProductName;

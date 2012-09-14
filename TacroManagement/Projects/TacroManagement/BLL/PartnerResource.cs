@@ -80,6 +80,11 @@ namespace BLL
             return dal.GetContactsByPartnerResourceId(partnerResourceId);
         }
 
+        public IList<PartnerResourceInfo> GetPartnerResourceByUserId(int userId)
+        {
+            return dal.GetPartnerResourceByUserId(userId);
+        }
+
         /// <summary>
         /// 根据查询条件生成sql查询语句
         /// </summary>
@@ -299,6 +304,44 @@ namespace BLL
             }
             return dataTable;
         }
+
+        public DataTable SearchPartnerResourcesByUserId(int userId)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn clinicalResourceID = new DataColumn("合作伙伴资源ID");
+            DataColumn userName = new DataColumn("负责人姓名");
+            DataColumn city = new DataColumn("城市");
+            DataColumn organName = new DataColumn("组织名称");
+            DataColumn organIntro = new DataColumn("组织简介");
+
+            dataTable.Columns.Add(clinicalResourceID);
+            dataTable.Columns.Add(userName);
+            dataTable.Columns.Add(city);
+            dataTable.Columns.Add(organName);
+            dataTable.Columns.Add(organIntro);
+
+            IList<PartnerResourceInfo> partnerResourceInfos = GetPartnerResourceByUserId(userId); //查询语句
+            PartnerResource partnerResource = new PartnerResource();
+            User user = new User();
+
+            for (int i = 0; i < partnerResourceInfos.Count; ++i)
+            {
+                PartnerResourceInfo partnerResourceInfo = partnerResourceInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["合作伙伴资源ID"] = partnerResourceInfo.PartnerID;
+
+                UserInfo userInfo = user.GetUserById(partnerResourceInfo.UserID);
+                dataRow["负责人姓名"] = userInfo.UserName;
+
+                dataRow["城市"] = partnerResourceInfo.PartnerCity;
+                dataRow["组织名称"] = partnerResourceInfo.OrganName;
+                dataRow["组织简介"] = partnerResourceInfo.OrganIntro;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
+        }
+
         #endregion
     }
 }

@@ -73,6 +73,7 @@
     <Compile Include="ProjectDocUser.cs" />
     <Compile Include="ProjectUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceAdmin.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="SubTask.cs" />
     <Compile Include="User.cs" />

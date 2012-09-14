@@ -1,25 +1,24 @@
-﻿<%@ Page Language="C#" Async="true" AutoEventWireup="true" MasterPageFile="~/web/index.master"  CodeFile="AddPartnerContact.aspx.cs" Inherits="web_AddPartnerContact"  Title="添加合作伙伴资源联系人" %>
+﻿<%@ Page Language="C#" Async="true" AutoEventWireup="true" MasterPageFile="~/web/index.master"  CodeFile="ModifyClinicalContact.aspx.cs" Inherits="web_ModifyClinicalContact"  Title="修改临床资源联系人" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server" >
-    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <div class="container">
-        <div class="row">
-            <form class="form-horizontal">
-           <ul class="breadcrumb">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server"> 
+        <div class="container">
+        <div style="padding-top:10px"></div>
+            <ul class="breadcrumb">
                 <li>
-                    <a href="PartnerResourceList.aspx">合作伙伴资源管理</a> <span class="divider">/</span>
+                    <a href="ClinicalResourceList.aspx">临床资源管理</a> <span class="divider">/</span>
                 </li>
                 <li>
-                    <a href="ModifyPartnerResource.aspx?partnerResourceID=<%=partnerResourceID %>">编辑合作伙伴资源</a> <span class="divider">/</span>
+                    <a href="ModifyClinicalResource.aspx?clinicalResourceID=<%=clinicalResourceID %>">编辑临床资源</a> <span class="divider">/</span>
                  </li>
                   <li class="active">
-                    <asp:Label runat="Server" Text="添加合作伙伴资源联系人"></asp:Label></li>
+                    <asp:Label ID="Label1" runat="Server" Text="编辑临床资源联系人"></asp:Label></li>
             </ul>
-                        <div class="row" style="align:middle">
-                        <form class="form-horizontal">
+        <div class="row" style="align:middle">
+                       <form class="form-horizontal">
             <div class="form-horizontal control-group">
                 <label class="control-label">
                     联系人姓名</label>
@@ -98,7 +97,7 @@
             </div>
                 <div class="form-horizontal control-group">
                     <div class="controls">
-                        <asp:Button class="btn btn-primary" id="addPartnerContact" Text="确定" runat="server" OnClick="Add_PartnerContact" />
+                        <asp:Button class="btn btn-primary" id="modifyClinicalContact" Text="确定" runat="server" OnClick="Modify_ClinicalContact" />
                         <asp:Button class="btn" ID="btnCancel" Text="取消" runat="Server" OnClick="Abort"/>
                     </div>
                 </div>
@@ -106,9 +105,4 @@
         </div>
     </div>
 </asp:Content>
-
-
-
-
-
 

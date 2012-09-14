@@ -68,6 +68,7 @@
     <Compile Include="IProjectDoc.cs" />
     <Compile Include="IProjectDocUser.cs" />
     <Compile Include="IProjectUser.cs" />
+    <Compile Include="IResourceAdmin.cs" />
     <Compile Include="IShedule.cs" />
     <Compile Include="ISubTask.cs" />
     <Compile Include="IUser.cs" />

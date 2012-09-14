@@ -15,12 +15,13 @@ using System.Collections.Generic;
 using BLL;
 using Model;
 
-public partial class web_AddClinicalContact : System.Web.UI.Page
+public partial class web_AddContact : System.Web.UI.Page
 {
     Contact contact = new Contact();
-    ClinicalContact clinicalContact = new ClinicalContact();
+    ContactInfo contactInfo = new ContactInfo();
+    CustomerContact customerContact = new CustomerContact();
     User user = new User();
-    public static string clinicalResourceID = "";
+    public static string customerID = "";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -30,34 +31,32 @@ public partial class web_AddClinicalContact : System.Web.UI.Page
             {
                 Response.Redirect("login.aspx");
             }
-            if (Request.Params["clinicalResourceID"] != null && Request.Params["clinicalResourceID"].Trim() != "")
+
+            if (Request.Params["customerID"].Trim() != "")
             {
-                clinicalResourceID = Request.Params["clinicalResourceID"];
+                customerID = Request.Params["customerID"];
             }
         }
     }
 
-    protected void Add_ClinicalContact(object sender, EventArgs e)
+    protected void Add_Contact(object sender, EventArgs e)
     {
-        ContactInfo contactInfo = new ContactInfo();
-        ClinicalContactInfo clinicalContactInfo = new ClinicalContactInfo();
+        CustomerContactInfo customerContactInfo = new CustomerContactInfo();
         contactInfo.ContactName = txtContactName.Text;
         contactInfo.Position = txtPosition.Text;
         contactInfo.Mobilephone = txtMobilephone.Text;
         contactInfo.Telephone = txtTelephone.Text;
         contactInfo.Email = txtEmail.Text;
-        contactInfo.Address = txtEmail.Text;
+        contactInfo.Address = txtAddress.Text;
         contactInfo.PostCode = txtPostCode.Text;
         contactInfo.FaxNumber = txtFaxNumber.Text;
 
-        int clinicalResourceID = Convert.ToInt32(Request.QueryString["clinicalResourceID"]);
-
-        clinicalContactInfo.ClinicalID = clinicalResourceID;
+        customerContactInfo.CustomerID = Convert.ToInt32(customerID);
 
         if (contact.InsertContact(contactInfo) == 1)
         {
-            clinicalContactInfo.ContactID = contact.GetContactByContactNameAndTelephone(contactInfo.ContactName, contactInfo.Telephone).ContactID;
-            if (clinicalContact.InsertClinicalContact(clinicalContactInfo) == 1)
+            customerContactInfo.ContactID = contact.GetContactByContactNameAndTelephone(contactInfo.ContactName, contactInfo.Telephone).ContactID;
+            if(customerContact.InsertCustomerContact(customerContactInfo) == 1)
                 Response.Write("<script  language='javascript'> window.alert('添加成功'); </script>");
         }
         else
@@ -65,12 +64,13 @@ public partial class web_AddClinicalContact : System.Web.UI.Page
             Response.Write("<script  language='javascript'> alert('添加失败'); </script>");
         }
 
-        Response.Redirect("ModifyClinicalResource.aspx?clinicalResourceID=" + clinicalResourceID.ToString());
+        if (Request.Params["customerID"] == null || Request.Params["customerID"] == "")
+            Response.Redirect("ModifyCustomer.aspx?customerID=" + customerID.ToString());
     }
 
     protected void Abort(object sender, EventArgs e)
     {
-        Response.Redirect("ModifyClinicalResource.aspx?clinicalResourceID=" + clinicalResourceID.ToString());
+        Response.Redirect("ModifyCustomer.aspx?customerID=" + customerID.ToString());
     }
 
     protected bool isUserLogin()

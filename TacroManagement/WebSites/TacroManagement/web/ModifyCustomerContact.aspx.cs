@@ -15,12 +15,13 @@ using System.Collections.Generic;
 using BLL;
 using Model;
 
-public partial class web_ModifyPartnerContact : System.Web.UI.Page
+public partial class web_ModifyCustomerContact : System.Web.UI.Page
 {
     Contact contact = new Contact();
+    CustomerContact customerContact = new CustomerContact();
     User user = new User();
     public static string contactID = "";
-    public static string partnerResourceID = "";
+    public static string customerID = "";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -30,20 +31,20 @@ public partial class web_ModifyPartnerContact : System.Web.UI.Page
             {
                 Response.Redirect("login.aspx");
             }
-
-            if (Request.Params["contactID"] != null && Request.Params["contactID"] != "" &&
-                Request.Params["partnerResourceID"] != null && Request.Params["partnerResourceID"] != "")
+            if (Request.Params["contactID"] != null && Request.Params["contactID"].Trim() != "" &&
+                Request.Params["customerID"] != null && Request.Params["customerID"].Trim() != "")
             {
-                contactID = Request.Params["contactID"];
-                partnerResourceID = Request.Params["partnerResourceID"];
                 ContactDataBind();
+                contactID = Request.Params["contactID"];
+                customerID = Request.Params["customerID"];
             }
         }
     }
 
     private void ContactDataBind()
     {
-        ContactInfo contactInfo = contact.GetContactById(Convert.ToInt32(contactID));
+        int contactID = Convert.ToInt32(Request["contactID"]);
+        ContactInfo contactInfo = contact.GetContactById(contactID);
         if (contactInfo != null)
         {
             txtContactName.Text = contactInfo.ContactName;
@@ -57,33 +58,30 @@ public partial class web_ModifyPartnerContact : System.Web.UI.Page
         }
     }
 
-    protected void Modify_PartnerContact(object sender, EventArgs e)
+    protected void Modify_CustomerContact(object sender, EventArgs e)
     {
-        ContactInfo contactInfo = contact.GetContactById(Convert.ToInt32(contactID));
-        contactInfo.ContactName = txtContactName.Text;
-        contactInfo.Position = txtPosition.Text;
-        contactInfo.Mobilephone = txtMobilephone.Text;
-        contactInfo.Telephone = txtTelephone.Text;
-        contactInfo.Email = txtEmail.Text;
-        contactInfo.Address = txtAddress.Text;
-        contactInfo.PostCode = txtPostCode.Text;
-        contactInfo.FaxNumber = txtFaxNumber.Text;
-
-        if (contact.UpdateContact(contactInfo) != -1)
+        if (contactID != null && contactID != "")
         {
-            Response.Write("<script  language='javascript'> alert('修改成功'); </script>");
-        }
-        else
-        {
-            Response.Write("<script  language='javascript'> alert('修改失败'); </script>");
-        }
+            ContactInfo contactInfo = contact.GetContactById(Convert.ToInt32(contactID));
+            contactInfo.ContactName = txtContactName.Text;
+            contactInfo.Position = txtPosition.Text;
+            contactInfo.Mobilephone = txtMobilephone.Text;
+            contactInfo.Telephone = txtTelephone.Text;
+            contactInfo.Email = txtEmail.Text;
+            contactInfo.Address = txtAddress.Text;
+            contactInfo.PostCode = txtPostCode.Text;
+            contactInfo.FaxNumber = txtFaxNumber.Text;
 
-        Response.Redirect("ModifyPartnerResource.aspx?goverResourceID=" + partnerResourceID.ToString());
+            CustomerInfo customerInfo = customerContact.GetCustomerByContactId(contactInfo.ContactID);
+
+            if (customerInfo != null && contact.UpdateContact(contactInfo) == 1)
+                Response.Redirect("ModifyCustomer.aspx?customerID=" + customerInfo.CustomerID.ToString());
+        }
     }
 
     protected void Abort(object sender, EventArgs e)
     {
-        Response.Redirect("ModifyPartnerResource.aspx?goverResourceID=" + partnerResourceID.ToString());
+        Response.Redirect("ModifyCustomer.aspx?customerID=" + customerID);
     }
 
     protected bool isUserLogin()

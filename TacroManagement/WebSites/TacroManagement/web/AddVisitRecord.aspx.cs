@@ -17,58 +17,78 @@ using Model;
 
 public partial class web_AddVisitRecord : System.Web.UI.Page
 {
+    Customer customer = new Customer();
+    CustomerContact customerContact = new CustomerContact();
+    Contact contact = new Contact();
+    VisitRecord visitRecord = new VisitRecord();
+    User user = new User();
+    public static string contactID = "";
+    public static string resourceID = "";
+    public static string resourceType = "";
+    public static string href1 = "";
+    public static string href2 = "";
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
         {
-            VisitRecordDataBind();
-
-            //if (Session["userID"].ToString() == "")
-            //{
-            //    Response.Redirect("login.aspx");
-            //}
-            CustomerGridView.Visible = false;
-            Customer_Hidden.Visible = false;
-            ContactGridView.Visible = false;
-            Contact_Hidden.Visible = false;
+            if (Request.Params["contactID"] != null && Request.Params["contactID"].Trim() != "" &&
+                Request.Params["ID"] != null && Request.Params["ID"].Trim() != "" &&
+                Request.Params["resourceType"] != null && Request.Params["resourceType"].Trim() != "")
+            {
+                contactID = Request.Params["contactID"];
+                resourceID = Request.Params["ID"];
+                resourceType = Request.Params["resourceType"];
+                VisitRecordDataBind();
+            }
         }
     }
 
     private void VisitRecordDataBind()
     {
-        Customer customer = new Customer();
-        CustomerContact customerContact = new CustomerContact();
-        Contact contact = new Contact();
-
-        CustomerGridView.DataSource = customer.SearchAllCustomers();
-        CustomerGridView.DataBind();
-
-        if (CustomerID_TextBox.Text != "")
+        switch (resourceType)
         {
-            int customerID = Convert.ToInt32(CustomerID_TextBox.Text);
-            ContactGridView.DataSource = customerContact.SearchAllContactsByCustomerID(customerID);
-
-        } else 
-        {
-            ContactGridView.DataSource = contact.SearchAllContacts();
+            case "客户":
+                {
+                    href1 = "CustomerList.aspx";
+                    href2 = "ModifyCustomer.aspx?customerID=" + ID;
+                    label1.Text = "客户资源管理";
+                    label2.Text = "编辑客户资源";
+                    break;
+                }
+            case "临床":
+                {
+                    href1 = "ClinicalResourceList.aspx";
+                    href2 = "ModifyClinicalResource.aspx?clinicalResourceID=" + ID;
+                    label1.Text = "临床资源管理";
+                    label2.Text = "编辑临床资源";
+                    break;
+                }
+            case "政府":
+                {
+                    href1 = "GoverResourceList.aspx";
+                    href2 = "ModifyGoverResource.aspx?goverResourceID=" + ID;
+                    label1.Text = "政府资源管理";
+                    label2.Text = "编辑政府资源";
+                    break;
+                }
+            case "合作伙伴":
+                {
+                    href1 = "PartnerResourceList.aspx";
+                    href2 = "ModifyPartnerResource.aspx?partnerResourceID=" + ID;
+                    label1.Text = "合作伙伴资源管理";
+                    label2.Text = "编辑合作伙伴资源";
+                    break;
+                }
         }
-        ContactGridView.DataBind();
-        //ddlCurrentPage.Items.Clear();
-        //for (int i = 1; i <= CustomerGridView.PageCount; i++)
-        //{
-        //    ddlCurrentPage.Items.Add(i.ToString());
-        //}
-        //if (ddlCurrentPage.SelectedIndex != -1)
-        //    ddlCurrentPage.SelectedIndex = CustomerGridView.PageIndex;
     }
 
     protected void Add_VisitRecord(object sender, EventArgs e)
     {
-        VisitRecord visitRecord = new VisitRecord();
         VisitRecordInfo visitRecordInfo = new VisitRecordInfo();
-        visitRecordInfo.ContactID = Convert.ToInt32(GetContactID());
-        visitRecordInfo.RecordTime = iEndDate.Value;
-        visitRecordInfo.VisitDetail = textBox_recordDetail.Text;
+        visitRecordInfo.ContactID = Convert.ToInt32(contactID);
+        visitRecordInfo.RecordTime = txtVisitTime.Value;
+        visitRecordInfo.VisitDetail = txtVisitDetail.Text;
         visitRecordInfo.UserID = Convert.ToInt32(Session["userID"].ToString());
 
         if (visitRecord.InsertVisitRecord(visitRecordInfo) == 1)
@@ -80,154 +100,45 @@ public partial class web_AddVisitRecord : System.Web.UI.Page
             Response.Write("<script  language='javascript'> alert('添加失败'); </script>");
         }
 
-        //Response.Redirect("ModifyCustomer.aspx?customerID=" + customerID.ToString());
-    }
-
-    protected void Select_Customer(object sender, EventArgs e)
-    {
-        CustomerGridView.Visible = true;
-        Customer_Hidden.Visible = true;
-    }
-
-    protected void Select_Contact(object sender, EventArgs e)
-    {
-        ContactGridView.Visible = true;
-        Contact_Hidden.Visible = true;
-        VisitRecordDataBind();
-    }
-
-    //protected void CustomerGridView_RowDataBound(object sender, GridViewRowEventArgs e)
-    //{
-    //    if (e.Row.RowType == DataControlRowType.Header || e.Row.RowType == DataControlRowType.DataRow)
-    //    {
-    //        CheckBox mycb = new CheckBox();
-    //        mycb = (CheckBox)e.Row.FindControl("CheckBox1");
-    //        if (mycb != null)
-    //        {
-    //            //if (e.Row.RowType == DataControlRowType.DataRow)
-    //            //{
-    //            //    mycb.Attributes.Add("onclick", "select_customer(this.name)");
-    //            //}
-    //        }
-    //    }
-    //}
-
-    /// <summary>
-    /// 当复选框被点击时发生
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void CustomerCheckBoxChanged(object sender, EventArgs e)
-    {
-        for (int i = 0; i <= CustomerGridView.Rows.Count - 1; i++)
+        switch (resourceType)
         {
-            CheckBox cbox = (CheckBox)(CustomerGridView.Rows[i].FindControl("Customer_CheckBox"));
-            if (cbox != (CheckBox)sender)
-                cbox.Checked = false;
-        }
-        int customerID = Convert.ToInt32(GetCustomerID());
-        Customer customer = new Customer();
-        CustomerInfo customerInfo = customer.GetCustomerById(customerID);
-        textBox_customerName.Text = customerInfo.CustomerName;
-        CustomerID_TextBox.Text = customerID.ToString();
-    }
-
-    /// <summary>
-    /// 当复选框被点击时发生
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ContactCheckBoxChanged(object sender, EventArgs e)
-    {
-        for (int i = 0; i <= ContactGridView.Rows.Count - 1; i++)
-        {
-            CheckBox cbox = (CheckBox)(ContactGridView.Rows[i].FindControl("Contact_CheckBox"));
-            if (cbox != (CheckBox)sender)
-                cbox.Checked = false;
-        }
-        int contactID = Convert.ToInt32(GetContactID());
-        Contact contact = new Contact();
-        ContactInfo contactInfo = contact.GetContactById(contactID);
-        textBox_contactName.Text = contactInfo.ContactName;
-    }
-
-    public string GetCustomerID()
-    {
-        //取选中的事件编号
-        string streid = "";
-        if (CustomerGridView != null)
-        {
-            int i, row;
-            i = 0;
-            row = CustomerGridView.Rows.Count;
-            CheckBox mycb = new CheckBox();
-            for (i = 0; i < row; i++)
-            {
-                mycb = (CheckBox)CustomerGridView.Rows[i].FindControl("Customer_CheckBox");
-                if (mycb != null)
+            case "客户":
                 {
-                    if (mycb.Checked)
-                    {
-                        TextBox mytb = new TextBox();
-                        mytb = (TextBox)CustomerGridView.Rows[i].FindControl("Customer_TextBox");
-                        if (mytb != null)
-                        {
-                            streid = streid + mytb.Text.Trim() + ",";
-                        }
-                    }
+                    Response.Redirect("ModifyCustomer.aspx?customerID=" + resourceID.ToString());
+                    break;
                 }
-            }
-        }
-        if (streid.Length > 0)
-        {
-            streid = streid.Remove(streid.Length - 1);
-        }
-        return streid;
-    }
-
-    public string GetContactID()
-    {
-        //取选中的事件编号
-        string streid = "";
-        if (ContactGridView != null)
-        {
-            int i, row;
-            i = 0;
-            row = ContactGridView.Rows.Count;
-            CheckBox mycb = new CheckBox();
-            for (i = 0; i < row; i++)
-            {
-                mycb = (CheckBox)ContactGridView.Rows[i].FindControl("Contact_CheckBox");
-                if (mycb != null)
+            case "临床":
                 {
-                    if (mycb.Checked)
-                    {
-                        TextBox mytb = new TextBox();
-                        mytb = (TextBox)ContactGridView.Rows[i].FindControl("Contact_TextBox");
-                        if (mytb != null)
-                        {
-                            streid = streid + mytb.Text.Trim() + ",";
-                        }
-                    }
+                    Response.Redirect("ModifyClinicalResource.aspx?clinicalResourceID=" + resourceID.ToString());
+                    break;
                 }
-            }
+            case "政府":
+                {
+                    Response.Redirect("ModifyGoverResource.aspx?goverResourceID=" + resourceID.ToString());
+                    break;
+                }
+            case "合作伙伴":
+                {
+                    Response.Redirect("ModifyPartnerResource.aspx?partnerResourceID=" + resourceID.ToString());
+                    break;
+                }
         }
-        if (streid.Length > 0)
-        {
-            streid = streid.Remove(streid.Length - 1);
-        }
-        return streid;
     }
 
-    protected void CustomerList_Hidden(object sender, EventArgs e)
+    protected void Abort(object sender, EventArgs e)
     {
-        CustomerGridView.Visible = false;
-        Customer_Hidden.Visible = false;
+        Response.Write("VisitRecordList.aspx");
     }
 
-    protected void ContactList_Hidden(object sender, EventArgs e)
+    protected bool isUserLogin()
     {
-        ContactGridView.Visible = false;
-        Contact_Hidden.Visible = false;
+        if (Session["userID"].ToString() == "")
+            return false;
+
+        int userID = Convert.ToInt32(Session["userID"].ToString());
+        if (user.GetUserById(userID) == null)
+            return false;
+
+        return true;
     }
 }

@@ -7,7 +7,6 @@ using System.Data;
 using Model;
 using IDAL;
 using DALFactory;
-using System.Data;
 
 namespace BLL
 {

@@ -1,199 +1,219 @@
 ﻿<%@ Page Language="C#" Async="true" AutoEventWireup="true" MasterPageFile="~/web/index.master"
-    CodeFile="ModifyCustomer.aspx.cs" Inherits="web_ModifyCustomer" Title="修改客户" %>
-
+    CodeFile="ModifyCustomer.aspx.cs" Inherits="web_ModifyCustomer" Title="编辑客户" %>
+    
+<%@ Register Assembly="AspNetPager" Namespace="Wuqi.Webdiyer" TagPrefix="webdiyer" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="../bootstrap/js/jquery-1.8.1.min.js" type="text/javascript"></script>
+
+    <script src="../bootstrap/js/bootstrap-modal.js" type="text/javascript"></script>
+
+    <script src="../bootstrap/js/bootstrap-dropdown.js" type="text/javascript"></script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-
-    <script type="text/javascript">
-  function modifyCustomer() 
-  {
-         if(confirm("确定要修改？"))
-         {
-            document.getElementById("<%=modifyCustomer_Hidden.ClientID %>").click();
-         }
-         else
-            return;
-  } 
-    </script>
-
-    <div>
-        <asp:Label ID="Label1" runat="server" Text="修改客户"></asp:Label>
+    <div style="padding-top: 10px">
     </div>
-    <table border="0" cellspacing="0" cellpadding="0" width="100%">
-        <tr>
-            <td>
-                <asp:Label ID="label_customerName" runat="server" Text="客户名称" />
-            </td>
-            <td>
-                <asp:TextBox ID="textBox_customerName" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_manager" runat="server" Text="负责人" />
-            </td>
-            <td>
-                <asp:TextBox ID="textBox_manager" runat="server" />
-            </td>
-            <td>
-                <asp:Button ID="select_manager" Text="选择负责人" runat="server" OnClick="Select_Manager" />
-            </td>
-            <asp:TextBox ID="UserID_TextBox" runat="server" Visible="false"></asp:TextBox>
-        </tr>
-        <tr>
-            <td>
-                <asp:GridView ID="UserGridView" runat="server" BackColor="White" BorderColor="#DEDFDE"
-                    BorderStyle="None" BorderWidth="1px" CellPadding="4" ForeColor="Black" GridLines="Vertical"
-                    AutoGenerateColumns="False" DataKeyNames="用户ID" AllowPaging="True" ShowFooter="false"
-                    OnRowDataBound="UserGridView_RowDataBound">
-                    <Columns>
-                        <asp:BoundField HeaderText="序号" ReadOnly="True" />
-                        <asp:BoundField DataField="用户名" HeaderText="用户名" ReadOnly="True" />
-                        <asp:BoundField DataField="用户类型" HeaderText="用户类型" ReadOnly="True" />
-                        <asp:BoundField DataField="邮箱" HeaderText="邮箱" ReadOnly="True" />
-                        <asp:BoundField DataField="手机" HeaderText="手机" ReadOnly="True" />
-                        <asp:BoundField DataField="所在部门" HeaderText="所在部门" ReadOnly="True" />
-                        <asp:TemplateField HeaderText="选择">
-                            <ItemTemplate>
-                                <asp:CheckBox ID="User_CheckBox" runat="server" OnCheckedChanged="UserCheckBoxChanged"
-                                    AutoPostBack="True" />
-                                <asp:TextBox ID="User_TextBox" runat="server" Text='<%# Eval("用户ID") %>' Visible="false"></asp:TextBox>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                    <RowStyle BackColor="#F7F7DE" />
-                    <FooterStyle BackColor="#CCCC99" />
-                    <PagerStyle BackColor="White" ForeColor="#66FFCC" HorizontalAlign="Center" BorderStyle="None"
-                        Wrap="False" />
-                    <PagerSettings Visible="False" />
-                    <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" />
-                    <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" />
-                    <AlternatingRowStyle BackColor="White" />
-                </asp:GridView>
-                <asp:LinkButton ID="label_UserFirstPage" runat="server" OnClick="User_FirstPage_Click">首页</asp:LinkButton>
-                <asp:LinkButton ID="label_UserPrePage" runat="server" OnClick="User_PrePage_Click">上一页</asp:LinkButton>
-                <asp:Label ID="label_User_CurrentPage" runat="server"></asp:Label>
-                <asp:LinkButton ID="label_UserNextPage" runat="server" OnClick="User_NextPage_Click">下一页</asp:LinkButton>
-                <asp:LinkButton ID="label_UserLastPage" runat="server" OnClick="User_LastPage_Click">尾页</asp:LinkButton>
-                <asp:Label ID="label_UserGoto" runat="server" Text="跳转到第" />
-                <asp:DropDownList ID="ddl_UserPage" runat="server" AutoPostBack="True" OnSelectedIndexChanged="User_DropDownList_SelectedIndexChanged">
-                </asp:DropDownList>
-                <asp:Label ID="label_UserPage" runat="server" Text="页" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_city" runat="server" Text="所在城市" />
-            </td>
-            <td>
-                <asp:TextBox ID="textBox_city" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_clientType" runat="server" Text="客户类别" />
-            </td>
-            <td>
-                <asp:DropDownList ID="ddl_clientType" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_level" runat="server" Text="级别" />
-            </td>
-            <td>
-                <asp:TextBox ID="textBox_level" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_productRange" runat="server" Text="产品范围" />
-            </td>
-            <td>
-                <asp:DropDownList ID="ddl_productRange" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_taxID" runat="server" Text="税务登记号" />
-            </td>
-            <td>
-                <asp:TextBox ID="textBox_taxID" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_organCode" runat="server" Text="组织机构代码" />
-            </td>
-            <td>
-                <asp:TextBox ID="textBox_organCode" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Label ID="label_contact" runat="server" Text="联系人" />
-            </td>
-            <td>
-                <asp:Button ID="check_Contact" Text="查看联系人" runat="server" OnClick="Select_Contact" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:GridView ID="ContactGridView" runat="server" BackColor="White" BorderColor="#DEDFDE"
-                    BorderStyle="None" BorderWidth="1px" CellPadding="4" ForeColor="Black" GridLines="Vertical"
-                    AutoGenerateColumns="False" DataKeyNames="联系人ID" AllowPaging="True" ShowFooter="false"
-                    OnRowDataBound="ContactGridView_RowDataBound" OnRowDeleting="ContactGridView_RowDeleting"
-                    OnRowEditing="ContactGridView_RowEditing">
-                    <Columns>
-                        <asp:BoundField HeaderText="序号" ReadOnly="True" />
-                        <asp:BoundField DataField="联系人姓名" HeaderText="联系人姓名" ReadOnly="True" />
-                        <asp:BoundField DataField="职位" HeaderText="职位" ReadOnly="True" />
-                        <asp:BoundField DataField="手机" HeaderText="手机" ReadOnly="True" />
-                        <asp:BoundField DataField="固定电话" HeaderText="固定电话" ReadOnly="True" />
-                        <asp:BoundField DataField="邮箱" HeaderText="邮箱" ReadOnly="True" />
-                        <asp:BoundField DataField="地址" HeaderText="地址" ReadOnly="True" />
-                        <asp:BoundField DataField="邮编" HeaderText="邮编" ReadOnly="True" />
-                        <asp:BoundField DataField="传真号" HeaderText="传真号" ReadOnly="True" />
-                        <asp:CommandField HeaderText="编辑" ShowEditButton="True" />
-                        <asp:TemplateField HeaderText="删除">
-                            <ItemTemplate>
-                                <asp:LinkButton ID="ContactDelete" runat="server" OnClientClick="return confirm('确定删除？')"
-                                    CommandName="Delete" Text="删除"></asp:LinkButton>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                    <RowStyle BackColor="#F7F7DE" />
-                    <FooterStyle BackColor="#CCCC99" />
-                    <PagerStyle BackColor="White" ForeColor="#66FFCC" HorizontalAlign="Center" BorderStyle="None"
-                        Wrap="False" />
-                    <PagerSettings Visible="False" />
-                    <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" />
-                    <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" />
-                    <AlternatingRowStyle BackColor="White" />
-                </asp:GridView>
-                <asp:LinkButton ID="label_ContactFirstPage" runat="server" OnClick="Contact_FirstPage_Click">首页</asp:LinkButton>
-                <asp:LinkButton ID="label_ContactPrePage" runat="server" OnClick="Contact_PrePage_Click">上一页</asp:LinkButton>
-                <asp:Label ID="label_Contact_CurrentPage" runat="server"></asp:Label>
-                <asp:LinkButton ID="label_ContactNextPage" runat="server" OnClick="Contact_NextPage_Click">下一页</asp:LinkButton>
-                <asp:LinkButton ID="label_ContactLastPage" runat="server" OnClick="Contact_LastPage_Click">尾页</asp:LinkButton>
-                <asp:Label ID="label_ContactGoto" runat="server" Text="跳转到第" />
-                <asp:DropDownList ID="ddl_ContactPage" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Contact_DropDownList_SelectedIndexChanged">
-                </asp:DropDownList>
-                <asp:Label ID="label_ContactPage" runat="server" Text="页" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Button ID="addContact" Text="添加联系人" runat="server" OnClick="Add_Contact" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:Button ID="modifyCustomer" Text="修改客户" runat="server" OnClientClick="modifyCustomer()" />
-                <asp:Button ID="modifyCustomer_Hidden" Text="修改客户" runat="server" OnClick="modify"
-                    Style="display: none" />
-            </td>
-        </tr>
-    </table>
+    <div class="container">
+        <div class="row">
+            <form class="form-horizontal">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="CustomerList.aspx">客户管理</a> <span class="divider">/</span>
+                </li>
+                <li class="active">
+                    <asp:Label runat="Server" Text="编辑客户"></asp:Label></li>
+            </ul>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    客户名称
+                </label>
+                <div class="controls">
+                    <asp:TextBox runat="Server" ID="txtCustomerName"></asp:TextBox>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    负责人
+                </label>
+                <div class="controls">
+                    <asp:TextBox runat="Server" ID="txtManager" onfocus="$('#myModal').modal({backdrop:false, keyboard:true,show:true})"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtManager"
+                        ErrorMessage="输入不正确" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                </div>
+                <div class="controls">
+                    <asp:TextBox ID="txtHiddenUserID" runat="server" Visible="false"></asp:TextBox>
+                </div>
+                <div class="modal hide fade" id="myModal">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">×</a>
+                        <h3>
+                            修改项目负责人</h3>
+                    </div>
+                    <div class="modal-body" style="margin: 0px auto">
+                        <asp:DropDownList runat="server" ID="ddlUser">
+                        </asp:DropDownList>
+                    </div>
+                    <div class="modal-footer">
+                        <asp:LinkButton class="btn btn-primary" ID="lbtnSelectUser" runat="Server" CommandName="select"
+                            CausesValidation="false" Text="确定" OnCommand="lbtnSelectUser_Command"></asp:LinkButton>
+                        <a data-dismiss="modal" href="#" class="btn">关闭</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    所在城市
+                </label>
+                <div class="controls">
+                    <asp:TextBox runat="Server" ID="txtCity"></asp:TextBox>
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtCity"
+                        ErrorMessage="输入不正确" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    客户类别
+                </label>
+                <div class="controls">
+                    <asp:DropDownList runat="Server" ID="ddlCustomerType">
+                    </asp:DropDownList>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="ddlCustomerType"
+                        ErrorMessage="输入不正确" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    级别
+                </label>
+                <div class="controls">
+                    <asp:TextBox runat="Server" ID="txtCustomerRank"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtCustomerRank"
+                        ErrorMessage="输入不正确" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    产品范围
+                </label>
+                <div class="controls">
+                    <asp:DropDownList runat="Server" ID="ddlProductRange">
+                    </asp:DropDownList>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ControlToValidate="ddlProductRange"
+                        ErrorMessage="输入不正确" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    税务登记号
+                </label>
+                <div class="controls">
+                    <asp:TextBox runat="Server" ID="txtTaxID"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ControlToValidate="txtTaxID"
+                        ErrorMessage="输入不正确" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    组织机构代码
+                </label>
+                <div class="controls">
+                    <asp:TextBox runat="Server" ID="txtOrganCode"></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtOrganCode"
+                        ErrorMessage="输入不正确" ValidationExpression="(.){0,30}" Display="Dynamic"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div width="100%">
+                <span><strong>客户联系人信息</strong> </span><i class="icon-plus-sign"></i><a href="AddCustomerContact.aspx?customerID=<%=customerID %>">
+                    添加</a>
+            </div>
+            <table class="table table-striped table-bordered table-condensed" cellspacing="0"
+                cellpadding="0" border="0" style="width: 100%">
+                <tr align="center">
+                    <td align="center">
+                        <strong>联系人姓名</strong>
+                    </td>
+                    <td align="center">
+                        <strong>职位</strong>
+                    </td>
+                    <td align="center">
+                        <strong>手机</strong>
+                    </td>
+                    <td align="center">
+                        <strong>固定电话</strong>
+                    </td>
+                    <td align="center">
+                        <strong>邮箱</strong>
+                    </td>
+                    <td align="center">
+                        <strong>地址</strong>
+                    </td>
+                    <td align="center">
+                        <strong>邮编</strong>
+                    </td>
+                    <td align="center">
+                        <strong>传真号</strong>
+                    </td>
+                    <td align="center">
+                    </td>
+                </tr>
+                <asp:Repeater runat="Server" ID="rpContactList" OnItemCommand="rpContactList_ItemCommand">
+                    <ItemTemplate>
+                        <tr align="center">
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblRpContactName" Text='<%#Eval("联系人姓名") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblRpPosition" Text='<%#Eval("职位") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblRpMobilephone" Text='<%#Eval("手机") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblRpTelephone" Text='<%#Eval("固定电话") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblRpEmail" Text='<%#Eval("邮箱") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblRpAddress" Text='<%#Eval("地址") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblPostCode" Text='<%#Eval("邮编") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:Label runat="Server" ID="lblFaxNumber" Text='<%#Eval("传真号") %>'></asp:Label>
+                            </td>
+                            <td align="center">
+                                <asp:LinkButton runat="Server" ID="lbtnRpAddVisitRecord" CommandName="addVisitRecord" Text="添加拜访记录" CausesValidation="false"
+                                    CommandArgument='<%#Eval("联系人ID") %>'></asp:LinkButton>
+                                <asp:LinkButton runat="Server" ID="lbtnRpEdit" CommandName="edit" Text="编辑" CausesValidation="false"
+                                    CommandArgument='<%#Eval("联系人ID") %>'></asp:LinkButton>
+                                <asp:LinkButton runat="Server" ID="lbtnRpDelete" CommandName="delete" Text="删除" CausesValidation="false"
+                                    CommandArgument='<%#Eval("联系人ID") %>' OnClientClick="return confirm('确定删除？')"></asp:LinkButton>
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </table>
+            <div style="height: 20px; text-align: center;">
+                <webdiyer:AspNetPager ID="ContactPager" runat="server" AlwaysShow="True" ButtonImageAlign="Middle"
+                    CssClass="p_num" CurrentPageButtonClass="p_num_currentPage" CustomInfoClass=""
+                    CustomInfoStyle="" FirstPageText="[首页]" Font-Size="9pt" Font-Underline="False"
+                    InputBoxStyle="p_input" LastPageText="[尾页]" NextPageText="[后一页]" NumericButtonCount="8"
+                    NumericButtonTextFormatString="[{0}]" OnPageChanged="Contact_PageChanged" PageSize="5"
+                    PrevPageText="[前一页]" ShowInputBox="Never" ShowNavigationToolTip="True" ToolTip="分页"
+                    CustomInfoTextAlign="NotSet">
+                </webdiyer:AspNetPager>
+            </div>
+            <div class="form-horizontal control-group">
+                <div class="controls">
+                    <asp:Button class="btn btn-primary" ID="addCustomer" Text="确定" runat="server" OnClick="ModifyContact" />
+                    <asp:Button class="btn" ID="btnCancel" Text="取消" runat="Server" OnClick="Abort"/>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
 </asp:Content>

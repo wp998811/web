@@ -46,7 +46,7 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CITY,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_HOSPITAL,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DEPARTMENT,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_DEPARTMENTINTRO,MySqlDbType.VarChar,50)
+                    new MySqlParameter(PARM_DEPARTMENTINTRO,MySqlDbType.VarChar,200)
                 };
 
                 if (clinicalResourceInfo.UserID == 0)
@@ -105,7 +105,7 @@ namespace MySQLDAL
                     new MySqlParameter(PARM_CITY,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_HOSPITAL,MySqlDbType.VarChar,50),
                     new MySqlParameter(PARM_DEPARTMENT,MySqlDbType.VarChar,50),
-                    new MySqlParameter(PARM_DEPARTMENTINTRO,MySqlDbType.VarChar,50),
+                    new MySqlParameter(PARM_DEPARTMENTINTRO,MySqlDbType.VarChar,200),
                     new MySqlParameter(PARM_CLINICALID,MySqlDbType.Int32,50)
                 };
 

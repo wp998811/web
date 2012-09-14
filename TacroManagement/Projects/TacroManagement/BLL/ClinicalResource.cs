@@ -333,6 +333,50 @@ namespace BLL
         /// 查询所有客户信息
         /// </summary>
         /// <returns></returns>
+        public DataTable SearchClinicalResourcesByUserId(int userId)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn clinicalResourceID = new DataColumn("临床资源ID");
+            DataColumn userName = new DataColumn("负责人姓名");
+            DataColumn city = new DataColumn("城市");
+            DataColumn hospitalName = new DataColumn("医院名称");
+            DataColumn departmentName = new DataColumn("科室名称");
+            DataColumn departIntro = new DataColumn("科室简介");
+
+            dataTable.Columns.Add(clinicalResourceID);
+            dataTable.Columns.Add(userName);
+            dataTable.Columns.Add(city);
+            dataTable.Columns.Add(hospitalName);
+            dataTable.Columns.Add(departmentName);
+            dataTable.Columns.Add(departIntro);
+
+            IList<ClinicalResourceInfo> clinicalResourceInfos = GetClinicalResourceByUserId(userId);
+            ClinicalResource clinicalResource = new ClinicalResource();
+            User user = new User();
+
+            for (int i = 0; i < clinicalResourceInfos.Count; ++i)
+            {
+                ClinicalResourceInfo clinicalResourceInfo = clinicalResourceInfos[i];
+                DataRow dataRow = dataTable.NewRow();
+                dataRow["临床资源ID"] = clinicalResourceInfo.ClinicalID;
+
+                UserInfo userInfo = user.GetUserById(clinicalResourceInfo.UserID);
+                dataRow["负责人姓名"] = userInfo.UserName;
+
+                dataRow["城市"] = clinicalResourceInfo.City;
+                dataRow["医院名称"] = clinicalResourceInfo.Hospital;
+                dataRow["科室名称"] = clinicalResourceInfo.Department;
+                dataRow["科室简介"] = clinicalResourceInfo.DepartIntro;
+
+                dataTable.Rows.Add(dataRow);
+            }
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 查询所有客户信息
+        /// </summary>
+        /// <returns></returns>
         public DataTable SearchAllContactsByClinicalResourceID(int clinicalResourceId)
         {
             DataTable dataTable = new DataTable();

@@ -92,6 +92,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ResourceAdmin.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="SubTask.cs" />
     <Compile Include="User.cs" />
