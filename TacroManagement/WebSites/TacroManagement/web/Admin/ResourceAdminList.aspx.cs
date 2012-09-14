@@ -39,14 +39,16 @@ public partial class web_Admin_ResourceAdminList : System.Web.UI.Page
         BindResourceAdmin();
     }
 
-    protected void dlResourceAdmin_DeleteCommand(object source, DataListCommandEventArgs e)
+    protected void lbDeleteRA_Command(object sender, CommandEventArgs e)
     {
-        string strID = "";
-        strID = ((Label)e.Item.FindControl("lblID")).Text;
-        int id = Int32.Parse(strID);
-        raBLL.DeleteResourceAdmin(id);
-        dlResourceAdmin.EditItemIndex = -1;
-        BindResourceAdmin();
+        if (e.CommandName == "del")
+        {
+            int id = Convert.ToInt32(e.CommandArgument.ToString());
+            if (raBLL.DeleteResourceAdmin(id) == 1)
+            {
+                BindResourceAdmin();
+            }
+        }
     }
 
     protected string GetUserName(string userID)

@@ -38,9 +38,9 @@ public partial class web_Admin_AddDepart : System.Web.UI.Page
         else
         {
             if (departBLL.AddDepartment(departName, departAdmin))
-                SetPrompt("修改成功", true);
+                SetPrompt("新建成功", true);
             else
-                SetPrompt("修改失败", true);
+                SetPrompt("新建失败", true);
         }
     }
 

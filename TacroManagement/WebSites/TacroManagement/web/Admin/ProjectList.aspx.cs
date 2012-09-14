@@ -38,13 +38,16 @@ public partial class web_Admin_ProjectList : System.Web.UI.Page
     }
 
     //删除
-    protected void dlProject_DeleteCommand(object source, DataListCommandEventArgs e)
+    protected void lbDeleteProject_Command(object sender, CommandEventArgs e)
     {
-        string strNum = "";
-        strNum = ((Label)e.Item.FindControl("lblProjectNum")).Text;
-        projectBLL.DeleteProject(strNum);
-        dlProject.EditItemIndex = -1;
-        BindProjects();
+        if (e.CommandName == "del")
+        {
+            string projectNum = e.CommandArgument.ToString();
+            if (projectBLL.DeleteProject(projectNum) == 1)
+            {
+                BindProjects();
+            }
+        }
     }
 
     //获取项目管理人员名

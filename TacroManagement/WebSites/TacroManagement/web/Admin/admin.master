@@ -86,7 +86,7 @@
                                                             </td>
                                                             <td width="100">
                                                                 <div align="center">
-                                                                    <img src="../../images/main_22.gif" width="98" height="19"></div>
+                                                                    </div>
                                                             </td>
                                                             <td>
                                                                 &nbsp;
@@ -144,7 +144,7 @@
                                     </td>
                                     <td width="59%" valign="bottom">
                                         <div align="center" class="STYLE1">
-                                            当前用户：<asp:Label ID="lblUserName" runat="server" Text=""></asp:Label></div>
+                                            管理员：<asp:Label ID="lblUserName" runat="server" Text=""></asp:Label></div>
                                     </td>
                                     <td width="21%">
                                         &nbsp;

@@ -37,17 +37,18 @@ public partial class web_Admin_UserList : System.Web.UI.Page
         BindUsers();
     }
 
-    protected void dlUser_DeleteCommand(object source, DataListCommandEventArgs e)
+    protected void lbDeleteUser_Command(object sender, CommandEventArgs e)
     {
-        string strID = "";
-        strID = ((Label)e.Item.FindControl("lblUserID")).Text;
-        int userID = Int32.Parse(strID);
-        userBLL.DeleteUser(userID);
-        dlUser.EditItemIndex = -1;
-        BindUsers();
+        if (e.CommandName == "del")
+        {
+            int userID = Convert.ToInt32(e.CommandArgument.ToString());
+            if (userBLL.DeleteUser(userID) == 1)
+            {
+                BindUsers();
+            }
+        }
     }
-
-
+    
     protected string GetDepartName(string departID)
     {
         if (departID == "0")

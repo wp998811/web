@@ -1,127 +1,114 @@
-Ôªø<%@ Page Title="" Language="C#" MasterPageFile="~/web/Admin/admin.master" AutoEventWireup="true" CodeFile="NewUser.aspx.cs" Inherits="web_Admin_NewUser" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/web/Admin/admin.master" AutoEventWireup="true"
+    CodeFile="NewUser.aspx.cs" Inherits="web_Admin_NewUser" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-
-
-  <h3>
-        Áî®Êà∑ÁÆ°ÁêÜ > Áî®Êà∑ÂàóË°®</h3>
-    <div style="margin: 0 auto; font-size: 12px; font-weight: bold;">
-        <table>
-            <tr>
-                <td class="style18">
-                    Áî®Êà∑Âêç:
-                </td>
-                <td class="style19">
-                    <asp:TextBox ID="txtUserName" runat="server" Width="180px"></asp:TextBox>
-                </td>
-                <td class="style17">
-                    <asp:RequiredFieldValidator ID="rfvName" runat="server" 
-                        ControlToValidate="txtUserName" ErrorMessage="ËØ∑ËæìÂÖ•Áî®Êà∑Âêç" Display="Dynamic"></asp:RequiredFieldValidator>
-                   <asp:Label ID="lblUserName" Text="Áî®Êà∑ÂêçÂ∑≤Â≠òÂú®" runat="server" Visible="false" Style="color: Red"></asp:Label>
-                </td>
-            </tr>
-            <tr>
-                <td class="style15">
-                    Áî®Êà∑ÂØÜÁ†Å:
-                </td>
-                <td class="style16">
-                    <asp:TextBox ID="txtPassword" runat="server" Width="180px" AutoCompleteType="Disabled"
-                        TextMode="Password"></asp:TextBox>
-                </td>
-                <td class="style17">
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorNickName" runat="server" ErrorMessage="ËØ∑ËæìÂÖ•ÂØÜÁ†Å"
-                        ControlToValidate="txtPassword"></asp:RequiredFieldValidator>
-                </td>
-            </tr>
-            <tr>
-                <td class="style15">
-                    Á°ÆËÆ§ÂØÜÁ†Å:
-                </td>
-                <td class="style16">
-                    <asp:TextBox ID="txtConfirmPassword" runat="server" Width="180px" 
-                        AutoCompleteType="Disabled" TextMode="Password"></asp:TextBox>
-                </td>
-                <td class="style17">
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="ËØ∑ËæìÂÖ•Á°ÆËÆ§ÂØÜÁ†Å"
-                        ControlToValidate="txtConfirmPassword"></asp:RequiredFieldValidator>
-                    <asp:CompareValidator ID="CompareValidator2" runat="server" ErrorMessage="‰∏§Ê¨°ÂØÜÁ†Å‰∏ç‰∏ÄËá¥"
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <div class="container">
+        <div style="padding-top: 10px;">
+        </div>
+        <ul class="breadcrumb">
+            <li><a href="#">”√ªßπ‹¿Ì</a><span class="divider">/ÃÌº”</span> </li>
+        </ul>
+        <div class="row">
+            <form class="form-horizontal">
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    ”√ªß√˚
+                </label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <asp:TextBox runat="Server" ID="txtUserName" Text=""></asp:TextBox>
+                    </div>
+                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtUserName"
+                        ErrorMessage="«Î ‰»Î”√ªß√˚" Display="Dynamic"></asp:RequiredFieldValidator>
+                    <asp:Label ID="lblUserName" Text="”√ªß√˚“—¥Ê‘⁄" runat="server" Visible="false" Style="color: Red"></asp:Label>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    ”√ªß√‹¬Î
+                </label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <asp:TextBox runat="Server" ID="txtPassword" Text="" TextMode="Password"></asp:TextBox>
+                    </div>
+                    <asp:RequiredFieldValidator ID="rfvPwd" runat="server" ErrorMessage="«Î ‰»Î√‹¬Î" ControlToValidate="txtPassword"
+                        Display="Dynamic"></asp:RequiredFieldValidator></div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    »∑»œ√‹¬Î
+                </label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <asp:TextBox runat="Server" ID="txtConfirmPassword" Text="" TextMode="Password"></asp:TextBox>
+                    </div>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="«Î ‰»Î»∑»œ√‹¬Î"
+                        ControlToValidate="txtConfirmPassword" Display="Dynamic"></asp:RequiredFieldValidator>
+                    <asp:CompareValidator ID="CompareValidator1" runat="server" ErrorMessage="¡Ω¥Œ√‹¬Î≤ª“ª÷¬"
                         ControlToCompare="txtPassword" ControlToValidate="txtConfirmPassword" Display="Dynamic"></asp:CompareValidator>
-                </td>
-            </tr>
-            <tr>
-                <td class="style12">
-                    Áî®Êà∑Á±ªÂûã:
-                </td>
-                <td class="style13">
-                    <asp:DropDownList ID="ddlUserType" runat="server">
-                        <asp:ListItem Value="Á≥ªÁªüÁÆ°ÁêÜÂëò">Á≥ªÁªüÁÆ°ÁêÜÂëò</asp:ListItem>
-                        <asp:ListItem Value="È°πÁõÆÁÆ°ÁêÜÂëò">È°πÁõÆÁÆ°ÁêÜÂëò</asp:ListItem>
-                        <asp:ListItem Value="ÈÉ®Èó®ÁÆ°ÁêÜÂëò">ÈÉ®Èó®ÁÆ°ÁêÜÂëò</asp:ListItem>
-                        <asp:ListItem Value="ÊôÆÈÄöÁî®Êà∑">ÊôÆÈÄöÁî®Êà∑</asp:ListItem>
-                        <asp:ListItem Value="ÂÆ¢Êà∑">ÂÆ¢Êà∑</asp:ListItem>
-                    </asp:DropDownList>
-                </td>
-                <td class="style14">
-                    &nbsp;
-                </td>
-            </tr>
-            <tr>
-                <td class="style12">
-                    Áî®Êà∑ÈÇÆÁÆ±:
-                </td>
-                <td class="style13">
-                    <asp:TextBox ID="txtEmail" runat="server" Width="180px" MaxLength="16" AutoCompleteType="Disabled"></asp:TextBox>
-                </td>
-                <td class="style14">
-                    &nbsp;
-                    <asp:RegularExpressionValidator ID="revEmail" runat="server" 
-                        ControlToValidate="txtEmail" ErrorMessage="ÈÇÆÁÆ±Ê†ºÂºè‰∏çÊ≠£Á°Æ" 
-                        ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
-                </td>
-            </tr>
-            <tr>
-                <td class="style9">
-                    Áî®Êà∑ÊâãÊú∫:
-                </td>
-                <td class="style10">
-                    <asp:TextBox ID="txtPhone" runat="server" Width="180px"></asp:TextBox>
-                </td>
-                <td class="style11">
-                    &nbsp;
-                    <asp:RegularExpressionValidator ID="revPhone" runat="server" 
-                        ControlToValidate="txtPhone" ErrorMessage="ÊâãÊú∫Âè∑Á†ÅÊ†ºÂºè‰∏çÊ≠£Á°Æ" 
-                        ValidationExpression="^(13[1-9]|15[0-9]|188[8|9])\d{8}$"></asp:RegularExpressionValidator>
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="style12">
-                    ÊâÄÂ±ûÈÉ®Èó®:
-                </td>
-                <td class="style13">
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    ”√ªß¿‡–Õ
+                </label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <asp:DropDownList ID="ddlUserType" runat="server">
+                            <asp:ListItem Value="œµÕ≥π‹¿Ì‘±">œµÕ≥π‹¿Ì‘±</asp:ListItem>
+                            <asp:ListItem Value="œÓƒøπ‹¿Ì‘±">œÓƒøπ‹¿Ì‘±</asp:ListItem>
+                            <asp:ListItem Value="≤ø√≈π‹¿Ì‘±">≤ø√≈π‹¿Ì‘±</asp:ListItem>
+                            <asp:ListItem Value="∆’Õ®”√ªß">∆’Õ®”√ªß</asp:ListItem>
+                            <asp:ListItem Value="øÕªß">øÕªß</asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    ”√ªß” œ‰
+                </label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <asp:TextBox runat="Server" ID="txtEmail" Text=""></asp:TextBox>
+                    </div>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtEmail"
+                        ErrorMessage="” œ‰∏Ò Ω≤ª’˝»∑" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    ”√ªß ÷ª˙
+                </label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <asp:TextBox runat="Server" ID="txtPhone" Text=""></asp:TextBox>
+                    </div>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtPhone"
+                        ErrorMessage=" ÷ª˙∫≈¬Î∏Ò Ω≤ª’˝»∑" ValidationExpression="^(13[1-9]|15[0-9]|18[8|9])\d{8}$"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <label class="control-label">
+                    À˘ Ù≤ø√≈
+                </label>
+                <div class="controls">
                     <asp:DropDownList ID="ddlDepart" runat="server">
                     </asp:DropDownList>
-                </td>
-                <td class="style14">
-                    &nbsp;
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="style6">
-                </td>
-                <td class="style7">
-                    <asp:Button ID="btAdd" runat="server" Text="Ê∑ªÂä†" onclick="btAdd_Click"/>
-                    <asp:Button ID="btnCancle" runat="server" Text="ËøîÂõû" OnClick="btnCancle_Click" 
-                        CausesValidation="False" Width="40px" style="height: 26px" />
-                </td>
-                <td class="style8">
+                </div>
+            </div>
+            <div class="form-horizontal control-group">
+                <div class="controls">
+                    <asp:Button ID="btAdd" class="btn btn-primary" runat="Server" Text="»∑∂®" OnClick="btAdd_Click" />
+                    <asp:Button ID="btnCancle" class="btn" runat="Server" Text="»°œ˚" OnClick="btnCancle_Click"
+                        CausesValidation="False" />
                     <asp:Label ID="lblPrompt" Text="" runat="server" Visible="false" Style="color: Red"></asp:Label>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+            </form>
+        </div>
     </div>
 </asp:Content>
-

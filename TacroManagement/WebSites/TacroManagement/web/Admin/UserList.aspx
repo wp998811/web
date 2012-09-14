@@ -1,73 +1,85 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/web/Admin/admin.master" AutoEventWireup="true" CodeFile="UserList.aspx.cs" Inherits="web_Admin_UserList" %>
-<%@ Register Assembly="AspNetPager" Namespace="Wuqi.Webdiyer" TagPrefix="webdiyer" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/web/Admin/admin.master" AutoEventWireup="true"
+    CodeFile="UserList.aspx.cs" Inherits="web_Admin_UserList" %>
 
-  <div>
-        <h3>
-            用户管理 > 用户列表</h3>
-        <div style="width: 1000px; margin: 0 auto;">
-            <div style="border-bottom: 2px solid gray; height: 20px;">
-                <div style="float: left; width: 100px; text-align: center;">
+<%@ Register Assembly="AspNetPager" Namespace="Wuqi.Webdiyer" TagPrefix="webdiyer" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../../bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+    <script src="../../bootstrap/js/bootstrap-modal.js" type="text/javascript"></script>
+
+    <script src="../../bootstrap/js/jquery-1.8.1.min.js" type="text/javascript"></script>
+
+    <script src="../../bootstrap/js/bootstrap-dropdown.js" type="text/javascript"></script>
+
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <div class="container" width="100%">
+        <div style="padding-top: 10px;">
+        </div>
+        <ul class="breadcrumb">
+            <li><span class="divider">用户管理/用户信息</span> </li>
+        </ul>
+        <div width="100%">
+            <span><strong>用户列表</strong> </span>
+        </div>
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <td>
                     用户名
-                </div>
-                <div style="float: left; width: 100px; text-align: center;">
+                </td>
+                <td>
                     用户密码
-                </div>
-                <div style="float: left; width: 100px; text-align: center;">
+                </td>
+                <td>
                     用户类别
-                </div>
-                <div style="float: left; width: 200px; text-align: center;">
+                </td>
+                <td>
                     用户邮箱
-                </div>
-                <div style="float: left; width: 200px; text-align: center;">
+                </td>
+                <td>
                     用户电话
-                </div>
-                <div style="float: left; width: 200px; text-align: center;">
+                </td>
+                <td>
                     所属部门
-                </div>
-            </div>
-            <asp:DataList ID="dlUser" runat="server" Width="1000px" OnDeleteCommand="dlUser_DeleteCommand">
+                </td>
+                <td>
+                  
+                </td>
+            </tr>
+            <asp:Repeater ID="dlUser" runat="Server">
                 <ItemTemplate>
-                    <div style="border-bottom: 1px dashed gray; width: 1000px;">
-                        <div style="float: left; text-align: center;">
-                            <asp:Label ID="lblUserID" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "UserID")%>'
-                                Visible="false"></asp:Label></a>
-                        </div>
-                        <div style="float: left; width: 100px; text-align: center;">
-                            <asp:Label ID="lblUserName" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "UserName")%>'></asp:Label>
-                        </div>
-                        <div style="float: left; width: 100px; text-align: center;">
-                            <asp:Label ID="lblPassword" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Password")%>'></asp:Label>
-                        </div>
-                        <div style="float: left; width: 100px; text-align: center;">
-                            <asp:Label ID="lblUserType" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "UserType")%>'></asp:Label>
-                        </div>
-                        <div style="float: left; width: 200px; text-align: center;">
-                            <asp:Label ID="lblUserEmail" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "UserEmail")%>'></asp:Label>
-                        </div>
-                        <div style="float: left; width: 200px; text-align: center;">
-                            <asp:Label ID="lblUserPhone" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "UserPhone")%>'></asp:Label>
-                        </div>
-                        
-                        <div style="float: left; width: 200px; text-align: center;">
-                            <asp:Label ID="lblDepartment" runat="server" Text='<%# GetDepartName(Eval("DepartID").ToString())%>'></asp:Label>
-                        </div>
-                        
-                        <div style="float: left; width: 50px; text-align: center;">
+                    <tr>
+                        <td>
+                            <asp:Label runat="Server" ID="lblUserName" Text='<%#Eval("UserName") %>'></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="Server" ID="lblPassword" Text='<%#Eval("Password") %>'></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="Server" ID="lblUserType" Text='<%#Eval("UserType") %>'></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="Server" ID="lblUserEmail" Text='<%#Eval("UserEmail") %>'></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="Server" ID="lblUserPhone" Text='<%#Eval("UserPhone") %>'></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="Server" ID="lblDepartment" Text='<%# GetDepartName(Eval("DepartID").ToString())%>'></asp:Label>
+                        </td>
+                        <td>
                             <a href='ModifyUser.aspx?userId=<%# DataBinder.Eval(Container.DataItem, "UserID")%>'>
                                 <asp:Label ID="lblEditUser" Text="编辑" runat="server">
                                 </asp:Label>
                             </a>
-                        </div>
-                        <div style="float: left; width: 50px; text-align: center;">
-                            <asp:LinkButton ID="lbDeleteUser" Text="删除" CommandName="Delete" runat="server" OnClientClick="return confirm('确定删除吗？')"></asp:LinkButton>
-                        </div>
-                    </div>
+                            <asp:LinkButton OnCommand="lbDeleteUser_Command" ID="lbDeleteUser" runat="Server"
+                                OnClientClick="return confirm('确定删除？');" CausesValidation="false" Text="删除" CommandName="del"
+                                CommandArgument='<%# Eval("UserID") %>'></asp:LinkButton>
+                        </td>
+                    </tr>
                 </ItemTemplate>
-            </asp:DataList>
-        </div>
+            </asp:Repeater>
+        </table>
         <div style="height: 20px; text-align: center;">
             <webdiyer:AspNetPager ID="AspNetPager1" runat="server" AlwaysShow="True" ButtonImageAlign="Middle"
                 CssClass="p_num" CurrentPageButtonClass="p_num_currentPage" CustomInfoClass=""
@@ -80,4 +92,3 @@
         </div>
     </div>
 </asp:Content>
-

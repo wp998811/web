@@ -39,15 +39,17 @@ public partial class web_Admin_DepartList : System.Web.UI.Page
         BindDepartments();
     }
 
-    protected void dlUser_DeleteCommand(object source, DataListCommandEventArgs e)
+
+    protected void lbDeleteDepart_Command(object sender, CommandEventArgs e)
     {
-        string strID = "";
-        strID = ((Label)e.Item.FindControl("lblDepartID")).Text;
-        int departID = Int32.Parse(strID);
-
-
-        departBLL.DeleteDepartment(departID);
-        dlDepart.EditItemIndex = -1;
-        BindDepartments();
+        if (e.CommandName == "del")
+        {
+            int departID = Convert.ToInt32(e.CommandArgument.ToString());
+            if (departBLL.DeleteDepartment(departID) == 1)
+            {
+                BindDepartments();
+            }
+        }
     }
+    
 }
