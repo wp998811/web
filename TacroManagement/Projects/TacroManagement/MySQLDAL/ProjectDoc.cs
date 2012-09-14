@@ -28,7 +28,7 @@ namespace MySQLDAL
 
         private const string SQL_INSERT_PROJDOC = "insert into projectdoc(TaskID, ProjDocCate, DocName, DocKey, DocDescription, UploadPath, SavePath, DocPermission, UploadTime, UploadUserID) values(@TaskID, @ProjDocCate, @DocName, @DocKey, @DocDescription, @UploadPath, @SavePath, @DocPermission, @UploadTime, @UploadUserID)";
         private const string SQL_DELETE_PROJDOC = "delete from projectdoc where ProjDocID=@ProjDocID";
-        private const string SQL_UPDATE_PROJDOC = "update projectdoc set TaskID, ProjDocCate, DocName=@DocName, DocKey=@DocKey, DocDescription=@DocDescripttion, UploadPath=@UploadPath, SavePath=@SavePath, DocPermission=@DocPermission, UploadTime=@UploadTime, UploadUserID=@UploadUserID";
+        private const string SQL_UPDATE_PROJDOC = "update projectdoc set TaskID=@TaskID, ProjDocCate=@ProjDocCate, DocName=@DocName, DocKey=@DocKey, DocDescription=@DocDescription, UploadPath=@UploadPath, SavePath=@SavePath, DocPermission=@DocPermission, UploadTime=@UploadTime, UploadUserID=@UploadUserID WHERE ProjDocID=@ProjDocID";
         private const string SQL_SELECT_PROJDOCS = "select * from projectdoc";
         private const string SQL_SELECT_PROJDOC_BY_ID = "select * from projectdoc where ProjDocID=@ProjDocID";
         private const string SQL_SELECT_PROJDOC_BY_DOC_NAME = "select * from projectdoc where DocName=@DocName";

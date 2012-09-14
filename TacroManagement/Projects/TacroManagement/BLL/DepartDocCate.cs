@@ -79,6 +79,10 @@ namespace BLL
             return dal.GetDepartDocCateByDepartCategory(departID, categoryName);
         }
 
+       public IList<DepartDocCateInfo> GetDepartDocCateByDepartVisiblity(int departID, int visiblity)
+       {
+           return dal.GetDepartDocCateByDepartVisiblity(departID, visiblity);
+       }
         
     }
 }

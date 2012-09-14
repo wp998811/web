@@ -226,7 +226,30 @@ namespace BLL
             }
             return condition;
         }
+        public bool isDeleteOrModify(int docID, int userID)
+        {
+            ProjectDoc projectDoc=new ProjectDoc();
+            ProjectDocInfo projectDocInfo=projectDoc.GetProjectDocById(docID);
+            if (projectDocInfo.ProjDocId ==0)
+            {
+                return false;
+            }
+            SubTask subTask = new SubTask();
+            SubTaskInfo subTaskInfo = subTask.GetSubTaskById(projectDocInfo.TaskId);
+            if (subTaskInfo.ProjectNum == "")
+            {
+                return false;
+            }
 
+            Project project = new Project();
+            ProjectInfo projectInfo = project.GetProjectByNum(subTaskInfo.ProjectNum);
+
+            if (projectInfo.ProjectAdminID == userID)
+            {
+                return true;
+            }
+            return false;
+        }
         public bool isPremissionToDownload(int downloadPremission, int docID, int userID)
         {
             if (downloadPremission == 1)

@@ -15,7 +15,6 @@ namespace MySQLDAL
     public class DepartDocCate:IDepartDocCate
     {
 
-
         #region DepartDocCate Constant String
 
         private const string PARM_ID = "@ID";
@@ -28,8 +27,9 @@ namespace MySQLDAL
         private const string SQL_UPDATE_DEPARTDOCCATE = "UPDATE departdoccate SET DepartID = @DepartID, Visibility = @Visibility, CategoryName = @CategoryName WHERE ID = @ID";
         private const string SQL_SELECT_DEPARTDOCCATE = "SELECT * FROM departdoccate";
         private const string SQL_SELECT_DEPARTDOCCATE_BY_ID = "SELECT * FROM departdoccate WHERE ID = @ID";
-        private const string SQL_SELECT_DEPARTDOCCATE_BY_DEPARTID = "SELECT * FROM departdoccate WHERE DepartID = @DepartID";
+        private const string SQL_SELECT_DEPARTDOCCATE_BY_DEPARTID = "SELECT * FROM departdoccate WHERE DepartID = @DepartID ORDER BY Visibility";
         private const string SQL_SELECT_DEPARTDOCCATE_BY_DEPART_CATEGORY = "SELECT * FROM departdoccate WHERE DepartID = @DepartID AND CategoryName = @CategoryName";
+        private const string SQL_SELECT_DEPARTDOCCATE_BY_DEPART_VISIBILIT = "SELECT * FROM departdoccate WHERE DepartID = @DepartID AND Visibility = @Visibility";
 
         #endregion
 
@@ -238,6 +238,40 @@ namespace MySQLDAL
                 Console.WriteLine(se.Message);
             }
             return departDocCateInfo;
+        }
+
+        /// <summary>
+        /// 根据部门和文档范围查找部门文档类型
+        /// </summary>
+        /// <param name="departID"></param>
+        /// <param name="visiblity"></param>
+        /// <returns></returns>
+        IList<DepartDocCateInfo> IDepartDocCate.GetDepartDocCateByDepartVisiblity(int departID, int visiblity)
+        {
+            IList<DepartDocCateInfo> departDocCates = new List<DepartDocCateInfo>();
+            try
+            {
+                MySqlParameter[] parms = new MySqlParameter[] { 
+                    new MySqlParameter(PARM_DEPARTID,MySqlDbType.Int32,11),
+                    new MySqlParameter(PARM_VISIBILITY,MySqlDbType.Int32,11)
+                };
+                parms[0].Value = departID;
+                parms[1].Value = visiblity;
+
+                using (MySqlDataReader rdr = DBUtility.MySqlHelper.ExecuteReader(DBUtility.MySqlHelper.ConnectionString, CommandType.Text, SQL_SELECT_DEPARTDOCCATE_BY_DEPART_VISIBILIT, parms))
+                {
+                    while (rdr.Read())
+                    {
+                        DepartDocCateInfo departDocCate = new DepartDocCateInfo(rdr.GetInt32(0), rdr.IsDBNull(1) ? 0 : rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetString(3));
+                        departDocCates.Add(departDocCate);
+                    }
+                }
+            }
+            catch (MySqlException se)
+            {
+                Console.WriteLine(se.Message);
+            }
+            return departDocCates;
         }
 
         #endregion

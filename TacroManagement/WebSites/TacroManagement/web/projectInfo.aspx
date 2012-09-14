@@ -78,7 +78,7 @@
        
        <div width="100%">
             <div width="100%">
-                <span> <strong>项目成员</strong> </span><i class="icon-plus-sign"></i>
+                <span> <strong>项目成员</strong> </span>
                 <a  data-toggle="modal" href="#myModal" data-keyboard="false" data-backdrop="false">添加</a>
                 <div class="modal hide fade" id="myModal">
                     <div class="modal-header">
