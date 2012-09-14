@@ -43,6 +43,10 @@ public partial class web_login : System.Web.UI.Page
             {
                 Response.Redirect("Admin/AdminManagement.aspx");
             }
+            else if(user.IsClient(userName))
+            {
+                Response.Redirect("../client/clientProjectList.aspx");
+            }
             else
             {
                 Response.Redirect("Home.aspx");

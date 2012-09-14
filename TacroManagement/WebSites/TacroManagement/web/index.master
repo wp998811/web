@@ -1,9 +1,6 @@
-﻿<%@ Master Language="C#" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="index.master.cs" Inherits="web_index" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<script runat="server">
-
-</script>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -15,8 +12,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    
-    <div style="height:100%">
+     <div style="height:100%">
         <table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td height="70" background="../../images/main_05.gif">
@@ -372,7 +368,7 @@
                                                                                                                 <td height="20" style="cursor: hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "
                                                                                                                     onmouseout="this.style.borderStyle='none'">
                                                                                                                     <span class="STYLE3">
-                                                                                                                        <a href="../project/projectInfo.aspx">项目列表</a>
+                                                                                                                        <a href="../project/projectList.aspx">项目列表</a>
                                                                                                                     </span>
                                                                                                                 </td>
                                                                                                             </tr>

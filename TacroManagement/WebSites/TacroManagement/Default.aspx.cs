@@ -290,10 +290,10 @@ public partial class _Default : System.Web.UI.Page
 
     {
 
-        MailMessage emailMessage = new MailMessage();//邮件对象
+        System.Net.Mail.MailMessage emailMessage = new System.Net.Mail.MailMessage();//邮件对象
 
         string sToEmail = mailTo.Trim();
-        emailMessage = new MailMessage(mailFrom, sToEmail, mailSubject, mailMessage);
+        emailMessage = new System.Net.Mail.MailMessage(mailFrom, sToEmail, mailSubject, mailMessage);
         emailMessage.IsBodyHtml = true;
         emailMessage.SubjectEncoding = System.Text.Encoding.Default;
 

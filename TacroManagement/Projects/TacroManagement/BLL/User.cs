@@ -300,6 +300,32 @@ namespace BLL
             return false;
         }
 
+        //判断用户是否是客户
+        public bool IsClient(string userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+                return false;
+            UserInfo user = dal.GetUserByName(userName);
+            if (user.UserType.Equals("客户"))
+                return true;
+            return false;
+        }
+
+        //选择所有不为客户的用户
+        public IList<UserInfo> GetUsersWithoutClient()
+        {
+            IList<UserInfo> userList = GetUsers();
+            IList<UserInfo> result = new List<UserInfo>();
+            foreach(UserInfo userInfo in userList)
+            {
+                if(!userInfo.UserType.Equals("客户"))
+                {
+                    result.Add(userInfo);
+                }
+            }
+            return result;
+        }
+
         #endregion
     }
 

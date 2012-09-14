@@ -17,6 +17,7 @@ public partial class web_projectModify : System.Web.UI.Page
 {
     Project projectManage = new Project();
     User userManage = new User();
+    FormatString formatString = new FormatString();
     
     public static string projectNum = "";
 
@@ -65,8 +66,8 @@ public partial class web_projectModify : System.Web.UI.Page
             }
             txtClientName.Text = projectInfo.ProjectClientName;
             txtProjectDes.Text = projectInfo.ProjectDescription;
-            iBeginDate.Value = projectInfo.BeginTime;
-            iEndDate.Value = projectInfo.EndTime;
+            iBeginDate.Value = formatString.FormatDate(projectInfo.BeginTime);
+            iEndDate.Value = formatString.FormatDate(projectInfo.EndTime);
         }
     }
 

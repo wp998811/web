@@ -23,12 +23,13 @@ public partial class web_Home : System.Web.UI.Page
     Affair affairManage = new Affair();
     FormatString formatString = new FormatString();
     public static int userId = 0;
+    string userName;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            string userName = Session["UserName"].ToString();
+            userName = Session["UserName"].ToString();
             UserInfo userInfo = userManage.GetUserByName(userName);
             if (userInfo != null && userInfo.UserID != 0)
             {
@@ -71,6 +72,25 @@ public partial class web_Home : System.Web.UI.Page
         }
         rpTask.DataSource = subTaskInfoList;
         rpTask.DataBind();
+
+        //对用户进行提醒
+        if (Request.Cookies[userName] == null)
+        {
+            IList<string> strList = new List<string>();
+            IList<SubTaskInfo> list = subTaskManage.GetSubTasksIsRemindNow(userId);
+            foreach(SubTaskInfo taskInfo in list)
+            {
+                string str = "<div class=\"alert fade in\"><a class=\"close\" data-dismiss=\"alert\" href=\"#\">×</a><strong> 提醒！</strong>" + "事宜 " + "<strong>" + taskInfo.TaskName + "</strong>" + " 今日到期" + "</div>";
+                strList.Add(str);
+            }
+            rpAlert.DataSource = strList;
+            rpAlert.DataBind();
+
+            HttpCookie cookie = new HttpCookie(userName);
+            cookie.Values[userName] = "1";
+            cookie.Expires = System.DateTime.Now.AddHours(12);
+            Response.Cookies.Add(cookie);
+        }
         //绑定项目管理rp
         count = 0;
         IList<ProjectUserInfo> projectUserInfoList = projectUserManage.GetProjectUsersByUserId(userId);
