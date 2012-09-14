@@ -21,7 +21,7 @@ public partial class web_subTaskModify : System.Web.UI.Page
     Project projectManage = new Project();
     ProjectUser projectUserManage = new ProjectUser();
     Affair affairManage = new Affair();
-    string projectNum;
+    public static string projectNum = "";
     int subTaskId;
     public static int type; 
 
@@ -136,13 +136,13 @@ public partial class web_subTaskModify : System.Web.UI.Page
     {
         if(txtSubTaskName.Text.Trim().Length == 0)
         {
-            Response.Write("<script language='javascript'>alert('子任务名不能为空')</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('子任务名不能为空');window.onload=ShowAlert;", true);
             return;
         }
 
         if(txtSubTaskPeriod.Text.Trim().Length == 0)
         {
-            Response.Write("<script language='javascript'>alert('工期不能为空')</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('工期不能为空');window.onload=ShowAlert;", true);
             return;
         }
         string taskName = txtSubTaskName.Text;
@@ -183,6 +183,13 @@ public partial class web_subTaskModify : System.Web.UI.Page
                 taskInfo.TaskState = taskState;
                 if (subTaskManage.UpdateSubTask(taskInfo) > 0)
                 {
+                    //添加项目动态
+                    string des = "修改子任务：" + taskName;
+                    string name = Session["UserName"].ToString();
+                    int uid = (userManage.GetUserByName(name)).UserID;
+                    AffairInfo affair = new AffairInfo(des, uid, DateTime.Now.ToString(), projectNum);
+                    affairManage.InsertAffair(affair);
+
 
                     string num = lblProjectNum.Text;
                     string url = "projectInfo.aspx?projectNum=" + num;
@@ -201,9 +208,13 @@ public partial class web_subTaskModify : System.Web.UI.Page
             if(subTaskManage.InsertSubTask(taskInfo) > 0)
             {
                 //添加项目动态
-                string des = "添加子任务：" + taskName;
-                AffairInfo affair = new AffairInfo(des, taskManager, DateTime.Now.ToString(), projectNum);
+                string des = "修改子任务：" + taskName;
+                string name = Session["UserName"].ToString();
+                int uid = (userManage.GetUserByName(name)).UserID;
+                AffairInfo affair = new AffairInfo(des, uid, DateTime.Now.ToString(), projectNum);
                 affairManage.InsertAffair(affair);
+
+
                 string num = lblProjectNum.Text;
                 string url = "projectInfo.aspx?projectNum=" + num;
                 Response.Redirect(url);

@@ -127,5 +127,25 @@ namespace BLL
                 return true;
             return false;
         }
+
+        //获取项目已经花费的时间，上面的版本存在问题
+        //可能导致当前时间在开始时间之前时，依然存在
+        //花费时间
+        public int GetProjectSpareTimeVer2(string projectNum)
+        {
+            FormatString formatString = new FormatString();
+            ProjectInfo projectInfo = GetProjectByNum(projectNum);
+            if(projectInfo != null)
+            {
+                string beginDate = formatString.FormatDate(projectInfo.BeginTime);
+                string nowDate = formatString.FormatDate(DateTime.Now.Date.ToString());
+                if (nowDate.CompareTo(beginDate) >= 0)
+                {
+                    return GetProjectSpareTime(projectNum);
+                }
+                else
+                    return -1;
+            }
+        }
     }
 }

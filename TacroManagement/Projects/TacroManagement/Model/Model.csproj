@@ -69,6 +69,7 @@
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="ProjectUserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RichAffairInfo.cs" />
     <Compile Include="RichSubTaskInfo.cs" />
     <Compile Include="ScheduleInfo.cs" />
     <Compile Include="SubTaskInfo.cs" />
